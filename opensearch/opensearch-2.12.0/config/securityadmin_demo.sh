@@ -1,0 +1,2 @@
+#!/bin/bash
+sudo "/home/user/htdocs/srv1113343.hstgr.cloud/opensearch/opensearch-2.12.0/plugins/opensearch-security/tools/securityadmin.sh" -cd "/home/user/htdocs/srv1113343.hstgr.cloud/opensearch/opensearch-2.12.0/config/opensearch-security" -icl -key "/home/user/htdocs/srv1113343.hstgr.cloud/opensearch/opensearch-2.12.0/config/kirk-key.pem" -cert "/home/user/htdocs/srv1113343.hstgr.cloud/opensearch/opensearch-2.12.0/config/kirk.pem" -cacert "/home/user/htdocs/srv1113343.hstgr.cloud/opensearch/opensearch-2.12.0/config/root-ca.pem" -nhnv
