@@ -398,6 +398,13 @@
             <argument name="scopeType" xsi:type="init_parameter">Magento\Store\Model\StoreManager::PARAM_RUN_TYPE</argument>
         </arguments>
     </type>
+        <type name="Magento\Captcha\Model\Checkout\ConfigProvider">
+            <arguments>
+                <argument name="formIds" xsi:type="array">
+                    <item name="user_login" xsi:type="string">user_login</item>
+                </argument>
+            </arguments>
+        </type>
     <type name="Magento\Framework\Translate">
         <arguments>
             <argument name="cache" xsi:type="object">Magento\Framework\App\Cache\Type\Translate</argument>
