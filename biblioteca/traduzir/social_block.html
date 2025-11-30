@@ -1,6 +1,22 @@
 <!-- title: Redes Sociais | identifier: social_block -->
-<div class="social-links">
-    <a href="#" class="facebook">Facebook</a>
-    <a href="#" class="instagram">Instagram</a>
-    <a href="#" class="twitter">Twitter</a>
-</div>
+<nav class="social-links" aria-label="Redes sociais e canais oficiais">
+    <ul class="social-links__list" role="list">
+        <li class="social-links__item" role="listitem"><a href="https://www.facebook.com/awamotos" target="_blank" rel="noopener" class="facebook" aria-label="Facebook AWA Motos"><i class="fa fa-facebook" aria-hidden="true"></i> facebook.com/awamotos</a></li>
+        <li class="social-links__item" role="listitem"><a href="https://www.instagram.com/awamotos/" target="_blank" rel="noopener" class="instagram" aria-label="Instagram AWA Motos"><i class="fa fa-instagram" aria-hidden="true"></i> instagram.com/awamotos</a></li>
+        <li class="social-links__item" role="listitem"><a href="https://www.youtube.com/@awamotos7661" target="_blank" rel="noopener" class="youtube" aria-label="YouTube AWA Motos"><i class="fa fa-youtube" aria-hidden="true"></i> youtube.com/@awamotos7661</a></li>
+        <li class="social-links__item" role="listitem"><a href="https://wa.me/5516997367588?text=Ol%C3%A1%2C%20vim%20pelo%20site" target="_blank" rel="noopener" class="whatsapp" aria-label="WhatsApp AWA Motos 5516997367588"><i class="fa fa-whatsapp" aria-hidden="true"></i> 5516997367588</a></li>
+        <li class="social-links__item" role="listitem"><a href="mailto:awamotos.mkt@gmail.com" class="email" aria-label="E-mail de suporte awamotos.mkt@gmail.com"><i class="fa fa-envelope" aria-hidden="true"></i> awamotos.mkt@gmail.com</a></li>
+        <li class="social-links__item" role="listitem"><a href="tel:1633011890" class="phone" aria-label="Telefone comercial (16) 3301-1890"><i class="fa fa-phone" aria-hidden="true"></i> (16) 3301-1890</a></li>
+        <li class="social-links__item" role="listitem"><span class="hours" aria-label="Horário comercial">Seg a Sex: 8h às 18h | Sáb: 8h às 12h</span></li>
+    </ul>
+</nav>
+<style>
+    .social-links__list{margin:0;padding:0;display:flex;flex-wrap:wrap;gap:10px}
+    .social-links__item{list-style:none;font-size:13px}
+    .social-links__item a{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;background:#fff;border-radius:8px;text-decoration:none;color:#333;box-shadow:0 2px 8px rgba(0,0,0,.08);transition:background .2s ease,transform .2s ease}
+    .social-links__item a:focus-visible{outline:2px solid #b73337;outline-offset:2px}
+    .social-links__item a:hover{background:#b73337;color:#fff;transform:translateY(-2px);box-shadow:0 6px 18px rgba(183,51,55,.25)}
+    .social-links__item .hours{display:inline-block;padding:6px 10px;border-radius:8px;background:#f5f5f5;border:1px solid rgba(183,51,55,.12)}
+    @media(max-width:639px){.social-links__list{flex-direction:column}}
+    @media (prefers-reduced-motion: reduce){.social-links__item a{transition:none}}
+</style>

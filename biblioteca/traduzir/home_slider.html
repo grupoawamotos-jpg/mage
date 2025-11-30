@@ -1,4 +1,12 @@
 <!-- title: Home - Slider Principal | identifier: home_slider -->
-<div class="banner-slider">
-    {{block class="Rokanthemes\SlideBanner\Block\Slider" slider_id="homepageslider" template="slider.phtml"}}
+<div class="ayo-slider-real" role="region" aria-label="Destaques em banner">
+    {{widget type="Rokanthemes\SlideBanner\Block\Slider" slider_identifier="homepageslider" template="slider.phtml"}}
 </div>
+<style>
+    .ayo-slider-real .owl-carousel .owl-item img { border-radius: 24px; }
+    .ayo-slider-real .owl-dots { margin-top: 16px; text-align: center; }
+    .ayo-slider-real .owl-dot { display: inline-block; width: 14px; height: 14px; margin: 0 6px; border-radius: 50%; background: #d5d5d5; position:relative; }
+    .ayo-slider-real .owl-dot:focus-visible { outline: 3px solid #b73337; outline-offset: 2px; }
+    .ayo-slider-real .owl-dot.active { background: #b73337; }
+    @media (prefers-reduced-motion: reduce){ .ayo-slider-real .owl-dot{ transition:none; } }
+</style>
