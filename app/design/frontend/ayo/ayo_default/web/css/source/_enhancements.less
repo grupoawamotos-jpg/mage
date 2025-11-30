@@ -5,6 +5,14 @@
 // Integrado ao tema Ayo existente
 
 // ============================================
+// FIX: LOADER INFINITO
+// ============================================
+// O loader de CSS deve sumir assim que os estilos carregarem
+[data-role="main-css-loader"].loading-mask {
+    display: none !important;
+}
+
+// ============================================
 // VARIÁVEIS E CORES
 // ============================================
 

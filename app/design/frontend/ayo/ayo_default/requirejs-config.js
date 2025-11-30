@@ -12,6 +12,12 @@ var config = {
             accessibility: 'js/accessibility-widget',
             placeholders: 'js/placeholders-widget',
             
+            // Theme Components
+            headerA11y: 'js/header-a11y',
+            lazyProductImages: 'js/lazy-product-images',
+            brasilMasks: 'js/brasil-masks',
+            footerCustom: 'js/footer-custom',
+            
             // Rokanthemes Core
             'rokanthemes/owl': 'Rokanthemes_RokanBase/js/owl_carousel',
             'rokanthemes/fancybox': 'Rokanthemes_RokanBase/js/jquery_fancybox',
@@ -31,9 +37,16 @@ var config = {
     },
     deps: [
         'js/theme',
-        'js/responsive'
+        'js/responsive',
+        'js/lazy-product-images',
+        'js/header-a11y',
+        'js/brasil-masks'
     ],
     shim: {
+        'js/brasil-masks': ['jquery'],
+        'js/header-a11y': ['jquery'],
+        'js/lazy-product-images': ['jquery'],
+        'js/footer-custom': ['jquery', 'rokanthemes/owl'],
         'rokanthemes/owl': ['jquery'],
         'rokanthemes/elevatezoom': ['jquery'],
         'rokanthemes/choose': ['jquery'],
