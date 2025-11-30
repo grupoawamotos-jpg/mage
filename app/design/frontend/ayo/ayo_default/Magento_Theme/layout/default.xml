@@ -7,6 +7,13 @@
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
+        <!-- Container auxiliar para evitar referências quebradas ao sidebar.additional -->
+        <referenceContainer name="columns">
+            <container name="div.sidebar.additional.fallback" htmlTag="div" htmlClass="sidebar sidebar-additional" after="main">
+                <container name="sidebar.additional" as="sidebar_additional" label="Sidebar Additional"/>
+            </container>
+        </referenceContainer>
+
 		<referenceContainer name="after.body.start">
 			<block class="Rokanthemes\Themeoption\Block\Loaderpage" name="loaderpage" template="Rokanthemes_Themeoption::html/beforebodyloader.phtml"/>
 		</referenceContainer>

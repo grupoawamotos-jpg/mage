@@ -1,0 +1,28 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ *
+ * Extended to include form enhancement widgets initialization
+ */
+?>
+<?= /* @noEscape */ $block->getMiscellaneousHtml() ?>
+<!-- Form Enhancement Widgets Initialization -->
+<script type="text/x-magento-init">
+{
+    "body": {
+        "floatingLabels": {},
+        "accessibility": {},
+        "placeholders": {}
+    },
+    "input[type='password']": {
+        "passwordStrength": {}
+    },
+    "textarea[maxlength], input[maxlength]": {
+        "charCounter": {}
+    },
+    "input:not([type='hidden']), textarea, select": {
+        "formValidationStyles": {}
+    }
+}
+</script>

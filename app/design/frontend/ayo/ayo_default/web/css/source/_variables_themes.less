@@ -26,6 +26,24 @@
 @submenutext: #333;
 @comparewishlist: #b6b6b6;
 @darkcolor: #222;
+
+/* Brand Colors - Awamotos */
+@brand-red: #b73337;
+@brand-red-dark: #8e2629;
+@brand-red-light: #d9585c;
+@brand-text: #333333;
+@brand-text-light: #666666;
+@brand-text-muted: #999999;
+@brand-bg-light: #f9fafb;
+@brand-border: #e5e7eb;
+@brand-border-dark: #d1d5db;
+
+/* Feedback Colors */
+@color-success: #10b981;
+@color-error: #ef4444;
+@color-warning: #f59e0b;
+@color-info: #3b82f6;
+
 /*Background */
 @bkg: #fff;
 @bkghome: #f5f5f5;
@@ -43,6 +61,32 @@
 /*Footer */
 @copyrightcolor: #666;
 @footer-color: #666;
+
+/* Spacing Scale */
+@spacing-xs: 4px;
+@spacing-sm: 8px;
+@spacing-md: 16px;
+@spacing-lg: 24px;
+@spacing-xl: 32px;
+@spacing-2xl: 48px;
+
+/* Border Radius */
+@radius-sm: 4px;
+@radius-md: 8px;
+@radius-lg: 12px;
+@radius-xl: 16px;
+@radius-full: 9999px;
+
+/* Shadows */
+@shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+@shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+@shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.1);
+@shadow-xl: 0 20px 50px rgba(0, 0, 0, 0.15);
+
+/* Transitions */
+@transition-fast: 0.15s ease;
+@transition-normal: 0.2s ease;
+@transition-slow: 0.3s ease;
 
 .bordermixin(){
 	border: 1px solid @bordercolor;
@@ -68,4 +112,46 @@
     -moz-transform: @transform;
     -ms-transform: @transform;
     transform: @transform;
+}
+
+/* Flexbox Helpers */
+.flex-center() {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-between() {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Focus State */
+.focus-ring() {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(183, 51, 55, 0.15);
+    border-color: @brand-red;
+}
+
+/* Card Style */
+.card-base() {
+    background: #ffffff;
+    border: 1px solid @brand-border;
+    border-radius: @radius-lg;
+    box-shadow: @shadow-md;
+}
+
+/* Button Base */
+.button-primary() {
+    background-color: @brand-red;
+    border-color: @brand-red;
+    color: #ffffff;
+    border-radius: @radius-md;
+    transition: all @transition-normal;
+    
+    &:hover {
+        background-color: @brand-red-dark;
+        border-color: @brand-red-dark;
+    }
 }
