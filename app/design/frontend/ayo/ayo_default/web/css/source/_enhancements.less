@@ -1,0 +1,595 @@
+// ============================================
+// MELHORIAS CONSOLIDADAS - TEMA AYO
+// ============================================
+// Arquivo único com todas as melhorias visuais finas
+// Integrado ao tema Ayo existente
+
+// ============================================
+// VARIÁVEIS E CORES
+// ============================================
+
+// Cores principais (usando variáveis do tema quando possível)
+@color-primary: #b73337;
+@color-primary-dark: #8e2629;
+@color-text-primary: #1a1a1a;
+@color-text-secondary: #4a4a4a;
+@color-text-tertiary: #6b6b6b;
+@color-bg-light: #f9fafb;
+@color-border-light: #e5e7eb;
+@color-border-medium: #d1d5db;
+@color-success: #10b981;
+@color-error: #ef4444;
+@color-warning: #f59e0b;
+@color-info: #3b82f6;
+
+// ============================================
+// CORES E CONTRASTE (WCAG AA)
+// ============================================
+
+// Seleção de texto
+::selection {
+    background: @color-primary;
+    color: #ffffff;
+}
+
+// Links com contraste adequado
+a {
+    color: @color-primary;
+    
+    &:hover,
+    &:focus {
+        color: @color-primary-dark;
+    }
+}
+
+// Botões com contraste adequado
+.action.primary,
+button.primary,
+.button-primary {
+    background-color: @color-primary;
+    color: #ffffff;
+    border-color: @color-primary;
+    
+    &:hover,
+    &:focus {
+        background-color: @color-primary-dark;
+        border-color: @color-primary-dark;
+        color: #ffffff;
+    }
+}
+
+// Inputs com contraste adequado
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+input[type="number"],
+input[type="search"],
+select,
+textarea {
+    color: @color-text-primary;
+    background-color: #ffffff;
+    border-color: @color-border-medium;
+    
+    &::placeholder {
+        color: @color-text-tertiary;
+    }
+    
+    &:focus {
+        border-color: @color-primary;
+        color: @color-text-primary;
+    }
+}
+
+// Mensagens com contraste adequado
+.message {
+    &.success {
+        background-color: #ecfdf5;
+        border-color: @color-success;
+        color: #065f46;
+    }
+    
+    &.error {
+        background-color: #fef2f2;
+        border-color: @color-error;
+        color: #991b1b;
+    }
+    
+    &.warning {
+        background-color: #fffbeb;
+        border-color: @color-warning;
+        color: #92400e;
+    }
+    
+    &.info,
+    &.notice {
+        background-color: #eff6ff;
+        border-color: @color-info;
+        color: #1e40af;
+    }
+}
+
+// ============================================
+// RESPONSIVIDADE MOBILE
+// ============================================
+
+// Área de toque mínima (44x44px)
+button,
+.action,
+.btn,
+.button,
+input[type="submit"],
+input[type="button"],
+a.button {
+    min-height: 44px;
+    min-width: 44px;
+    
+    @media (max-width: 767px) {
+        min-height: 48px;
+        font-size: 16px; // Prevenir zoom no iOS
+    }
+}
+
+// Inputs em mobile
+@media (max-width: 767px) {
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="tel"],
+    input[type="number"],
+    input[type="search"],
+    select,
+    textarea {
+        font-size: 16px; // Prevenir zoom no iOS
+        min-height: 48px;
+    }
+}
+
+// ============================================
+// ACESSIBILIDADE
+// ============================================
+
+// Focus visible melhorado
+*:focus {
+    outline: none;
+}
+
+*:focus-visible {
+    outline: 3px solid @color-primary;
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+// Skip links
+.skip-link {
+    position: absolute;
+    left: -9999px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    z-index: 10000;
+    
+    &:focus {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        width: auto;
+        height: auto;
+        padding: 12px 20px;
+        background: @color-primary;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 14px;
+        z-index: 10001;
+    }
+}
+
+// Prefers reduced motion
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+// ============================================
+// BUSCA MELHORADA
+// ============================================
+
+.block-search {
+    .control {
+        position: relative;
+
+        input[type="search"],
+        input[type="text"] {
+            border-radius: 9999px;
+            padding-right: 50px;
+            
+            &:focus {
+                border-color: @color-primary;
+                box-shadow: 0 0 0 3px rgba(183, 51, 55, 0.12);
+            }
+        }
+
+        .action.search {
+            position: absolute;
+            right: 6px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: @color-primary;
+            color: #ffffff;
+            
+            &:hover {
+                background: @color-primary-dark;
+                transform: translateY(-50%) scale(1.1);
+            }
+        }
+    }
+}
+
+// Autocomplete
+.searchsuite-autocomplete {
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    margin-top: 8px;
+    max-height: 500px;
+    overflow-y: auto;
+    
+    .qs-option {
+        padding: 16px 20px;
+        border-bottom: 1px solid #f1f5f9;
+        transition: background 0.15s ease;
+        
+        &:hover {
+            background: rgba(183, 51, 55, 0.06);
+        }
+        
+        .qs-option-image {
+            border-radius: 8px;
+        }
+        
+        .qs-option-price {
+            color: @color-primary;
+            font-weight: 700;
+        }
+    }
+}
+
+// ============================================
+// COMPARAÇÃO E WISHLIST
+// ============================================
+
+.action.towishlist,
+.action.tocompare {
+    width: 44px;
+    height: 44px;
+    border: 2px solid @color-border-light;
+    border-radius: 50%;
+    background: transparent;
+    color: #666;
+    transition: all 0.2s ease;
+    
+    &:hover {
+        border-color: @color-primary;
+        background: @color-primary;
+        color: #ffffff;
+        transform: scale(1.1);
+    }
+    
+    &.active {
+        border-color: @color-primary;
+        background: @color-primary;
+        color: #ffffff;
+    }
+}
+
+// Página de comparação
+.catalog-product-compare-index {
+    .table-wrapper.comparison {
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+        
+        table {
+            thead th {
+                border-bottom: 2px solid @color-border-light;
+            }
+            
+            tbody tr:hover {
+                background: rgba(183, 51, 55, 0.02);
+            }
+        }
+    }
+}
+
+// Wishlist
+.wishlist-index-index {
+    .products-grid.wishlist .product-item {
+        border-radius: 16px;
+        padding: 20px;
+        transition: all 0.2s ease;
+        
+        &:hover {
+            border-color: @color-primary;
+            box-shadow: 0 8px 24px rgba(183, 51, 55, 0.15);
+            transform: translateY(-4px);
+        }
+    }
+}
+
+// ============================================
+// MENSAGENS DO SISTEMA
+// ============================================
+
+.messages {
+    margin: 0 0 24px;
+}
+
+.message {
+    padding: 16px 20px;
+    margin-bottom: 12px;
+    border-radius: 12px;
+    border: 1px solid;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    animation: messageSlideIn 0.3s ease;
+    
+    @keyframes messageSlideIn {
+        from {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    
+    &:before {
+        content: '';
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+    
+    &.success:before {
+        content: '✓';
+        background: @color-success;
+        color: #ffffff;
+    }
+    
+    &.error:before {
+        content: '✕';
+        background: @color-error;
+        color: #ffffff;
+    }
+    
+    &.warning:before {
+        content: '⚠';
+        background: @color-warning;
+        color: #ffffff;
+    }
+    
+    &.info:before,
+    &.notice:before {
+        content: 'ℹ';
+        background: @color-info;
+        color: #ffffff;
+    }
+}
+
+// ============================================
+// CHECKOUT MELHORADO
+// ============================================
+
+.checkout-index-index {
+    .opc-progress-bar {
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 24px;
+        margin: 32px 0;
+        
+        .opc-progress-bar-item {
+            &._active > span:before,
+            &._complete > span:before {
+                background: @color-primary;
+                border-color: @color-primary;
+            }
+        }
+    }
+    
+    .opc-wrapper .step-content {
+        border-radius: 16px;
+        padding: 32px;
+        box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+    }
+    
+    .opc-summary-wrapper {
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+    }
+}
+
+// ============================================
+// CARRINHO MELHORADO
+// ============================================
+
+.checkout-cart-index {
+    .cart.table-wrapper {
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+        
+        table {
+            thead th {
+                border-bottom: 2px solid @color-border-light;
+            }
+            
+            tbody tr:hover {
+                background: rgba(183, 51, 55, 0.02);
+            }
+        }
+    }
+    
+    .cart-summary {
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+    }
+}
+
+// ============================================
+// PÁGINAS DE CONTA
+// ============================================
+
+.customer-account-index,
+.customer-account-edit,
+.customer-address-index {
+    .block,
+    .form-edit-account,
+    .form-address-edit {
+        border-radius: 16px;
+        padding: 32px;
+        box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+    }
+}
+
+// ============================================
+// QUICKVIEW
+// ============================================
+
+#quick-window,
+.modal-popup.quickview-popup {
+    border-radius: 20px;
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.25);
+    
+    #quickview-close,
+    .action-close {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.95);
+        
+        &:hover {
+            background: @color-primary;
+            color: #ffffff;
+            transform: rotate(90deg) scale(1.1);
+        }
+    }
+}
+
+// ============================================
+// SCROLL TO TOP
+// ============================================
+
+.scroll-to-top-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    background: @color-primary;
+    color: #ffffff;
+    border: none;
+    border-radius: 50%;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+    z-index: 9999;
+    box-shadow: 0 4px 12px rgba(183, 51, 55, 0.3);
+    
+    &.visible {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+    
+    &:hover {
+        background: @color-primary-dark;
+        transform: translateY(-4px);
+    }
+}
+
+// ============================================
+// PERFORMANCE E OTIMIZAÇÕES
+// ============================================
+
+// Scroll suave
+html {
+    scroll-behavior: smooth;
+}
+
+// Scrollbar customizada
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
+    
+    &:hover {
+        background: @color-primary;
+    }
+}
+
+// Lazy loading placeholder
+img[data-src],
+img.lazy {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading-shimmer 1.5s infinite;
+    
+    @keyframes loading-shimmer {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+    }
+}
+
+// ============================================
+// RESPONSIVO MOBILE
+// ============================================
+
+@media (max-width: 767px) {
+    // Reduzir animações em mobile
+    * {
+        animation-duration: 0.2s !important;
+        transition-duration: 0.2s !important;
+    }
+    
+    // Desabilitar hover effects em touch devices
+    @media (hover: none) {
+        .product-item:hover {
+            transform: none;
+            box-shadow: none;
+        }
+    }
+    
+    // Scroll otimizado
+    .page-wrapper,
+    .main-content {
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
