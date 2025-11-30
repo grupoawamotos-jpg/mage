@@ -61,3 +61,8 @@ __MACOSX/
 .trae/
 backup_pre_update_20251130/
 biblioteca/modulos_backup_*.tgz
+
+# OpenSearch binários grandes (>100MB) - não versionar
+/opensearch/opensearch-2.12.0/jdk/
+/opensearch/opensearch-2.12.0/plugins/opensearch-ml/
+/opensearch/opensearch-2.12.0/modules/ingest-geoip/
