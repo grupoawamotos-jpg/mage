@@ -1,0 +1,17 @@
+<?php /** @var $block \GrupoAwamotos\Header\Block\MarketplaceLinks */ ?>
+<div class="header-extra-links" role="group" aria-label="Links adicionais">
+    <?php if ($block->isLoggedIn()): ?>
+        <a class="account-link" href="<?= $block->escapeUrl($block->getAccountUrl()) ?>" aria-label="Minha Conta"><?= __('Minha Conta') ?></a>
+    <?php else: ?>
+        <a class="login-link" href="<?= $block->escapeUrl($block->getLoginUrl()) ?>" aria-label="Entrar"><?= __('Entrar') ?></a>
+        <a class="register-link" href="<?= $block->escapeUrl($block->getRegisterUrl()) ?>" aria-label="Criar Conta"><?= __('Registrar') ?></a>
+    <?php endif; ?>
+
+    <?php if ($block->showVendorLink()): ?>
+        <a class="vendor-dashboard-link" href="<?= $block->escapeUrl($block->getVendorDashboardUrl()) ?>" aria-label="Painel do Vendedor"><?= __('Vendedor') ?></a>
+    <?php endif; ?>
+
+    <?php if ($block->showB2BLinks()): ?>
+        <a class="b2b-quote-link" href="<?= $block->escapeUrl($block->getB2BQuoteUrl()) ?>" aria-label="Solicitar Cotação B2B"><?= __('Cotação B2B') ?></a>
+    <?php endif; ?>
+</div>

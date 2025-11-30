@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!--
+  GrupoAwamotos Header - 2columns-left layout
+  Provides sidebar.additional in layouts that actually have sidebar.main
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="sidebar.main">
+            <container name="sidebar.additional" label="Sidebar Additional" as="sidebar_additional" htmlTag="div" htmlClass="sidebar sidebar-additional" />
+        </referenceContainer>
+    </body>
+</page>

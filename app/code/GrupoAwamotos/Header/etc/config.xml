@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <grupoawamotos_header>
+            <links>
+                <vendor_enable>0</vendor_enable>
+                <vendor_groups></vendor_groups>
+                <b2b_enable>0</b2b_enable>
+                <b2b_groups></b2b_groups>
+            </links>
+        </grupoawamotos_header>
+    </default>
+</config>

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!--
+  GrupoAwamotos Header - Recovery layout
+  Adds missing structural blocks/containers to silence Broken reference logs from
+  third-party modules (Webkul Marketplace, B2B, Rokanthemes).
+  Keep minimal: only creates if not already provided by theme.
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <!-- Ensure header.links exists for marketplace and custom header links -->
+        <referenceContainer name="header.panel">
+            <block class="Magento\Framework\View\Element\Html\Links" name="header.links">
+                <arguments>
+                    <argument name="css_class" xsi:type="string">header links</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+        <!-- 
+          Container sidebar.additional criado via config. Movido para 2columns-left.xml 
+          para evitar erro em páginas 1column que não têm sidebar.main
+        -->
+    </body>
+</page>
