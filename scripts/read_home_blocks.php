@@ -12,13 +12,14 @@ $appState->setAreaCode('adminhtml');
 $blockRepository = $obj->get('Magento\Cms\Api\BlockRepositoryInterface');
 $searchCriteriaBuilder = $obj->get('Magento\Framework\Api\SearchCriteriaBuilder');
 
-$identifiers = ['home_slider', 'home_banner_promo'];
+$identifiers = ['home_slider','home_featured','home_new_products','home_banner_promo','home_fitment','featured_categories'];
 
 foreach ($identifiers as $identifier) {
     $searchCriteria = $searchCriteriaBuilder->addFilter('identifier', $identifier, 'eq')->create();
     $blocks = $blockRepository->getList($searchCriteria)->getItems();
     foreach ($blocks as $block) {
         echo "=== Block: $identifier ===\n";
-        echo $block->getContent() . "\n\n";
+        $content = $block->getContent();
+        echo $content . "\n\n";
     }
 }
