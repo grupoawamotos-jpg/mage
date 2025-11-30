@@ -37,34 +37,9 @@
                 "components": {
                     "messages": {
                         "component": "Magento_Theme/js/view/messages"
-                    },
-                    "cookieMessages": {
-                        "component": "Magento_Theme/js/cookie-messages"
                     }
                 }
             }
         }
     }
-<?php
-/** @var \Magento\Framework\View\Element\Template $block */
-?>
-<script type="text/x-magento-init">
-{
-    "*": {
-        "Magento_Ui/js/core/app": {
-            "components": {
-                "cookieMessages": {
-                    "component": "Magento_Theme/js/cookie-messages"
-                }
-            }
-        }
-    }
-}
 </script>
-<!-- ko if: typeof cookieMessagesObservable !== 'undefined' && cookieMessagesObservable().length > 0 -->
-    <!-- ko foreach: { data: cookieMessagesObservable, as: 'message' } -->
-        <div class="message notice">
-            <span data-bind="text: message"></span>
-        </div>
-    <!-- /ko -->
-<!-- /ko -->
