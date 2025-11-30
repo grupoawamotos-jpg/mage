@@ -9,7 +9,20 @@
 
 ---
 
-## 📊 Módulos Instalados e Habilitados
+## 📊 Módulos Instalados e Estado Atual
+
+### 🚨 Alteração Importante (30 Nov 2025)
+Em 30/11/2025 todos os módulos **Amasty** e **Webkul_Marketplace** foram totalmente desinstalados do código-fonte (diretórios removidos) conforme decisão de simplificação da stack. 
+
+Backup criado: `biblioteca/modulos_backup_2025-11-30_amasty_webkul.tgz`
+
+Impactos principais:
+- Removido carrinho abandonado, promoções avançadas, banners promocionais e GeoIP (Amasty).
+- Removido marketplace multi-vendedor (Webkul).
+- Limpeza de deprecations PHP 8.2 relacionados a construtores e propriedades dinâmicas.
+- Nenhuma configuração órfã `amasty/%` ou `webkul/%` permaneceu em `core_config_data`.
+
+Se alguma funcionalidade precisar ser reativada, restaurar diretórios a partir do backup, executar `php bin/magento setup:upgrade` e revisar dependências.
 
 ### 🔐 Gateway de Pagamento
 
@@ -33,7 +46,7 @@
 
 ---
 
-### 📧 Amasty - Abandoned Cart Email (v1.9.6) ✅ INSTALADO
+### 📧 Amasty - Abandoned Cart Email (v1.9.6) ❌ REMOVIDO (30/11/2025)
 - **Módulo:** Amasty_Acart
 - **Status:** Habilitado e Compilado
 - **Funcionalidades:**
@@ -46,7 +59,7 @@
 
 ---
 
-### 📦 Amasty - Shipping Table Rates (v1.6.4) ✅ INSTALADO
+### 📦 Amasty - Shipping Table Rates (v1.6.4) ❌ REMOVIDO (30/11/2025)
 - **Módulo:** Amasty_ShippingTableRates
 - **Status:** Habilitado e Compilado
 - **Funcionalidades:**
@@ -59,7 +72,7 @@
 
 ---
 
-### 🎁 Amasty - Special Promotions Pro (v2.7.4) ✅ INSTALADO
+### 🎁 Amasty - Special Promotions Pro (v2.7.4) ❌ REMOVIDO (30/11/2025)
 - **Módulos:** 
   - Amasty_Rules (Base)
   - Amasty_RulesPro (Profissional)
@@ -75,7 +88,7 @@
 
 ---
 
-### 🔧 Amasty - Mass Product Actions (v1.11.12) ✅ INSTALADO
+### 🔧 Amasty - Mass Product Actions (v1.11.12) ❌ REMOVIDO (30/11/2025)
 - **Módulo:** Amasty_Paction
 - **Status:** Habilitado e Compilado
 - **Funcionalidades:**
@@ -86,7 +99,7 @@
 
 ---
 
-### ⏰ Amasty - Cron Scheduler (v1.0.2) ✅ INSTALADO
+### ⏰ Amasty - Cron Scheduler (v1.0.2) ❌ REMOVIDO (30/11/2025)
 - **Módulos:**
   - Amasty_CronScheduler
   - Amasty_CronScheduleList
@@ -99,7 +112,7 @@
 
 ---
 
-### 🌍 Amasty - Geoip ✅ INSTALADO
+### 🌍 Amasty - Geoip ❌ REMOVIDO (30/11/2025)
 - **Módulo:** Amasty_Geoip
 - **Status:** Habilitado e Compilado
 - **Funcionalidades:**
@@ -109,7 +122,7 @@
 
 ---
 
-### 🏢 Webkul - Marketplace (v3.0.3) ✅ INSTALADO
+### 🏢 Webkul - Marketplace (v3.0.3) ❌ REMOVIDO (30/11/2025)
 - **Módulo:** Webkul_Marketplace
 - **Status:** Habilitado e Compilado
 - **Funcionalidades:**
@@ -155,9 +168,9 @@
 
 ---
 
-### 🛠️ Amasty - Módulos de Suporte
+### 🛠️ Amasty - Módulos de Suporte ❌ REMOVIDOS (30/11/2025)
 
-#### Amasty Base ✅ INSTALADO
+#### Amasty Base ❌ REMOVIDO (30/11/2025)
 - **Módulo:** Amasty_Base
 - **Status:** Habilitado e Compilado
 - **Funcionalidades:**
@@ -168,7 +181,7 @@
 **📝 Correções Aplicadas:**
 - Migração de imports `Zend\Http` para `Laminas\Http` em `Module.php`
 
-#### Amasty CommonTests ✅ INSTALADO
+#### Amasty CommonTests ❌ REMOVIDO (30/11/2025)
 - **Módulo:** Amasty_CommonTests
 - **Status:** Habilitado e Compilado
 - **Uso:** Testes automatizados dos módulos Amasty
@@ -196,10 +209,10 @@
 
 | Métrica | Valor |
 |---------|-------|
-| **Total de Módulos Instalados** | 16 módulos |
-| **Módulos Amasty** | 11 módulos |
-| **Módulos MGS** | 3 módulos (desabilitados) |
-| **Módulos Webkul** | 1 módulo |
+| **Total de Módulos Ativos** | Ajustar após auditoria (Amasty/Webkul removidos) |
+| **Módulos Amasty** | 0 (removidos) |
+| **Módulos MGS** | 3 (continuam desabilitados) |
+| **Módulos Webkul** | 0 (removido) |
 | **Módulos de Pagamento** | 1 módulo (MercadoPago) |
 | **Correções de Código** | 5 arquivos |
 | **Tempo de Compilação** | ~3 minutos |
@@ -334,4 +347,4 @@ chown -R www-data:www-data var/ pub/ generated/
 ---
 
 **Autor:** GitHub Copilot  
-**Última Atualização:** 19/11/2024 10:15 BRT
+**Última Atualização:** 30/11/2025 03:30 BRT (Remoção Amasty/Webkul)

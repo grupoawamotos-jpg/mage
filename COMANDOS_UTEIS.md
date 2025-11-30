@@ -497,3 +497,89 @@ php bin/magento config:set catalog/search/elasticsearch7_server_port 9200
 ---
 
 **Última atualização:** 19/11/2025
+
+---
+
+## Verificação de Blocos CMS (Qualidade de Conteúdo)
+
+### Script Local
+O script `scripts/verify_store_blocks.php` valida se blocos críticos possuem dados reais.
+
+```bash
+# Executar verificação
+php scripts/verify_store_blocks.php
+
+# Saída esperada quando OK
+"Todos os blocos verificados com dados reais."
+```
+
+### Tokens Monitorados
+Blocos checados: `head_contact`, `footer_info`, `footer_static`, `fixed_right`, `social_block`, `hotline_header`, `top-left-static`, `top-contact`.
+
+### Ajuste Rápido
+Se houver ⚠️ em `hotline_header` ou `social_block`, reexecutar:
+```bash
+php bin/magento grupoawamotos:store:setup
+php scripts/verify_store_blocks.php
+```
+
+### CI Simplificada (GitHub Actions)
+Workflow criado em `.github/workflows/cms-blocks-verify.yml` que
+faz auditoria estática de placeholders proibidos no `StoreConfigurator.php`.
+
+Placeholders alvo (regex): `Banner Placeholder|Placeholder|TODO|Your Phone|your@email|0000-0000`.
+
+### Expansão (Opcional)
+Para auditoria completa em CI (carregar Magento e executar script):
+1. Provisionar MySQL de teste.
+2. Rodar `setup:install`.
+3. Rodar `grupoawamotos:store:setup`.
+4. Executar script de verificação.
+
+Exemplo (trecho a adicionar no workflow):
+```yaml
+		- name: Full Magento audit
+			if: env.FULL_BLOCK_AUDIT == '1'
+			run: |
+				php bin/magento grupoawamotos:store:setup
+				php scripts/verify_store_blocks.php
+```
+
+### Snapshots dos Blocos
+Gerar snapshot JSON dos blocos monitorados (hash + tamanho + preview):
+```bash
+php scripts/export_cms_blocks_snapshot.php
+```
+Arquivo gerado em `relatorios/cms_blocks_snapshot_YYYY-MM-DD_HH-MM-SS.json`.
+
+Comparar duas últimas snapshots:
+```bash
+php scripts/diff_cms_blocks_snapshot.php
+```
+Saída indica blocos com alterações (`CONTEUDO_MODIFICADO` ou `TAMANHO_ALTERADO`).
+
+### CI (FULL_BLOCK_AUDIT)
+Quando `FULL_BLOCK_AUDIT=1` no workflow:
+- Executa export da snapshot.
+- Executa diff se houver ao menos duas.
+
+Para armazenar artefatos no GitHub Actions (opcional):
+```yaml
+		- name: Upload snapshot artifact
+			uses: actions/upload-artifact@v4
+			with:
+				name: cms-blocks-snapshot
+				path: relatorios/cms_blocks_snapshot_*.json
+```
+
+### Configurações Dinâmicas
+Horário comercial e WhatsApp:
+```bash
+php bin/magento config:show grupoawamotos_store/contact/hours
+php bin/magento config:show grupoawamotos_store/contact/whatsapp
+```
+Atualizar via Admin: Stores > Configuration > General > AWA Motos > Contato.
+
+---
+
+**Última atualização:** 29/11/2025

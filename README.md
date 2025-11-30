@@ -117,16 +117,14 @@ O comando `grupoawamotos:store:setup` aplica os blocos CMS, homepage, categorias
 
 ### Na Biblioteca (biblioteca/modulos/)
 
-#### Amasty
-- **Mass Product Actions** (1.11.12) - Ações em massa
-- **Advanced Permissions** (1.0.7) - Permissões avançadas
-- **Cron Scheduler** (1.0.2) - Gerenciador de cron
-- **Special Promotions Pro** (2.7.4) - Promoções avançadas
-- **Abandoned Cart Email** (1.9.6) - Recuperação de carrinho
-- **Shipping Table Rates** (1.6.4) - Frete por tabela
+#### Amasty (Removidos em 30/11/2025)
+- Todos os módulos listados anteriormente foram removidos do código para reduzir complexidade (promoções, carrinho abandonado, banners, geoip, ações em massa, frete tabela, permissões avançadas, cron visual).
+- Backup de origem: `biblioteca/modulos_backup_2025-11-30_amasty_webkul.tgz`
+- Para restauração: extrair diretórios e executar `php bin/magento setup:upgrade && php bin/magento setup:di:compile`.
 
-#### Webkul
-- **Marketplace** (3.0.0, 3.0.3) - Multi-vendedor
+#### Webkul (Removido em 30/11/2025)
+- Marketplace multi-vendedor desativado e diretório removido.
+- Para eventual retorno, restaurar do backup e reexecutar rotinas de upgrade.
 
 #### MGS
 - **Portfolio** (1.0) - Portfólio de produtos
@@ -153,8 +151,8 @@ O comando `grupoawamotos:store:setup` aplica os blocos CMS, homepage, categorias
 7. [ ] Configurar Cron Jobs
 
 ### Prioridade Média 📊
-8. [ ] Instalar módulos Amasty disponíveis
-9. [ ] Implementar Webkul Marketplace (se necessário)
+8. [ ] (Removido) Instalar módulos Amasty disponíveis
+9. [ ] (Removido) Implementar Webkul Marketplace (se necessário)
 10. [ ] Configurar Store Locator
 11. [ ] Ativar recuperação de carrinho abandonado
 12. [ ] Configurar backup automático

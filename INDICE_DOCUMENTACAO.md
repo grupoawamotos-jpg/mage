@@ -49,7 +49,64 @@
 
 ---
 
-### 3. 📖 IMPLEMENTACAO_BRASIL.md
+### 3. 🇧🇷 MELHORES_PRATICAS_MAGENTO2_BRASIL.md
+**Guia completo de melhores práticas para o mercado brasileiro**
+- ✅ Localização e tradução (pt_BR)
+- ✅ Validação de documentos (CPF/CNPJ)
+- ✅ Pagamentos brasileiros (PIX, Boleto, Cartões)
+- ✅ Frete e transportadoras
+- ✅ Nota Fiscal Eletrônica (NFe)
+- ✅ LGPD e privacidade
+- ✅ Performance e otimização
+- ✅ SEO para o mercado brasileiro
+- ✅ Integrações com ERPs brasileiros
+- ✅ Boas práticas de código
+- ✅ Segurança
+- ✅ Checklist completo
+
+**Quem deve ler:** Desenvolvedores, Arquitetos, Tech Leads, Gestores  
+**Quando ler:** Durante planejamento, desenvolvimento e manutenção  
+**Tamanho:** ~800 linhas
+
+**Seções principais:**
+- 12 categorias de melhores práticas
+- Checklists detalhados
+- Comandos e configurações
+- Módulos recomendados
+- Integrações essenciais
+- Recursos da comunidade brasileira
+
+---
+
+### 4. 🏭 MELHORES_PRATICAS_B2B_PECAS_MOTOS.md
+**Guia específico para B2B de fábrica de peças de motos**
+- ✅ Configuração de clientes B2B
+- ✅ Gestão de preços e catálogos compartilhados
+- ✅ Sistema de compatibilidade (Fitment)
+- ✅ Pedidos em grande volume (Quick Order)
+- ✅ Aprovação de pedidos
+- ✅ Integração com ERP industrial
+- ✅ Gestão de estoque complexa (MSI)
+- ✅ Cotações e negociação (RFQ)
+- ✅ Números OEM e cross-reference
+- ✅ Performance para alto volume
+- ✅ Checklist completo B2B
+
+**Quem deve ler:** Desenvolvedores B2B, Gerentes de Vendas, Gestores de E-commerce B2B  
+**Quando ler:** Durante configuração e otimização do ambiente B2B  
+**Tamanho:** ~700 linhas
+
+**Seções principais:**
+- 12 categorias específicas para B2B industrial
+- Integração com módulos customizados existentes
+- Fluxos de aprovação e negociação
+- Integração com ERPs industriais
+- Gestão de compatibilidade de peças
+- Performance otimizada para alto volume
+
+---
+
+### 5. 📖 IMPLEMENTACAO_BRASIL.md
 **Guia completo de implementação por fases**
 - ✅ FASE 1: Análise Inicial
 - ✅ FASE 2: Localização pt_BR
@@ -77,7 +134,7 @@
 
 ---
 
-### 4. ⚡ GUIA_RAPIDO.md
+### 6. ⚡ GUIA_RAPIDO.md
 **Comandos essenciais e troubleshooting**
 - ✅ Instalação automática (script)
 - ✅ Comandos mais usados (cache, indexadores, deploy)
@@ -103,7 +160,7 @@
 
 ---
 
-### 5. 🔧 COMANDOS_UTEIS.md
+### 7. 🔧 COMANDOS_UTEIS.md
 **Referência completa de comandos CLI**
 - ✅ Cache (10+ comandos)
 - ✅ Indexadores (15+ comandos)
@@ -126,7 +183,7 @@
 
 ---
 
-### 6. 📋 PLANO_DE_ACAO.md
+### 8. 📋 PLANO_DE_ACAO.md
 **Roadmap detalhado das próximas fases**
 - 🔴 FASE 2: Integrações de Pagamento (Semana 1)
 - 🟡 FASE 3: Correios e Frete (Semana 1-2)
@@ -155,7 +212,36 @@
 
 ---
 
-### 7. 🚀 setup-brasil.sh
+### 9. 🚀 setup-brasil.sh
+
+---
+
+### 10. 🎨 TEMA_AYO_DOCUMENTACAO_OFICIAL.md
+**Documentação oficial completa do tema Ayo**
+- ✅ Estrutura de arquivos do tema
+- ✅ Requisitos técnicos
+- ✅ Instalação (Base Package e Quick-Start)
+- ✅ Conteúdo do tema (blocos, páginas)
+- ✅ Personalização completa
+- ✅ Todos os módulos Rokanthemes
+- ✅ Configurações detalhadas
+- ✅ Suporte oficial
+
+**Quem deve ler:** Desenvolvedores Frontend, Designers, Administradores do Tema  
+**Quando ler:** Durante instalação, configuração e personalização do tema  
+**Tamanho:** ~600 linhas
+
+**Seções principais:**
+- Instalação passo a passo
+- Personalização de header, footer, menus
+- Configuração de sliders e banners
+- Módulos de produtos (ProductTab, Category Tab)
+- Blog, Testimonials, Newsletter
+- Links para documentação oficial
+
+**Fonte:** [https://ayo.nextsky.co/documentation/](https://ayo.nextsky.co/documentation/)
+
+---
 **Script bash de configuração automática**
 - ✅ Localização (pt_BR, timezone, moeda)
 - ✅ Métodos de pagamento
@@ -188,15 +274,18 @@ cd /home/jessessh/htdocs/srv1113343.hstgr.cloud
 📁 srv1113343.hstgr.cloud/
 ├── 📄 README.md                    # Documentação principal
 ├── 📄 RESUMO_EXECUTIVO.md          # Resumo para gestores
+├── 🇧🇷 MELHORES_PRATICAS_MAGENTO2_BRASIL.md # Melhores práticas Brasil
+├── 🏭 MELHORES_PRATICAS_B2B_PECAS_MOTOS.md # Melhores práticas B2B
 ├── 📄 IMPLEMENTACAO_BRASIL.md      # Guia completo por fases
 ├── 📄 GUIA_RAPIDO.md               # Referência rápida
 ├── 📄 COMANDOS_UTEIS.md            # Todos os comandos CLI
 ├── 📄 PLANO_DE_ACAO.md             # Roadmap detalhado
 ├── 📄 INDICE_DOCUMENTACAO.md       # Este arquivo
+├── 📄 RELATORIO_REMOCAO_MODULOS.md # Remoção Amasty/Webkul (auditoria)
 └── 🚀 setup-brasil.sh              # Script automático
 ```
 
-**Total:** ~2.200 linhas de documentação técnica
+**Total:** ~3.700 linhas de documentação técnica
 
 ---
 
@@ -241,11 +330,13 @@ cd /home/jessessh/htdocs/srv1113343.hstgr.cloud
 ## 🔍 Busca Rápida por Tópico
 
 ### Pagamentos
+- 🇧🇷 [MELHORES_PRATICAS_MAGENTO2_BRASIL.md](MELHORES_PRATICAS_MAGENTO2_BRASIL.md) - Seção 3
 - 📖 [IMPLEMENTACAO_BRASIL.md](IMPLEMENTACAO_BRASIL.md) - FASE 3
 - 📋 [PLANO_DE_ACAO.md](PLANO_DE_ACAO.md) - FASE 2
 - ⚡ [GUIA_RAPIDO.md](GUIA_RAPIDO.md) - Integrações
 
 ### Frete / Correios
+- 🇧🇷 [MELHORES_PRATICAS_MAGENTO2_BRASIL.md](MELHORES_PRATICAS_MAGENTO2_BRASIL.md) - Seção 4
 - 📖 [IMPLEMENTACAO_BRASIL.md](IMPLEMENTACAO_BRASIL.md) - FASE 4
 - 📋 [PLANO_DE_ACAO.md](PLANO_DE_ACAO.md) - FASE 3
 - ⚡ [GUIA_RAPIDO.md](GUIA_RAPIDO.md) - Integrações
@@ -274,6 +365,7 @@ cd /home/jessessh/htdocs/srv1113343.hstgr.cloud
 - ⚡ [GUIA_RAPIDO.md](GUIA_RAPIDO.md) - Segurança
 
 ### LGPD
+- 🇧🇷 [MELHORES_PRATICAS_MAGENTO2_BRASIL.md](MELHORES_PRATICAS_MAGENTO2_BRASIL.md) - Seção 6
 - 📋 [PLANO_DE_ACAO.md](PLANO_DE_ACAO.md) - FASE 8.1
 
 ### Módulos
@@ -302,10 +394,12 @@ cd /home/jessessh/htdocs/srv1113343.hstgr.cloud
 | RESUMO_EXECUTIVO.md | ~100 | ~1.000 | 15 | 5+ |
 | IMPLEMENTACAO_BRASIL.md | ~400 | ~4.000 | 50+ | 100+ |
 | GUIA_RAPIDO.md | ~200 | ~1.500 | 15 | 50+ |
+| MELHORES_PRATICAS_MAGENTO2_BRASIL.md | ~800 | ~6.000 | 12 | 50+ |
+| MELHORES_PRATICAS_B2B_PECAS_MOTOS.md | ~700 | ~5.500 | 12 | 40+ |
 | COMANDOS_UTEIS.md | ~400 | ~3.000 | 12 | 150+ |
 | PLANO_DE_ACAO.md | ~600 | ~5.000 | 60+ | 200+ |
 | setup-brasil.sh | ~200 | ~1.000 | 10 | 40+ |
-| **TOTAL** | **~2.200** | **~18.000** | **180+** | **550+** |
+| **TOTAL** | **~3.700** | **~29.500** | **204+** | **640+** |
 
 ### Por Categoria
 - **Configurações aplicadas:** 100+
@@ -415,12 +509,14 @@ cd /home/jessessh/htdocs/srv1113343.hstgr.cloud
 Esta documentação cobre **100% da implementação** atual e fornece um **roadmap completo** para as próximas fases.
 
 **Total documentado:**
-- ✅ 2.200 linhas de documentação
-- ✅ 550+ comandos
+- ✅ 3.700 linhas de documentação
+- ✅ 640+ comandos
 - ✅ 12 fases completas
-- ✅ 15+ checklists
+- ✅ 25+ checklists
 - ✅ 100+ configurações
 - ✅ 20+ integrações
+- ✅ 12 categorias de melhores práticas (Brasil)
+- ✅ 12 categorias de melhores práticas (B2B)
 
 **Qualidade:**
 - ✅ Organizada por persona (gestor, dev, devops)
