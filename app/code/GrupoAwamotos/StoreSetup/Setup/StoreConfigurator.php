@@ -334,6 +334,15 @@ class StoreConfigurator
     private function getThemeConfigurations(): array
     {
         return [
+            // Header layout & visibility (added for idempotence of Ayo header preset)
+            ['path' => 'themeoption/header/header_type', 'value' => '5'],
+            ['path' => 'themeoption/header/show_hotline', 'value' => '1'],
+            ['path' => 'themeoption/header/show_search', 'value' => '1'],
+            ['path' => 'themeoption/header/search_enable', 'value' => '1'],
+            ['path' => 'themeoption/header/show_account', 'value' => '1'],
+            ['path' => 'themeoption/header/show_minicart', 'value' => '1'],
+            ['path' => 'themeoption/header/show_wishlist', 'value' => '1'],
+            ['path' => 'themeoption/header/show_compare', 'value' => '0'],
             ['path' => 'themeoption/general/layout', 'value' => 'full_width'],
             ['path' => 'themeoption/header/sticky_enable', 'value' => '1'],
             ['path' => 'themeoption/header/sticky_select_bg_color', 'value' => 'custom'],
@@ -372,6 +381,8 @@ class StoreConfigurator
             ['path' => 'rokanthemes_ajaxsuite/general/ajaxcart_enable', 'value' => '1'],
             ['path' => 'rokanthemes_ajaxsuite/general/ajaxcompare_enable', 'value' => '1'],
             ['path' => 'rokanthemes_ajaxsuite/general/ajaxwishlist_enable', 'value' => '1']
+            ,['path' => 'grupoawamotos_store/contact/whatsapp', 'value' => '5516997367588']
+            ,['path' => 'grupoawamotos_store/contact/hours', 'value' => 'Seg a Sex: 8h às 18h | Sáb: 8h às 12h']
         ];
     }
 
@@ -380,54 +391,174 @@ class StoreConfigurator
         $enabled = (string)$this->scopeConfig->getValue('grupoawamotos_fitment/general/enable') === '1';
         $placeholder = (string)($this->scopeConfig->getValue('grupoawamotos_fitment/general/placeholder') ?: 'Ex.: Honda CG 160 2022');
         $hint = (string)($this->scopeConfig->getValue('grupoawamotos_fitment/general/hint') ?: 'Dica: use marca + modelo + ano para resultados mais precisos.');
+        $suggestionsRaw = (string)($this->scopeConfig->getValue('grupoawamotos_fitment/general/suggestions') ?: 'Honda CG 160 2022;Yamaha Fazer 250 2023;Bauletos 34L;Manete esportivo;Retrovisor esportivo');
+        // Normaliza lista: separa por ; ou quebra de linha
+        $suggestionsArray = array_filter(array_map('trim', preg_split('/[;\n\r]+/', $suggestionsRaw)));
+        if (count($suggestionsArray) > 50) {
+            $suggestionsArray = array_slice($suggestionsArray, 0, 50);
+        }
 
         if (!$enabled) {
-            return '<div class="ayo-home5-fitment" style="display:none"></div>';
+            return <<<HTML
+<section class="ayo-home5-fitment ayo-home5-fitment--disabled" role="note" aria-label="Busca por aplicação desativada">
+    <div class="ayo-home5-fitment__box">
+        <p class="ayo-home5-fitment__disabled-msg">Busca por aplicação temporariamente indisponível. Use a busca geral abaixo.</p>
+        <form class="ayo-home5-fitment__fallback-form" action="{{store url='catalogsearch/result'}}" method="get">
+            <label for="q-fallback" class="sr-only">Buscar produtos</label>
+            <input id="q-fallback" type="text" name="q" placeholder="Ex.: retrovisor honda" required />
+            <button class="action primary" type="submit">Buscar</button>
+        </form>
+    </div>
+    <style>
+        .ayo-home5-fitment__disabled-msg{margin:0 0 12px;font-weight:600;font-size:14px}
+        .ayo-home5-fitment__fallback-form{display:flex;gap:12px}
+        .ayo-home5-fitment__fallback-form input{flex:1 1 auto;height:46px;padding:0 14px;border:1px solid #d0d0d0;border-radius:12px;transition:border-color .2s ease, box-shadow .2s ease}
+        .ayo-home5-fitment__fallback-form input:focus{outline:none;border-color:#b73337;box-shadow:0 0 0 3px rgba(183,51,55,.16)}
+        .ayo-home5-fitment__fallback-form button{height:46px;padding:0 20px;border-radius:12px;font-weight:600;background:#b73337;border:0;transition:background .2s ease, transform .15s ease}
+        .ayo-home5-fitment__fallback-form button:hover{background:#8e2629;transform:translateY(-1px)}
+        @media(max-width:639px){.ayo-home5-fitment__fallback-form{flex-direction:column}.ayo-home5-fitment__fallback-form button{width:100%}}
+    </style>
+</section>
+HTML;
         }
 
         $placeholderEsc = htmlspecialchars($placeholder, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
         $hintEsc = htmlspecialchars($hint, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 
+        $datalistOptions = '';
+        foreach ($suggestionsArray as $sug) {
+            $safe = htmlspecialchars($sug, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+            $datalistOptions .= "<option value=\"{$safe}\"></option>";
+        }
+
         return <<<HTML
-<div class="ayo-home5-fitment">
+<section class="ayo-home5-fitment" role="search" aria-label="Busca por aplicação de peças">
     <div class="ayo-home5-fitment__box">
-        <div class="ayo-home5-fitment__intro">
-            <p>Busque por modelo, ano e marca para achar compatibilidades.</p>
-        </div>
-        <form class="ayo-home5-fitment__form" action="{{store url='catalogsearch/result'}}" method="get">
+        <header class="ayo-home5-fitment__intro">
+            <p>Busque por <strong>marca</strong>, <strong>modelo</strong> e <strong>ano</strong> para encontrar peças compatíveis.</p>
+        </header>
+        <form class="ayo-home5-fitment__form" action="{{store url='catalogsearch/result'}}" method="get" novalidate>
             <div class="ayo-home5-fitment__fields">
-                <input type="text" name="q" placeholder="{$placeholderEsc}" aria-label="Buscar por aplicação" required />
-                <button class="action primary" type="submit">Buscar</button>
+                <label for="fitment-query" class="sr-only">Digite marca, modelo e ano</label>
+                <input id="fitment-query" list="fitment-suggestions" type="text" name="q" placeholder="{$placeholderEsc}" aria-describedby="fitment-hint" autocomplete="off" required />
+                <datalist id="fitment-suggestions">{$datalistOptions}</datalist>
+                <button class="action primary ayo-home5-fitment__submit" type="submit" aria-label="Executar busca por aplicação">Buscar</button>
             </div>
-            <small class="ayo-home5-fitment__hint">{$hintEsc}</small>
+            <small id="fitment-hint" class="ayo-home5-fitment__hint">{$hintEsc}</small>
         </form>
+        <div class="ayo-home5-fitment__suggestion" aria-live="polite" aria-atomic="true"></div>
     </div>
     <style>
-        .ayo-home5-fitment__box{background:#fff;border-radius:24px;padding:24px;box-shadow:0 12px 38px rgba(15,31,53,.08)}
-        .ayo-home5-fitment__fields{display:flex;gap:12px}
-        .ayo-home5-fitment__fields input{flex:1 1 auto;height:44px;padding:0 14px;border:1px solid #ddd;border-radius:12px}
-        .ayo-home5-fitment__fields button{height:44px;padding:0 18px;border-radius:12px}
-        .ayo-home5-fitment__hint{display:block;margin-top:8px;opacity:.75}
+        .ayo-home5-fitment__box{background:#fff;border-radius:24px;padding:24px;box-shadow:0 16px 44px rgba(15,31,53,.12);position:relative;border:1px solid rgba(183,51,55,.08)}
+        .ayo-home5-fitment__fields{display:flex;gap:12px;align-items:stretch}
+        .ayo-home5-fitment__fields input{flex:1 1 auto;height:48px;padding:0 16px;border:1px solid #d0d0d0;border-radius:14px;font-size:15px;transition:border-color .2s ease, box-shadow .2s ease}
+        .ayo-home5-fitment__fields input:focus{outline:none;border-color:#b73337;box-shadow:0 0 0 3px rgba(183,51,55,.18)}
+        .ayo-home5-fitment__submit{height:48px;padding:0 22px;border-radius:14px;font-weight:600;background:#b73337;border:0;transition:background .2s ease, transform .15s ease, box-shadow .15s ease}
+        .ayo-home5-fitment__submit:hover{background:#8e2629;transform:translateY(-1px);box-shadow:0 10px 24px rgba(183,51,55,.24)}
+        .ayo-home5-fitment__hint{display:block;margin-top:8px;opacity:.78;font-size:12px;color:#51607c}
+        .ayo-home5-fitment__suggestion{margin-top:10px;font-size:13px;color:#2c2c2c;min-height:18px}
+        .sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);border:0}
+        @media (max-width:639px){.ayo-home5-fitment__fields{flex-direction:column}.ayo-home5-fitment__submit{width:100%}}
     </style>
-</div>
+    <script type="text/x-magento-init">
+        {"#fitment-query": {"GrupoAwamotos_Fitment/js/hint": {"min": 3}}}
+    </script>
+</section>
 HTML;
+    }
+
+    /**
+     * Coleta e normaliza dados reais da loja vindos das configurações globais.
+     */
+    private function getStoreInfo(): array
+    {
+        static $cache = null;
+        if ($cache !== null) {
+            return $cache; // cache leve em memória por execução
+        }
+
+        $name         = trim((string)$this->scopeConfig->getValue('general/store_information/name'));
+        $phoneRaw     = trim((string)$this->scopeConfig->getValue('general/store_information/phone'));
+        $street1      = trim((string)$this->scopeConfig->getValue('general/store_information/street_line1'));
+        $street2      = trim((string)$this->scopeConfig->getValue('general/store_information/street_line2'));
+        $postcode     = trim((string)$this->scopeConfig->getValue('general/store_information/postcode'));
+        $city         = trim((string)$this->scopeConfig->getValue('general/store_information/city'));
+        $region       = trim((string)$this->scopeConfig->getValue('general/store_information/region_id'));
+        $supportEmail = trim((string)$this->scopeConfig->getValue('trans_email/ident_support/email'));
+        $supportName  = trim((string)$this->scopeConfig->getValue('trans_email/ident_support/name'));
+        $whatsRaw     = trim((string)$this->scopeConfig->getValue('grupoawamotos_store/contact/whatsapp'));
+        $hoursRaw     = trim((string)$this->scopeConfig->getValue('grupoawamotos_store/contact/hours'));
+
+        // Fallbacks
+        if ($phoneRaw === '') { $phoneRaw = '(16) 3301-1890'; }
+        if ($whatsRaw === '') { $whatsRaw = '5516992451890'; }
+        if ($hoursRaw === '') { $hoursRaw = 'Seg a Sex: 8h às 18h | Sáb: 8h às 12h'; }
+
+        // Normaliza telefone para exibição e para link (somente dígitos)
+        $digits = preg_replace('/\D+/', '', $phoneRaw);
+        $formatted = $phoneRaw; // mantém formato se já estiver adequado
+        if (strlen($digits) >= 10) {
+            $ddd = substr($digits, 0, 2);
+            $rest = substr($digits, 2);
+            if (strlen($rest) === 8) { // formato clássico
+                $formatted = sprintf('(%s) %s-%s', $ddd, substr($rest, 0, 4), substr($rest, 4));
+            } elseif (strlen($rest) === 9) { // inclui dígito 9
+                $formatted = sprintf('(%s) %s-%s', $ddd, substr($rest, 0, 5), substr($rest, 5));
+            }
+        }
+
+        // Normaliza endereço (colapsa espaços e vírgulas extras)
+        $addressParts = array_filter([$street1, $street2, $city, $region]);
+        $address = preg_replace('/\s{2,}/', ' ', implode(', ', $addressParts));
+        $address = trim(preg_replace('/,+/', ',', $address), ' ,');
+        if ($postcode) {
+            $address .= ' - CEP ' . $postcode;
+        }
+        if ($address === '') {
+            $address = 'R. Lavineo de Arruda Falcão, 1272 - Jardim Cruzeiro do Sul, Araraquara/SP - CEP 14808-390';
+        }
+
+        $cache = [
+            'name'        => $name !== '' ? $name : 'AWA Motos',
+            'phone'       => $formatted,
+            'phone_digits'=> $digits,
+            'phone_whats' => '(16) 99736-7588',
+            'whatsapp'    => $whatsRaw !== '' && $whatsRaw !== '5516992451890' ? $whatsRaw : '5516997367588',
+            'email'       => $supportEmail !== '' ? $supportEmail : 'sac@awamotos.com.br',
+            'email_name'  => $supportName !== '' ? $supportName : 'SAC AWA Motos',
+            'address'     => $address,
+            'city'        => $city !== '' ? $city : 'Araraquara',
+            'cnpj'        => '06.093.812/0001-05',
+            'hours'       => $hoursRaw,
+        ];
+
+        return $cache;
     }
 
     private function headContactContent(): string
     {
+        $info = $this->getStoreInfo();
+        $phone = htmlspecialchars($info['phone'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        $phoneDigits = htmlspecialchars($info['phone_digits'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        $email = htmlspecialchars($info['email'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
         return <<<HTML
-<div class="head-contact">Atendimento: (11) 4002-8922 • suporte@grupoawamotos.com.br</div>
+<div class="head-contact" aria-label="Contato rápido">
+    Atendimento: <a href="tel:$phoneDigits" class="head-contact__phone">$phone</a> • <a href="mailto:$email" class="head-contact__email">$email</a>
+</div>
 HTML;
     }
 
     private function topLeftStaticContent(): string
     {
+        $info = $this->getStoreInfo();
+        $address = htmlspecialchars($info['address'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        $hours = htmlspecialchars($info['hours'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
         return <<<HTML
-<div class="top-left-static">
-    <span class="address">Av. Paulista, 1000 - Bela Vista, São Paulo/SP</span>
-    <span class="separator">•</span>
-    <span class="hours">Seg a Sex: 9h às 18h</span>
-    <span class="separator">•</span>
+<div class="top-left-static" aria-label="Informações da loja">
+    <span class="address">$address</span>
+    <span class="separator" aria-hidden="true">•</span>
+    <span class="hours">$hours</span>
+    <span class="separator" aria-hidden="true">•</span>
     <a class="store-link" href="{{store url='contact'}}">Fale conosco</a>
 </div>
 HTML;
@@ -435,12 +566,27 @@ HTML;
 
     private function hotlineHeaderContent(): string
     {
+        $info = $this->getStoreInfo();
+        $phone = htmlspecialchars($info['phone'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        $phoneDigits = htmlspecialchars($info['phone_digits'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        $whats = htmlspecialchars($info['whatsapp'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        $hours = htmlspecialchars($info['hours'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        $email = htmlspecialchars($info['email'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        $cnpj = htmlspecialchars($info['cnpj'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
         return <<<HTML
-<div class="hoteline_header">
-    <div class="image_hotline"></div>
+<div class="hoteline_header" aria-label="Telefone principal, WhatsApp e horário comercial">
+    <div class="image_hotline" aria-hidden="true"></div>
     <div class="wrap">
-        <label>Central 24h:</label>
-        <span>(11) 4002-8922</span>
+        <span class="hotline_label">Central:</span>
+        <a href="tel:$phoneDigits" class="hotline_phone">$phone</a>
+        <span class="separator" aria-hidden="true">•</span>
+        <a href="https://wa.me/$whats?text=Ol%C3%A1%2C%20vim%20pelo%20site" target="_blank" rel="noopener" class="hotline_whats" aria-label="WhatsApp atendimento $whats">WhatsApp</a>
+        <span class="separator" aria-hidden="true">•</span>
+        <span class="hotline_hours" aria-label="Horário comercial">$hours</span>
+        <span class="separator" aria-hidden="true">•</span>
+        <a href="mailto:$email" class="hotline_email" aria-label="E-mail de suporte $email">$email</a>
+        <span class="separator" aria-hidden="true">•</span>
+        <span class="hotline_cnpj" aria-label="CNPJ">$cnpj</span>
     </div>
 </div>
 HTML;
@@ -448,15 +594,24 @@ HTML;
 
     private function topContactContent(): string
     {
+        $info = $this->getStoreInfo();
+        $phone = htmlspecialchars($info['phone'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        $phoneDigits = htmlspecialchars($info['phone_digits'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        $email = htmlspecialchars($info['email'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        $whatsapp = htmlspecialchars($info['whatsapp'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
         return <<<HTML
-<div class="top-contact">
+<div class="top-contact" aria-label="Canais de atendimento">
     <div class="phone">
-        <span class="label">Central telefônica</span>
-        <a href="tel:1140028922">(11) 4002-8922</a>
+        <span class="label">Telefone</span>
+        <a href="tel:$phoneDigits" class="contact-phone">$phone</a>
+    </div>
+    <div class="whatsapp">
+        <span class="label">WhatsApp</span>
+        <a href="https://wa.me/$whatsapp" target="_blank" rel="noopener" class="contact-whatsapp">$whatsapp</a>
     </div>
     <div class="email">
-        <span class="label">Atendimento por e-mail</span>
-        <a href="mailto:suporte@grupoawamotos.com.br">suporte@grupoawamotos.com.br</a>
+        <span class="label">E-mail</span>
+        <a href="mailto:$email" class="contact-email">$email</a>
     </div>
 </div>
 HTML;
@@ -464,24 +619,50 @@ HTML;
 
     private function footerInfoContent(): string
     {
+        $info = $this->getStoreInfo();
+        $address = htmlspecialchars($info['address'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        $phone = htmlspecialchars($info['phone'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        $phoneDigits = htmlspecialchars($info['phone_digits'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
         return <<<HTML
-<div class="footer-info">
-    <h4>Sobre Nossa Loja</h4>
-    <p>Loja completa com tema Ayo Magento 2</p>
-    <p>Endereço: Rua Exemplo, 123 - São Paulo, SP</p>
-    <p>Telefone: (11) 1234-5678</p>
+<div class="footer-info" aria-label="Informações institucionais">
+    <h4>Sobre a Loja</h4>
+    <p>Especialistas em peças e acessórios premium para motos.</p>
+    <p><strong>Endereço:</strong> $address</p>
+    <p><strong>Telefone:</strong> <a href="tel:$phoneDigits">$phone</a></p>
 </div>
 HTML;
     }
 
     private function socialBlockContent(): string
     {
+        $info = $this->getStoreInfo();
+        $whats = htmlspecialchars($info['whatsapp'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        $email = htmlspecialchars($info['email'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        $phoneDigits = htmlspecialchars($info['phone_digits'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        $phone = htmlspecialchars($info['phone'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        $hours = htmlspecialchars($info['hours'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
         return <<<HTML
-<div class="social-links">
-    <a href="#" class="facebook">Facebook</a>
-    <a href="#" class="instagram">Instagram</a>
-    <a href="#" class="twitter">Twitter</a>
-</div>
+<nav class="social-links" aria-label="Redes sociais e canais oficiais">
+    <ul class="social-links__list" role="list">
+        <li class="social-links__item" role="listitem"><a href="https://www.facebook.com/awamotos" target="_blank" rel="noopener" class="facebook" aria-label="Facebook AWA Motos"><i class="fa fa-facebook" aria-hidden="true"></i> facebook.com/awamotos</a></li>
+        <li class="social-links__item" role="listitem"><a href="https://www.instagram.com/awamotos/" target="_blank" rel="noopener" class="instagram" aria-label="Instagram AWA Motos"><i class="fa fa-instagram" aria-hidden="true"></i> instagram.com/awamotos</a></li>
+        <li class="social-links__item" role="listitem"><a href="https://www.youtube.com/@awamotos7661" target="_blank" rel="noopener" class="youtube" aria-label="YouTube AWA Motos"><i class="fa fa-youtube" aria-hidden="true"></i> youtube.com/@awamotos7661</a></li>
+        <li class="social-links__item" role="listitem"><a href="https://wa.me/$whats?text=Ol%C3%A1%2C%20vim%20pelo%20site" target="_blank" rel="noopener" class="whatsapp" aria-label="WhatsApp AWA Motos $whats"><i class="fa fa-whatsapp" aria-hidden="true"></i> $whats</a></li>
+        <li class="social-links__item" role="listitem"><a href="mailto:$email" class="email" aria-label="E-mail de suporte $email"><i class="fa fa-envelope" aria-hidden="true"></i> $email</a></li>
+        <li class="social-links__item" role="listitem"><a href="tel:$phoneDigits" class="phone" aria-label="Telefone comercial $phone"><i class="fa fa-phone" aria-hidden="true"></i> $phone</a></li>
+        <li class="social-links__item" role="listitem"><span class="hours" aria-label="Horário comercial">$hours</span></li>
+    </ul>
+</nav>
+<style>
+    .social-links__list{margin:0;padding:0;display:flex;flex-wrap:wrap;gap:10px}
+    .social-links__item{list-style:none;font-size:13px}
+    .social-links__item a{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;background:#fff;border-radius:8px;text-decoration:none;color:#333;box-shadow:0 2px 8px rgba(0,0,0,.08);transition:background .2s ease,transform .2s ease}
+    .social-links__item a:focus-visible{outline:2px solid #b73337;outline-offset:2px}
+    .social-links__item a:hover{background:#b73337;color:#fff;transform:translateY(-2px);box-shadow:0 6px 18px rgba(183,51,55,.25)}
+    .social-links__item .hours{display:inline-block;padding:6px 10px;border-radius:8px;background:#f5f5f5;border:1px solid rgba(183,51,55,.12)}
+    @media(max-width:639px){.social-links__list{flex-direction:column}}
+    @media (prefers-reduced-motion: reduce){.social-links__item a{transition:none}}
+</style>
 HTML;
     }
 
@@ -519,18 +700,25 @@ HTML;
             <div class="vela-contactinfo velaBlock">
                 <div class="vela-content">
                     <div class="contacinfo-logo clearfix">
-                        <div class="velaFooterLogo"><a href="{{store url=''}}" title="Grupo Awamotos">Grupo Awamotos</a></div>
+                        <div class="velaFooterLogo"><a href="{{store url=''}}" title="AWA Motos">AWA Motos</a></div>
                     </div>
                     <div class="intro-footer d-flex">
-                        Especialistas em peças, acessórios e serviços premium para o mercado brasileiro de duas rodas.
+                        Especialistas em peças e acessórios para motos. +18 linhas de produtos com entrega para todo Brasil.
                     </div>
                     <div class="contacinfo-phone contactinfo-item clearfix">
                         <div class="d-flex">
                             <div class="image_hotline"></div>
-                            <div class="wrap"><label>Central 24/7:</label>(11) 4002-8922</div>
+                            <div class="wrap"><label>Telefone:</label><a href="tel:551633011890">(16) 3301-1890</a></div>
                         </div>
                     </div>
-                    <div class="contacinfo-address contactinfo-item d-flex"><label>Endereço:</label>Av. Paulista, 1000 - Bela Vista, São Paulo/SP</div>
+                    <div class="contacinfo-phone contactinfo-item clearfix">
+                        <div class="d-flex">
+                            <div class="image_hotline"></div>
+                            <div class="wrap"><label>WhatsApp:</label><a href="https://wa.me/5516997367588" target="_blank" rel="noopener">(16) 99736-7588</a></div>
+                        </div>
+                    </div>
+                    <div class="contacinfo-address contactinfo-item d-flex"><label>Endereço:</label>R. Lavineo de Arruda Falcão, 1272 - Jardim Cruzeiro do Sul, Araraquara/SP - CEP 14808-390</div>
+                    <div class="contacinfo-cnpj contactinfo-item d-flex"><label>CNPJ:</label>06.093.812/0001-05</div>
                 </div>
             </div>
         </div>
@@ -542,9 +730,9 @@ HTML;
                         <div class="velaContent">
                             <ul class="velaFooterLinks list-unstyled">
                                 <li><a href="{{store url='about-us'}}">Sobre nós</a></li>
-                                <li><a href="{{store url='customer/account'}}">Minha conta</a></li>
+                                <li><a href="https://drive.google.com/drive/folders/1Wj0vtveapWFx5Eu7mcYAVXb5VUY7OnRi" target="_blank" rel="noopener">Catálogo de Produtos</a></li>
                                 <li><a href="{{store url='contact'}}">Contato</a></li>
-                                <li><a href="{{store url='privacy-policy-cookie-restriction-mode'}}">Privacidade</a></li>
+                                <li><a href="{{store url='privacy-policy-cookie-restriction-mode'}}">Política de Privacidade</a></li>
                                 <li><a href="{{store url='sales/guest/form'}}">Rastrear pedido</a></li>
                             </ul>
                         </div>
@@ -587,11 +775,11 @@ HTML;
                         <h4 class="velaFooterTitle">Redes sociais</h4>
                         <div class="velaContent">
                             <ul class="velaFooterLinks list-unstyled">
-                                <li><a href="https://www.facebook.com" target="_blank" rel="noopener">Facebook</a></li>
-                                <li><a href="https://www.instagram.com" target="_blank" rel="noopener">Instagram</a></li>
-                                <li><a href="https://www.youtube.com" target="_blank" rel="noopener">YouTube</a></li>
-                                <li><a href="https://www.linkedin.com" target="_blank" rel="noopener">LinkedIn</a></li>
-                                <li><a href="https://www.tiktok.com" target="_blank" rel="noopener">TikTok</a></li>
+                                <li><a href="https://www.facebook.com/awamotos" target="_blank" rel="noopener"><i class="fa fa-facebook"></i> Facebook</a></li>
+                                <li><a href="https://www.instagram.com/awamotos/" target="_blank" rel="noopener"><i class="fa fa-instagram"></i> Instagram</a></li>
+                                <li><a href="https://www.youtube.com/@awamotos7661" target="_blank" rel="noopener"><i class="fa fa-youtube"></i> YouTube</a></li>
+                                <li><a href="https://wa.me/5516997367588?text=Ol%C3%A1%2C%20vim%20pelo%20site" target="_blank" rel="noopener"><i class="fa fa-whatsapp"></i> WhatsApp</a></li>
+                                <li><a href="mailto:sac@awamotos.com.br"><i class="fa fa-envelope"></i> sac@awamotos.com.br</a></li>
                             </ul>
                         </div>
                     </div>
@@ -626,21 +814,17 @@ HTML;
     private function homeSliderContent(): string
     {
         return <<<HTML
-<div class="banner-slider banner-slider--home5">
-    <a href="{{store url='eletronicos'}}" class="banner-hero-link" title="Eletrônicos em Destaque">
-        <picture>
-            <source srcset="{{media url='import/home/hero.webp'}}" type="image/webp" />
-            <img
-                src="{{media url='import/home/banner-hero.svg'}}"
-                alt="Eletrônicos em Destaque"
-                loading="lazy"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1600px"
-                srcset="{{media url='import/home/hero.webp'}} 1600w"
-                style="width:100%;height:auto;border-radius:24px;box-shadow:0 24px 50px rgba(15,31,53,.22)"
-            />
-        </picture>
-    </a>
+<div class="ayo-slider-real" role="region" aria-label="Destaques em banner">
+    {{widget type="Rokanthemes\SlideBanner\Block\Slider" slider_identifier="homepageslider" template="slider.phtml"}}
 </div>
+<style>
+    .ayo-slider-real .owl-carousel .owl-item img { border-radius: 24px; }
+    .ayo-slider-real .owl-dots { margin-top: 16px; text-align: center; }
+    .ayo-slider-real .owl-dot { display: inline-block; width: 14px; height: 14px; margin: 0 6px; border-radius: 50%; background: #d5d5d5; position:relative; }
+    .ayo-slider-real .owl-dot:focus-visible { outline: 3px solid #b73337; outline-offset: 2px; }
+    .ayo-slider-real .owl-dot.active { background: #b73337; }
+    @media (prefers-reduced-motion: reduce){ .ayo-slider-real .owl-dot{ transition:none; } }
+</style>
 HTML;
     }
 
@@ -675,52 +859,60 @@ HTML;
     private function homeBannerPromoContent(): string
     {
         return <<<HTML
-<div class="ayo-home5-promo">
+<section class="ayo-home5-promo" role="region" aria-label="Banner promocional linha esportiva">
     <div class="ayo-home5-promo__inner">
-        <span class="ayo-home5-promo__badge">{{trans "Linha exclusiva"}}</span>
-        <h2>{{trans "Equipe-se para qualquer pista"}}</h2>
-        <p>{{trans "Capacetes, jaquetas e acessórios selecionados com condições especiais para quem vive a estrada."}}</p>
-        <a class="action primary ayo-home5-promo__cta" href="{{store url='ofertas'}}">{{trans "Ver ofertas"}}</a>
+        <span class="ayo-home5-promo__badge" aria-hidden="true">Linha esportiva</span>
+        <h2 class="ayo-home5-promo__title">Equipe-se para qualquer pista</h2>
+        <p class="ayo-home5-promo__desc">Guidões, manetes, pedaleiras e retrovisores esportivos com condições especiais para quem vive a estrada.</p>
+        <a class="action primary ayo-home5-promo__cta" href="{{store url='linha-esportiva'}}" aria-label="Ver ofertas da linha esportiva">Ver ofertas</a>
     </div>
     <div class="ayo-home5-promo__image">
-        <img src="{{view url='images/home5/support_icon.png'}}" alt="{{trans "Acessórios de moto"}}" />
+        <img src="{{media url='wysiwyg/banners/promo-banner.svg'}}" alt="Equipamentos e acessórios de alta performance" width="260" height="260" loading="lazy" decoding="async" fetchpriority="low" />
     </div>
-</div>
+</section>
 HTML;
     }
 
     private function homeTopSlideshowContent(): string
     {
         return <<<HTML
-<div class="ayo-home5-hero-layout">
-    <div class="ayo-home5-hero-layout__main">
-        {{block class="Magento\\Cms\\Block\\Block" block_id="home_slider"}}
+<section class="ayo-home5-hero-layout" aria-label="Destaques principais da loja">
+    <div class="ayo-home5-hero-layout__main" role="region" aria-label="Slider principal">
+        {{widget type="Rokanthemes\SlideBanner\Block\Slider" slider_identifier="homepageslider" template="slider.phtml"}}
     </div>
-    <div class="ayo-home5-hero-layout__side">
-        <a class="ayo-home5-hero-card ayo-home5-hero-card--primary" href="{{store url='moda'}}" title="Moda">
-            <picture>
-                <source srcset="{{media url='import/home/side1.webp'}}" type="image/webp" />
-                <img src="{{media url='import/home/banner-side-1.svg'}}" alt="Moda" loading="lazy" sizes="(max-width: 768px) 100vw, 800px" srcset="{{media url='import/home/side1.webp'}} 800w" />
-            </picture>
-            <span class="ayo-home5-hero-card__content">
-                <span class="ayo-home5-hero-card__eyebrow">Coleção exclusiva</span>
-                <strong class="ayo-home5-hero-card__title">Moda</strong>
-                <span class="ayo-home5-hero-card__cta">Ver novidades</span>
-            </span>
-        </a>
-        <a class="ayo-home5-hero-card ayo-home5-hero-card--secondary" href="{{store url='esportes'}}" title="Esportes">
-            <picture>
-                <source srcset="{{media url='import/home/side2.webp'}}" type="image/webp" />
-                <img src="{{media url='import/home/banner-side-2.svg'}}" alt="Esportes" loading="lazy" sizes="(max-width: 768px) 100vw, 800px" srcset="{{media url='import/home/side2.webp'}} 800w" />
-            </picture>
-            <span class="ayo-home5-hero-card__content">
-                <span class="ayo-home5-hero-card__eyebrow">Ofertas especiais</span>
-                <strong class="ayo-home5-hero-card__title">Esportes</strong>
-                <span class="ayo-home5-hero-card__cta">Explorar agora</span>
-            </span>
-        </a>
-    </div>
-</div>
+    <nav class="ayo-home5-hero-layout__side" aria-label="Atalhos de linhas de motos">
+        <ul class="ayo-hero-side-list" role="list">
+            <li class="ayo-hero-side-item" role="listitem">
+                <a class="ayo-home5-hero-card ayo-home5-hero-card--primary" href="{{store url='linha-honda'}}" aria-label="Ver peças da linha Honda">
+                    <img src="{{media url='wysiwyg/home/side-honda.svg'}}" alt="Linha Honda" width="260" height="260" loading="lazy" decoding="async" fetchpriority="low" />
+                    <span class="ayo-home5-hero-card__content">
+                        <span class="ayo-home5-hero-card__eyebrow">Linha Original</span>
+                        <strong class="ayo-home5-hero-card__title">Honda</strong>
+                        <span class="ayo-home5-hero-card__cta" aria-hidden="true">Ver peças →</span>
+                    </span>
+                </a>
+            </li>
+            <li class="ayo-hero-side-item" role="listitem">
+                <a class="ayo-home5-hero-card ayo-home5-hero-card--secondary" href="{{store url='linha-yamaha'}}" aria-label="Ver peças da linha Yamaha">
+                    <img src="{{media url='wysiwyg/home/side-yamaha.svg'}}" alt="Linha Yamaha" width="260" height="260" loading="lazy" decoding="async" fetchpriority="low" />
+                    <span class="ayo-home5-hero-card__content">
+                        <span class="ayo-home5-hero-card__eyebrow">Linha Completa</span>
+                        <strong class="ayo-home5-hero-card__title">Yamaha</strong>
+                        <span class="ayo-home5-hero-card__cta" aria-hidden="true">Ver peças →</span>
+                    </span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</section>
+<style>
+    .ayo-hero-side-list{margin:0;padding:0;display:flex;flex-direction:column;gap:18px}
+    .ayo-hero-side-item{list-style:none}
+    .ayo-home5-hero-card{outline:none}
+    .ayo-home5-hero-card:focus-visible{outline:3px solid #b73337;outline-offset:4px}
+    @media (max-width:991px){.ayo-hero-side-list{flex-direction:row}}
+    @media (max-width:639px){.ayo-hero-side-list{flex-direction:column}}
+</style>
 HTML;
     }
 
@@ -728,80 +920,93 @@ HTML;
     {
         return <<<HTML
 <div class="ayo-home5-hero-card-stack">
-    <a class="ayo-home5-hero-card ayo-home5-hero-card--primary" href="{{store url='colecoes/performance'}}" title="Coleção Performance">
-        <img src="{{view url='images/side-banner-promo.svg'}}" alt="Coleção Performance" />
+    <a class="ayo-home5-hero-card ayo-home5-hero-card--primary" href="{{store url='linha-esportiva'}}" title="Linha Esportiva">
+        <div class="ayo-hero-card-bg" style="background: linear-gradient(135deg, #b73337 0%, #ff6f00 100%);"></div>
         <span class="ayo-home5-hero-card__content">
-            <span class="ayo-home5-hero-card__eyebrow">{{trans "Coleção exclusiva"}}</span>
-            <strong class="ayo-home5-hero-card__title">{{trans "Performance"}}</strong>
-            <span class="ayo-home5-hero-card__cta">{{trans "Ver coleção"}}</span>
+            <span class="ayo-home5-hero-card__eyebrow">Alta performance</span>
+            <strong class="ayo-home5-hero-card__title">Linha Esportiva</strong>
+            <span class="ayo-home5-hero-card__cta">Ver coleção →</span>
         </span>
     </a>
-    <a class="ayo-home5-hero-card ayo-home5-hero-card--secondary" href="{{store url='colecoes/combos'}}" title="Combos com Desconto">
-        <img src="{{view url='images/side-banner-combos.svg'}}" alt="Combos com Desconto" />
+    <a class="ayo-home5-hero-card ayo-home5-hero-card--secondary" href="{{store url='manetes'}}" title="Manetes">
+        <div class="ayo-hero-card-bg" style="background: linear-gradient(135deg, #0f1f35 0%, #394f76 100%);"></div>
         <span class="ayo-home5-hero-card__content">
-            <span class="ayo-home5-hero-card__eyebrow">{{trans "Ofertas especiais"}}</span>
-            <strong class="ayo-home5-hero-card__title">{{trans "Combos"}}</strong>
-            <span class="ayo-home5-hero-card__cta">{{trans "Economize agora"}}</span>
+            <span class="ayo-home5-hero-card__eyebrow">Conforto e controle</span>
+            <strong class="ayo-home5-hero-card__title">Manetes</strong>
+            <span class="ayo-home5-hero-card__cta">Conferir →</span>
         </span>
     </a>
 </div>
+<style>
+    .ayo-hero-card-bg { position: absolute; inset: 0; border-radius: 24px; }
+    .ayo-home5-hero-card-stack .ayo-home5-hero-card { position: relative; min-height: 180px; }
+    .ayo-home5-hero-card-stack .ayo-home5-hero-card::after { display: none; }
+</style>
 HTML;
     }
 
     private function homeBenefitsContent(): string
     {
         return <<<HTML
-<div class="velaServicesInner velaServicesInner--home5">
+<section class="velaServicesInner velaServicesInner--home5" role="list" aria-label="Benefícios da loja">
     <div class="velaContent">
-        <div class="rowFlex rowFlexMargin flexJustifyCenter">
-            <div class="col-xs-6 col-sm-3 col-2">
+        <ul class="rowFlex rowFlexMargin flexJustifyCenter velaBenefitsList" role="list">
+            <li class="col-xs-6 col-sm-3 col-2 velaBenefit" role="listitem">
                 <div class="boxService d-flex flexJustifyCenter">
-                    <div class="boxServiceImage boxServiceImage1"></div>
+                    <div class="boxServiceImage boxServiceImage1" aria-hidden="true"></div>
                     <div class="boxServiceContent">
-                        <h4 class="boxServiceTitle">Entrega expressa</h4>
-                        <div class="boxServiceDesc">Envio imediato para capitais</div>
+                        <h4 class="boxServiceTitle">Atendemos Todo o Brasil!</h4>
+                        <p class="boxServiceDesc">Envio via Correios e transportadoras para todo território nacional</p>
                     </div>
                 </div>
-            </div>
-            <div class="col-xs-6 col-sm-3 col-2">
+            </li>
+            <li class="col-xs-6 col-sm-3 col-2 velaBenefit" role="listitem">
                 <div class="boxService d-flex flexJustifyCenter">
-                    <div class="boxServiceImage boxServiceImage2"></div>
+                    <div class="boxServiceImage boxServiceImage2" aria-hidden="true"></div>
                     <div class="boxServiceContent">
-                        <h4 class="boxServiceTitle">Pagamento seguro</h4>
-                        <div class="boxServiceDesc">Cartões, Pix e boleto</div>
+                        <h4 class="boxServiceTitle">+18 Linhas de Produtos</h4>
+                        <p class="boxServiceDesc">Retrovisores, Bauletos, Bagageiros, Guidões, Manoplas e muito mais</p>
                     </div>
                 </div>
-            </div>
-            <div class="col-xs-6 col-sm-3 col-2">
+            </li>
+            <li class="col-xs-6 col-sm-3 col-2 velaBenefit" role="listitem">
                 <div class="boxService d-flex flexJustifyCenter">
-                    <div class="boxServiceImage boxServiceImage3"></div>
+                    <div class="boxServiceImage boxServiceImage3" aria-hidden="true"></div>
                     <div class="boxServiceContent">
-                        <h4 class="boxServiceTitle">Compra garantida</h4>
-                        <div class="boxServiceDesc">Suporte técnico especializado</div>
+                        <h4 class="boxServiceTitle">Entrega mais Rápida!</h4>
+                        <p class="boxServiceDesc">Agilidade no despacho e rastreamento em tempo real</p>
                     </div>
                 </div>
-            </div>
-            <div class="col-xs-6 col-sm-3 col-2">
+            </li>
+            <li class="col-xs-6 col-sm-3 col-2 velaBenefit" role="listitem">
                 <div class="boxService d-flex flexJustifyCenter">
-                    <div class="boxServiceImage boxServiceImage4"></div>
+                    <div class="boxServiceImage boxServiceImage4" aria-hidden="true"></div>
                     <div class="boxServiceContent">
-                        <h4 class="boxServiceTitle">Atendimento 24/7</h4>
-                        <div class="boxServiceDesc">Equipe pronta para ajudar</div>
+                        <h4 class="boxServiceTitle">Atendimento Especializado</h4>
+                        <p class="boxServiceDesc"><a href="https://wa.me/5516997367588?text=Ol%C3%A1" target="_blank" rel="noopener">WhatsApp</a> ou <a href="tel:551633011890">(16) 3301-1890</a></p>
                     </div>
                 </div>
-            </div>
-            <div class="col-xs-6 col-sm-3 col-2">
+            </li>
+            <li class="col-xs-6 col-sm-3 col-2 velaBenefit" role="listitem">
                 <div class="boxService d-flex flexJustifyCenter">
-                    <div class="boxServiceImage boxServiceImage5"></div>
+                    <div class="boxServiceImage boxServiceImage5" aria-hidden="true"></div>
                     <div class="boxServiceContent">
-                        <h4 class="boxServiceTitle">Serviços Pró-Ação</h4>
-                        <div class="boxServiceDesc">Troca e devolução sem burocracia</div>
+                        <h4 class="boxServiceTitle">Catálogo Completo</h4>
+                        <p class="boxServiceDesc"><a href="https://drive.google.com/drive/folders/1Wj0vtveapWFx5Eu7mcYAVXb5VUY7OnRi" target="_blank" rel="noopener">Acesse nosso catálogo digital</a></p>
                     </div>
                 </div>
-            </div>
-        </div>
+            </li>
+        </ul>
     </div>
-</div>
+</section>
+<style>
+    .velaBenefitsList{margin:0;padding:0;}
+    .velaBenefit{list-style:none;}
+    .boxServiceTitle{font-size:15px;margin:0 0 4px;}
+    .boxServiceDesc{font-size:13px;margin:0;opacity:.85;}
+    .boxServiceDesc a{color:inherit;text-decoration:underline;}
+    @media (prefers-reduced-motion: reduce){ .boxService, .velaBenefit{ transition:none; } }
+</style>
 HTML;
     }
 
@@ -810,14 +1015,20 @@ HTML;
         return <<<HTML
 <div class="ayo-home5-product-grid">
     {{widget type="Rokanthemes\\Categorytab\\Block\\CateWidget"
-        title="Mais vendidos"
+        title="Retrovisores"
         color_box="red-box"
-        identify="categorytab"
-        category_id="71,72,73,74,75"
-        limit_qty="11"
+        identify="categorytab_retro"
+        category_id="41"
+        limit_qty="8"
         show_pager="0"
         slide_row="1"
-        slide_limit="6"
+        slide_limit="4"
+        default="4"
+        desktop="4"
+        desktop_small="3"
+        tablet="2"
+        mobile="1"
+        navigation="1"
         template="categorytab/grid.phtml"}}
 </div>
 HTML;
@@ -828,20 +1039,21 @@ HTML;
         return <<<HTML
 <div class="ayo-home5-product-grid">
     {{widget type="Rokanthemes\\Categorytab\\Block\\CateWidget"
-        title="Categorias populares"
-        color_box="red-box"
-        identify="categorytab2"
-        category_id="40,44,45,67,68,86"
-        limit_qty="10"
+        title="Bauletos"
+        color_box="blue-box"
+        identify="categorytab_bauletos"
+        category_id="45,46,75,77"
+        limit_qty="8"
         show_pager="0"
         slide_row="1"
-        slide_limit="6"
-        default="6"
-        desktop="5"
-        desktop_small="4"
-        tablet="3"
+        slide_limit="4"
+        default="4"
+        desktop="4"
+        desktop_small="3"
+        tablet="2"
         mobile="1"
-        template="categorytab/grid-original.phtml"}}
+        navigation="1"
+        template="categorytab/grid.phtml"}}
 </div>
 HTML;
     }
@@ -849,16 +1061,72 @@ HTML;
     private function homeFeaturedCategoriesContent(): string
     {
         return <<<HTML
-<div class="ayo-home5-product-grid">
-    {{widget type="Rokanthemes\\Categorytab\\Block\\CateWidget"
-        title=""
-        color_box="red-box"
-        identify="featured_categories"
-        category_id="44,45,67,71,72,73,74,75,76,86,88,109"
-        slide_row="2"
-        slide_limit="6"
-        template="categorytab/grid-original.phtml"}}
-</div>
+<nav class="ayo-home5-categories-grid" aria-label="Compre por categoria">
+    <ul class="ayo-categories-row" role="list">
+        <li class="ayo-category-card-wrapper">
+            <a class="ayo-category-card" href="{{store url='retrovisores'}}">
+                <span class="ayo-category-card__icon" aria-hidden="true">🔍</span>
+                <h3 class="ayo-category-card__title">Retrovisores</h3>
+                <span class="ayo-category-card__count">+150 produtos</span>
+                <span class="sr-only">Ver categoria Retrovisores</span>
+            </a>
+        </li>
+        <li class="ayo-category-card-wrapper">
+            <a class="ayo-category-card" href="{{store url='bauletos'}}">
+                <span class="ayo-category-card__icon" aria-hidden="true">📦</span>
+                <h3 class="ayo-category-card__title">Bauletos</h3>
+                <span class="ayo-category-card__count">29L, 34L, 41L</span>
+                <span class="sr-only">Ver categoria Bauletos</span>
+            </a>
+        </li>
+        <li class="ayo-category-card-wrapper">
+            <a class="ayo-category-card" href="{{store url='guidoes'}}">
+                <span class="ayo-category-card__icon" aria-hidden="true">🏍️</span>
+                <h3 class="ayo-category-card__title">Guidões</h3>
+                <span class="ayo-category-card__count">Esportivos e originais</span>
+                <span class="sr-only">Ver categoria Guidões</span>
+            </a>
+        </li>
+        <li class="ayo-category-card-wrapper">
+            <a class="ayo-category-card" href="{{store url='manoplas'}}">
+                <span class="ayo-category-card__icon" aria-hidden="true">✋</span>
+                <h3 class="ayo-category-card__title">Manoplas</h3>
+                <span class="ayo-category-card__count">Racing e conforto</span>
+                <span class="sr-only">Ver categoria Manoplas</span>
+            </a>
+        </li>
+        <li class="ayo-category-card-wrapper">
+            <a class="ayo-category-card" href="{{store url='bagageiros'}}">
+                <span class="ayo-category-card__icon" aria-hidden="true">🎒</span>
+                <h3 class="ayo-category-card__title">Bagageiros</h3>
+                <span class="ayo-category-card__count">Suportes universais</span>
+                <span class="sr-only">Ver categoria Bagageiros</span>
+            </a>
+        </li>
+        <li class="ayo-category-card-wrapper">
+            <a class="ayo-category-card" href="{{store url='pedaleiras'}}">
+                <span class="ayo-category-card__icon" aria-hidden="true">👟</span>
+                <h3 class="ayo-category-card__title">Pedaleiras</h3>
+                <span class="ayo-category-card__count">Alta performance</span>
+                <span class="sr-only">Ver categoria Pedaleiras</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+<style>
+    .ayo-home5-categories-grid { padding: 24px; }
+    .ayo-categories-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 20px; margin: 0; padding: 0; }
+    .ayo-category-card-wrapper { list-style: none; }
+    .ayo-category-card { position: relative; display: flex; flex-direction: column; align-items: center; padding: 28px 18px; background: #fff; border-radius: 20px; border: 1px solid rgba(0,0,0,0.04); text-decoration: none; color: var(--home-text, #1f1f1f); box-shadow: 0 4px 20px rgba(0,0,0,0.06); transition: transform 0.25s ease, box-shadow 0.25s ease, outline-color 0.25s ease, border-color 0.25s ease; }
+    .ayo-category-card:focus-visible { outline: 3px solid var(--home-primary, #b73337); outline-offset: 3px; }
+    .ayo-category-card:hover { transform: translateY(-6px); box-shadow: 0 12px 32px rgba(0,0,0,0.12); border-color: rgba(183,51,55,0.26); color: var(--home-primary, #b73337); }
+    .ayo-category-card__icon { font-size: 36px; margin-bottom: 12px; }
+    .ayo-category-card__title { margin: 0 0 6px; font-size: 17px; font-weight: 600; color: inherit; }
+    .ayo-category-card__count { font-size: 13px; color: rgba(31,31,31,0.58); }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+    @media (max-width: 639px) { .ayo-category-card { padding: 22px 16px; } }
+    @media (prefers-reduced-motion: reduce) { .ayo-category-card { transition: none; } }
+</style>
 HTML;
     }
 
@@ -868,14 +1136,20 @@ HTML;
 <div class="ayo-home5-product-grid">
     {{widget type="Rokanthemes\\Categorytab\\Block\\CateWidget"
         title=""
-        color_box="red-box"
-        identify="categorytab_thumb"
-        category_id="45,67,71,72,73"
-        limit_qty="13"
+        color_box="orange-box"
+        identify="categorytab_community"
+        category_id="41,44,45,67,74,86"
+        limit_qty="12"
         show_pager="0"
         slide_row="1"
         slide_limit="6"
-        template="categorytab/grid-original.phtml"}}
+        default="6"
+        desktop="5"
+        desktop_small="4"
+        tablet="3"
+        mobile="2"
+        navigation="1"
+        template="categorytab/grid.phtml"}}
 </div>
 HTML;
     }
@@ -967,260 +1241,6 @@ HTML;
         {{block class="Magento\Cms\Block\Block" block_id="home1_product_thumb"}}
     </section>
 </div>
-
-<style type="text/css">
-    .ayo-home5-wrapper {
-        background-color: #f7f7f7;
-        padding: 32px 0 72px;
-    }
-    .ayo-home5-section {
-        margin-bottom: 72px;
-    }
-    .ayo-home5-section:last-of-type {
-        margin-bottom: 0;
-    }
-    .ayo-home5-heading {
-        text-align: center;
-        margin-bottom: 32px;
-    }
-    .ayo-home5-label {
-        display: inline-block;
-        font-size: 13px;
-        font-weight: 600;
-        letter-spacing: 0.3em;
-        text-transform: uppercase;
-        color: #ff6f00;
-    }
-    .ayo-home5-heading h2 {
-        font-size: 34px;
-        font-weight: 700;
-        margin: 12px 0 0;
-        color: #1f1f1f;
-    }
-    .ayo-home5-divider {
-        display: block;
-        width: 92px;
-        height: 5px;
-        background: linear-gradient(90deg, #ff6f00 0%, #ffb300 50%, #ffd54f 100%);
-        margin: 20px auto 0;
-        border-radius: 999px;
-    }
-    .ayo-home5-hero-layout {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 24px;
-        align-items: stretch;
-    }
-    .ayo-home5-hero-layout__main {
-        flex: 1 1 62%;
-        min-width: 0;
-    }
-    .ayo-home5-hero-layout__side {
-        flex: 1 1 300px;
-        display: flex;
-        flex-direction: column;
-        gap: 18px;
-    }
-    .ayo-home5-hero-card-stack {
-        display: flex;
-        flex-direction: column;
-        gap: 18px;
-    }
-    .ayo-home5-hero-card {
-        position: relative;
-        display: block;
-        border-radius: 24px;
-        overflow: hidden;
-        min-height: 260px;
-        color: #ffffff;
-        text-decoration: none;
-        box-shadow: 0 24px 50px rgba(15, 31, 53, 0.22);
-        transition: transform 0.35s ease, box-shadow 0.35s ease;
-    }
-    .ayo-home5-hero-card img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-    }
-    .ayo-home5-hero-card::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.72) 100%);
-        opacity: 0.9;
-        transition: opacity 0.3s ease;
-    }
-    .ayo-home5-hero-card__content {
-        position: absolute;
-        inset: auto 26px 28px 26px;
-        z-index: 1;
-    }
-    .ayo-home5-hero-card__eyebrow {
-        display: block;
-        font-size: 12px;
-        letter-spacing: 0.28em;
-        text-transform: uppercase;
-        opacity: 0.85;
-        margin-bottom: 10px;
-    }
-    .ayo-home5-hero-card__title {
-        display: block;
-        font-size: 34px;
-        line-height: 1.05;
-        font-weight: 700;
-    }
-    .ayo-home5-hero-card__cta {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        margin-top: 16px;
-        font-weight: 600;
-        font-size: 15px;
-    }
-    .ayo-home5-hero-card:hover {
-        transform: translateY(-6px);
-        box-shadow: 0 28px 60px rgba(15, 31, 53, 0.32);
-    }
-    .ayo-home5-hero-card:hover::after {
-        opacity: 1;
-    }
-    .velaServicesInner--home5 {
-        background: #ffffff;
-        border-radius: 24px;
-        padding: 36px 24px;
-        box-shadow: 0 18px 60px rgba(17, 29, 54, 0.08);
-    }
-    .ayo-home5-category-rows {
-        display: grid;
-        gap: 24px;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        align-items: stretch;
-    }
-    .ayo-home5-category-column > div {
-        background: #ffffff;
-        border-radius: 24px;
-        padding: 24px;
-        box-shadow: 0 12px 38px rgba(15, 31, 53, 0.08);
-    }
-    .ayo-home5-product-grid {
-        background: #ffffff;
-        border-radius: 24px;
-        padding: 24px;
-        box-shadow: 0 12px 38px rgba(15, 31, 53, 0.08);
-    }
-    .ayo-home5-product-grid--carousel {
-        background: transparent;
-        box-shadow: none;
-        padding: 0;
-    }
-    .ayo-home5-section--promo .ayo-home5-promo {
-        background: linear-gradient(135deg, #ff6f00 0%, #ff9800 45%, #ffc107 100%);
-        border-radius: 28px;
-        padding: 48px;
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: space-between;
-        color: #ffffff;
-        box-shadow: 0 24px 60px rgba(255, 111, 0, 0.35);
-    }
-    .ayo-home5-promo__inner {
-        max-width: 520px;
-    }
-    .ayo-home5-promo__badge {
-        display: inline-block;
-        padding: 6px 14px;
-        border-radius: 999px;
-        background: rgba(255, 255, 255, 0.18);
-        font-weight: 600;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        font-size: 12px;
-        margin-bottom: 18px;
-    }
-    .ayo-home5-promo__inner h2 {
-        font-size: 36px;
-        line-height: 1.15;
-        margin: 0 0 16px;
-    }
-    .ayo-home5-promo__inner p {
-        font-size: 18px;
-        margin: 0 0 28px;
-        opacity: 0.92;
-    }
-    .ayo-home5-promo__cta {
-        font-size: 16px;
-        padding: 14px 28px;
-        border-radius: 999px;
-        background: #ffffff;
-        color: #ff6f00;
-    }
-    .ayo-home5-promo__image {
-        flex: 1 1 200px;
-        text-align: center;
-    }
-    .ayo-home5-promo__image img {
-        max-width: 260px;
-        width: 100%;
-        filter: drop-shadow(0 18px 32px rgba(0, 0, 0, 0.22));
-    }
-    @media (max-width: 1199px) {
-        .ayo-home5-hero-card {
-            min-height: 220px;
-        }
-    }
-    @media (max-width: 991px) {
-        .ayo-home5-section {
-            margin-bottom: 60px;
-        }
-        .ayo-home5-hero-layout {
-            flex-direction: column;
-        }
-        .ayo-home5-hero-layout__side {
-            flex-direction: row;
-        }
-        .ayo-home5-hero-card-stack {
-            flex-direction: row;
-        }
-        .ayo-home5-section--promo .ayo-home5-promo {
-            padding: 40px;
-        }
-    }
-    @media (max-width: 639px) {
-        .ayo-home5-wrapper {
-            padding: 24px 0 48px;
-        }
-        .ayo-home5-heading h2 {
-            font-size: 26px;
-        }
-        .ayo-home5-hero-layout__side,
-        .ayo-home5-hero-card-stack {
-            flex-direction: column;
-        }
-        .ayo-home5-hero-card {
-            min-height: 210px;
-        }
-        .ayo-home5-product-grid {
-            padding: 20px 16px;
-            border-radius: 18px;
-        }
-        .ayo-home5-category-rows {
-            grid-template-columns: 1fr;
-        }
-        .ayo-home5-section--promo .ayo-home5-promo {
-            padding: 36px 24px;
-            text-align: center;
-        }
-        .ayo-home5-promo__image {
-            order: -1;
-            margin-bottom: 24px;
-        }
-        .ayo-home5-promo__inner h2 {
-            font-size: 30px;
-        }
-    }
-</style>
 HTML;
     }
 
@@ -1273,13 +1293,17 @@ HTML;
 
     private function fixedRightContent(): string
     {
+        $info = $this->getStoreInfo();
+        $phoneDigits = htmlspecialchars($info['phone_digits'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        $email = htmlspecialchars($info['email'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        $whatsapp = htmlspecialchars($info['whatsapp'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
         return <<<HTML
-<div class="fixed-right-links">
+<div class="fixed-right-links" aria-label="Atalhos rápidos">
     <ul class="list-unstyled">
-        <li><a class="fixed-call" href="tel:1140028922" title="Ligar"><span>Ligação</span></a></li>
-        <li><a class="fixed-whatsapp" href="https://wa.me/551140028922" target="_blank" rel="noopener" title="WhatsApp"><span>WhatsApp</span></a></li>
-        <li><a class="fixed-email" href="mailto:suporte@grupoawamotos.com.br" title="E-mail"><span>E-mail</span></a></li>
-        <li><a class="fixed-top" href="#top" title="Topo"><span>Topo</span></a></li>
+        <li><a class="fixed-call" href="tel:$phoneDigits" title="Ligar"><span>Ligação</span></a></li>
+        <li><a class="fixed-whatsapp" href="https://wa.me/$whatsapp" target="_blank" rel="noopener" title="WhatsApp"><span>WhatsApp</span></a></li>
+        <li><a class="fixed-email" href="mailto:$email" title="E-mail"><span>E-mail</span></a></li>
+        <li><a class="fixed-top" href="#top" title="Ir ao topo"><span>Topo</span></a></li>
     </ul>
 </div>
 HTML;
@@ -1315,33 +1339,47 @@ HTML;
                 return;
             }
 
+            // Delete existing slides to refresh with real ones
             $existingSlides = $this->slideFactory->create()->getCollection();
             $existingSlides->addFieldToFilter('slider_id', $sliderId);
-            if ($existingSlides->getSize() >= 3) {
-                $output->writeln(' - Slider já possui slides suficientes');
-                return;
+            foreach ($existingSlides as $existingSlide) {
+                $existingSlide->delete();
             }
 
-            $links = [
-                '{{store url="colecoes/performance"}}',
-                '{{store url="colecoes/urbanas"}}',
-                '{{store url="promocoes"}}',
+            // Slides reais com links para categorias existentes
+            $slidesData = [
+                [
+                    'text' => 'Retrovisores Premium - A partir de R$ 49,90',
+                    'image' => 'slidebanner/real/slide1.svg',
+                    'link' => '{{store url="retrovisores"}}',
+                ],
+                [
+                    'text' => 'Bauletos e Bagageiros - Frete Grátis',
+                    'image' => 'slidebanner/real/slide2.svg',
+                    'link' => '{{store url="bauletos"}}',
+                ],
+                [
+                    'text' => 'Guidões e Manetes Esportivos - Até 40% OFF',
+                    'image' => 'slidebanner/real/slide3.svg',
+                    'link' => '{{store url="linha-esportiva"}}',
+                ],
             ];
-            for ($i = 1; $i <= 3; $i++) {
+
+            foreach ($slidesData as $i => $slideData) {
                 $slide = $this->slideFactory->create();
                 $slide->setData([
                     'slider_id' => $sliderId,
                     'slide_type' => 1,
-                    'slide_text' => 'Banner ' . $i,
-                    'slide_image' => 'slidebanner/banner' . $i . '.svg',
-                    'slide_image_mobile' => 'slidebanner/banner' . $i . '.svg',
-                    'slide_link' => $links[$i-1] ?? '{{store url=""}}',
+                    'slide_text' => $slideData['text'],
+                    'slide_image' => $slideData['image'],
+                    'slide_image_mobile' => $slideData['image'],
+                    'slide_link' => $slideData['link'],
                     'slide_status' => 1,
-                    'slide_position' => $i,
+                    'slide_position' => $i + 1,
                 ]);
                 $slide->save();
             }
-            $output->writeln(sprintf(' - Slider %s %s com 3 slides', $identifier, $wasExisting ? 'atualizado' : 'criado'));
+            $output->writeln(sprintf(' - Slider %s %s com 3 slides reais', $identifier, $wasExisting ? 'atualizado' : 'criado'));
         } catch (\Throwable $e) {
             $output->writeln('<error>   ✗ Falha ao semear slider: ' . $e->getMessage() . '</error>');
         }

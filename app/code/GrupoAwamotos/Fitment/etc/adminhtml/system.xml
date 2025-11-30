@@ -22,6 +22,25 @@
                     <comment>Cada linha representa um grupo de sinônimos separados por vírgula. Ex: pastilha,freio,brake pad</comment>
                 </field>
             </group>
+            <group id="general" translate="label" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>UI Fitment</label>
+                <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Ativar Formulário Fitment</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="placeholder" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Placeholder Busca</label>
+                    <comment>Texto guia exibido no campo de busca.</comment>
+                </field>
+                <field id="hint" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Dica (hint)</label>
+                    <comment>Mensagem curta abaixo do campo para orientar o usuário.</comment>
+                </field>
+                <field id="suggestions" translate="label" type="textarea" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sugestões Pré-definidas</label>
+                    <comment>Separar sugestões por ponto e vírgula (;).</comment>
+                </field>
+            </group>
             <group id="search" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Busca</label>
                 <field id="fallback_enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">

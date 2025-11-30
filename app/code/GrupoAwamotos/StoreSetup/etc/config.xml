@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!-- Valores padrão para contato da loja -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <grupoawamotos_store>
+            <contact>
+                <whatsapp>5516997367588</whatsapp>
+                <hours>Seg a Sex: 8h às 18h | Sáb: 8h às 12h</hours>
+            </contact>
+        </grupoawamotos_store>
+    </default>
+</config>

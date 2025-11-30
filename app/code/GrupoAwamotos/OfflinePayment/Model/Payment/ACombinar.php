@@ -75,7 +75,7 @@ class ACombinar extends AbstractMethod
      * @param CartInterface|null $quote
      * @return bool
      */
-    public function isAvailable(CartInterface $quote = null): bool
+    public function isAvailable(?CartInterface $quote = null): bool
     {
         return parent::isAvailable($quote);
     }

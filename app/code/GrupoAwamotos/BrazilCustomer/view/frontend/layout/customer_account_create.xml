@@ -6,6 +6,10 @@
                    name="brazil.customer.fields" 
                    template="GrupoAwamotos_BrazilCustomer::customer/form/brazil-fields.phtml"
                    before="-"/>
+            <block class="Magento\Framework\View\Element\Template" 
+                   name="password.strength.initializer" 
+                   template="Magento_Customer::password-strength.phtml"
+                   after="brazil.customer.fields"/>
         </referenceContainer>
     </body>
 </page>
