@@ -59,3 +59,5 @@ __MACOSX/
 
 # Trae IDE
 .trae/
+backup_pre_update_20251130/
+biblioteca/modulos_backup_*.tgz
