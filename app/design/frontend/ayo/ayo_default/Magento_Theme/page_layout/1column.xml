@@ -10,6 +10,11 @@
     <referenceContainer name="page.wrapper">
         <container name="header.container" as="header_container" label="Page Header Container"  htmlTag="header" htmlClass="header-container" before="main.content"/>
         <container name="page.top" as="page_top" label="After Page Header" after="header.container"/>
+        <!-- Ensure sidebar.additional exists to avoid broken references on 1column pages -->
+        <referenceContainer name="main.content">
+            <container name="div.sidebar.additional" htmlTag="div" htmlClass="sidebar sidebar-additional1" after="-"/>
+            <container name="sidebar.additional" as="sidebar_additional" label="Sidebar Additional"/>
+        </referenceContainer>
         <container name="footer-container" as="footer" before="before.body.end" label="Page Footer Container" htmlTag="footer" htmlClass="page-footer" />
     </referenceContainer>
 </layout>

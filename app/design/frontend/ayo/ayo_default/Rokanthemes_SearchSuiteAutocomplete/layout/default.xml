@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+	SearchSuiteAutocomplete para tema Ayo.
+	Adiciona o bloco de autocomplete no toki_header que é definido pelo Rokanthemes_Themeoption.
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <!-- Remove blocos de busca padrão do Magento -->
+        <referenceBlock name="top.search" remove="true"/>
+        
+        <!-- Adiciona autocomplete ao header do tema Ayo -->
+        <referenceBlock name="toki_header">
+            <block class="Rokanthemes\SearchSuiteAutocomplete\Block\Autocomplete"
+                   name="rokanthemes-search-autocomplete-wrapper"
+                   as="topSearch"
+                   template="Rokanthemes_SearchSuiteAutocomplete::autocomplete.phtml"
+                   before="-"/>
+        </referenceBlock>
+    </body>
+</page>

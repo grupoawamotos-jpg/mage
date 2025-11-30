@@ -1,0 +1,1325 @@
+// ============================================
+// AJUSTE FINO - USA VARIÁVEIS DO TEMA
+// ============================================
+
+// Cores auxiliares (principais vêm de _variables_themes.less)
+@color-red: #d32f2f;
+@color-green: #4caf50;
+@color-gray: #999999;
+@color-bg-light: #fafafa;
+
+// 🎨 VISUAL DO CARD
+.product-item-info,
+.item-product {
+    border-radius: 8px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    overflow: hidden;
+    background: #fff;
+    
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+        z-index: 2;
+    }
+
+    @media (max-width: 767px) {
+        border-radius: 6px;
+    }
+}
+
+// 🖼️ IMAGEM DO PRODUTO
+.product-item-photo {
+    background-color: @color-bg-light;
+    overflow: hidden;
+    position: relative;
+    padding-bottom: 100%; // Aspect Ratio 1:1
+    height: 0;
+    display: block;
+
+    .product-image-photo {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain !important;
+        transition: transform 0.3s ease !important;
+    }
+}
+
+.product-item-info:hover .product-item-photo .product-image-photo {
+    transform: scale(1.05) !important;
+}
+
+// Compatibilidade com wrappers padrão Magento/Rokanthemes
+.product-item-photo,
+.product.photo.product-item-photo {
+    position: relative;
+    display: block;
+}
+
+.product-image-container,
+.product-image-wrapper {
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
+}
+
+.product-image-container .product-image-photo,
+.product-image-wrapper .product-image-photo,
+.product.photo.product-item-photo .product-image-photo {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+// Evita placeholders sobrepondo a imagem real
+.product-item-photo .placeholder,
+.product-image-container .placeholder {
+    display: none !important;
+}
+
+// 📝 NOME DO PRODUTO
+.product-item-name,
+.product-name a {
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    line-height: 1.4 !important;
+    height: 40px; // Aproximadamente 2 linhas
+    overflow: hidden;
+    display: -webkit-box;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    color: #333;
+
+    @media (max-width: 767px) {
+        font-size: 13px !important;
+    }
+
+    &:hover {
+        color: @linkshover !important;
+        text-decoration: none;
+    }
+}
+
+// 💰 PREÇO
+.price-box {
+    .price {
+        font-size: 18px !important;
+        font-weight: 700 !important;
+        color: #333;
+
+        @media (max-width: 767px) {
+            font-size: 16px !important;
+        }
+    }
+
+    .old-price .price {
+        font-size: 13px !important;
+        color: @color-gray !important;
+        text-decoration: line-through !important;
+        font-weight: 400 !important;
+    }
+
+    .special-price .price {
+        color: @color-red !important;
+    }
+}
+
+// 🛒 BOTÃO COMPRAR
+.action.tocart {
+    background-color: @linkshover !important;
+    border-color: @linkshover !important;
+    border-radius: 10px !important;
+    width: 100%;
+    color: #fff !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    transition: all 0.2s ease !important;
+
+    &:hover {
+        background-color: @linkshover !important;
+        border-color: @linkshover !important;
+        transform: scale(1.02);
+    }
+}
+
+// ❤️ ÍCONES SECUNDÁRIOS (Wishlist/Compare)
+.product-item-actions .actions-secondary {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 10;
+
+    .action {
+        width: 36px;
+        height: 36px;
+        line-height: 36px;
+        border-radius: 50%;
+        background: #fff;
+        color: #333;
+        text-align: center;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+            background: @linkshover;
+            color: #fff;
+        }
+    }
+}
+
+.product-item-info:hover .actions-secondary {
+    opacity: 1;
+}
+
+// ��️ BADGES (Novo/Promoção)
+.product-label, .onsale {
+    border-radius: 6px !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    padding: 4px 8px !important;
+    text-transform: uppercase;
+    
+    &.new-label {
+        background-color: @color-green !important;
+    }
+    
+    &.sale-label {
+        background-color: @color-red !important;
+    }
+}
+
+// 🎠 CARROSSEL OWL
+.owl-nav {
+    .owl-prev, .owl-next {
+        width: 40px;
+        height: 40px;
+        background: #fff !important;
+        border-radius: 50% !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+        color: #333 !important;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+
+        &:hover {
+            background: @linkshover !important;
+            color: #fff !important;
+        }
+    }
+}
+
+.owl-dots {
+    .owl-dot {
+        span {
+            width: 10px !important;
+            height: 10px !important;
+            background: #ddd !important;
+            transition: all 0.3s ease;
+        }
+
+        &.active span {
+            background: @linkshover !important;
+            width: 12px !important;
+            height: 12px !important;
+        }
+    }
+}
+
+// 📱 RESPONSIVO (Grid)
+.products-grid .product-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 24px;
+
+    @media (max-width: 991px) {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 16px;
+    }
+
+    @media (max-width: 639px) {
+        grid-template-columns: repeat(2, 1fr); // 2 colunas fixas
+        gap: 12px;
+    }
+}
+
+.product-item {
+    width: 100% !important; // Resetar larguras fixas do Magento
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+// ============================================
+// FORMULÁRIOS GLOBAIS (inputs, selects, radios)
+// ============================================
+
+// Altura e consistência dos campos
+.field,
+.fieldset .field {
+    margin-bottom: 16px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+input[type="number"],
+input[type="search"],
+select,
+textarea,
+.input-text {
+    height: 44px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 14px;
+    background: #fff;
+    transition: border-color .15s ease, box-shadow .15s ease;
+
+    &:focus {
+        outline: none;
+        border-color: #b73337;
+        box-shadow: 0 0 0 3px rgba(183, 51, 55, 0.12);
+    }
+}
+
+textarea {
+    min-height: 100px;
+    height: auto;
+    resize: vertical;
+}
+
+// Selects
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: none;
+}
+
+// Checkboxes e radios
+input[type="checkbox"],
+input[type="radio"] {
+    accent-color: #b73337;
+}
+
+// Erros inline
+.mage-error,
+.field-error,
+.message-error {
+    color: #e02b27 !important;
+    font-size: 12px;
+    margin-top: 6px;
+}
+
+// Estados inválidos
+.field._error input,
+.field._error select,
+.field._error textarea,
+input.mage-error,
+select.mage-error,
+textarea.mage-error {
+    border-color: #e02b27 !important;
+    box-shadow: 0 0 0 3px rgba(224, 43, 39, 0.12) !important;
+}
+
+// Botões padrão de formulário
+.action.primary,
+button.action,
+button,
+input[type="submit"],
+.btn,
+.button {
+    border-radius: 8px;
+    height: 44px;
+    font-weight: 600;
+}
+
+// Busca do header
+.block-search {
+    .control {
+        position: relative;
+    }
+
+    input[type="text"],
+    input[type="search"],
+    .input-text {
+        height: 44px;
+        border-radius: 9999px;
+        padding-right: 48px;
+    }
+
+    .action.search {
+        position: absolute;
+        right: 6px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+// ============================================
+// AJUSTE FINO LOGIN E CADASTRO
+// ============================================
+
+.customer-account-login,
+.customer-account-create,
+.customer-account-forgotpassword {
+    .page-title-wrapper {
+        text-align: center;
+        margin-bottom: 40px;
+        
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #333;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 15px;
+            
+            &:after {
+                content: "";
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 60px;
+                height: 3px;
+                background-color: @linkshover;
+                border-radius: 2px;
+            }
+        }
+    }
+
+    .block {
+        background: #fff;
+        padding: 40px;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        border: 1px solid #eee;
+        margin-bottom: 30px;
+        transition: transform 0.3s ease;
+
+        &:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+        }
+
+        .block-title {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            
+            strong {
+                font-size: 20px;
+                font-weight: 600;
+                color: #333;
+            }
+        }
+    }
+
+    // Inputs
+    .input-text {
+        height: 48px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        padding: 0 15px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        background-color: #fafafa;
+
+        &:focus {
+            border-color: @linkshover;
+            box-shadow: 0 0 0 3px rgba(255, 111, 0, 0.1);
+            background-color: #fff;
+        }
+    }
+
+    // Labels
+    .label {
+        font-weight: 600;
+        color: #555;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    // Botões
+    .action.login,
+    .action.submit,
+    .action.remind {
+        background-color: @linkshover;
+        border: none;
+        border-radius: 8px;
+        height: 48px;
+        font-size: 16px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 0 30px;
+        color: #fff;
+        transition: all 0.3s ease;
+        width: 100%;
+        margin-top: 10px;
+
+        &:hover {
+            background-color: @linkshover;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(230, 81, 0, 0.2);
+        }
+    }
+
+    .action.create {
+        background-color: #333;
+        border: none;
+        border-radius: 8px;
+        height: 48px;
+        font-size: 16px;
+        font-weight: 600;
+        text-transform: uppercase;
+        color: #fff;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+
+        &:hover {
+            background-color: #000;
+            transform: translateY(-2px);
+        }
+    }
+
+    // Links secundários
+    .secondary {
+        text-align: center;
+        margin-top: 15px;
+        
+        a {
+            color: @color-gray;
+            text-decoration: underline;
+            font-size: 14px;
+            
+            &:hover {
+                color: @linkshover;
+            }
+        }
+    }
+}
+
+// Layout específico de colunas no Login
+.login-container {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    
+    .block {
+        flex: 1;
+        min-width: 300px;
+    }
+}
+
+// ============================================
+// MINHA CONTA (Dashboard, Editar Conta, Endereços)
+// ============================================
+
+.customer-account-index,
+.customer-account-edit,
+.customer-address-index,
+.customer-address-form {
+    .page-title-wrapper { margin-bottom: 20px; }
+
+    // Cartões
+    .block, .box, .form-address-edit, .form-edit-account {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: 0 6px 16px rgba(15,23,42,0.06);
+    }
+
+    // Campos consistentes
+    .fieldset .field .control > .input-text,
+    .fieldset .field .control > input,
+    .fieldset .field .control > select,
+    .fieldset .field .control > textarea {
+        height: 44px;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 10px 14px;
+        transition: border-color .15s ease, box-shadow .15s ease;
+        &:focus { border-color: #b73337; box-shadow: 0 0 0 3px rgba(183,51,55,.12); }
+    }
+
+    // Erros e feedback
+    .field._error .control > input,
+    .field._error .control > select,
+    .field._error .control > textarea { border-color: #e02b27 !important; box-shadow: 0 0 0 3px rgba(224,43,39,.12) !important; }
+    .field .mage-error { color: #e02b27; font-size: 12px; margin-top: 6px; }
+
+    // Ações
+    .actions-toolbar .action.primary { height: 44px; border-radius: 8px; font-weight: 700; }
+}
+
+// ============================================
+// NEWSLETTER (Minha Conta) e CONTATO
+// ============================================
+
+// Newsletter manage na conta
+.customer-account .form-newsletter-manage,
+.newsletter-manage-index .form-newsletter-manage {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 6px 16px rgba(15,23,42,0.06);
+
+    .actions-toolbar .action.primary { height: 44px; border-radius: 8px; }
+}
+
+// Página de contato
+.contact-index-index {
+    #contact-form,
+    .form.contact {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: 0 6px 16px rgba(15,23,42,0.06);
+    }
+
+    .fieldset .field .control > .input-text,
+    .fieldset .field .control > input,
+    .fieldset .field .control > select,
+    .fieldset .field .control > textarea { height: 44px; border-radius: 8px; }
+
+    textarea { min-height: 140px; }
+
+    .actions-toolbar .action.primary { height: 44px; border-radius: 8px; font-weight: 700; }
+}
+
+// ============================================
+// CHECKOUT (Steps, Campos, Erros, Sidebar)
+// ============================================
+
+.checkout-index-index {
+    // Barra de progresso
+    .opc-progress-bar {
+        margin: 20px 0 30px;
+        .opc-progress-bar-item {
+            text-transform: none;
+            .step-title { font-weight: 600; }
+            &._active > span:before,
+            &._complete > span:before {
+                background: #b73337;
+                border-color: #b73337;
+            }
+        }
+    }
+
+    // Cartões de step
+    .opc-wrapper .step-content,
+    .opc-wrapper .shipping-address-items,
+    .opc-wrapper .shipping-address-item,
+    .checkout-billing-address .billing-address-form {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: 0 6px 16px rgba(15,23,42,0.06);
+    }
+
+    // Campos do checkout
+    .opc-wrapper .fieldset .field .control > .input-text,
+    .opc-wrapper .fieldset .field .control > input,
+    .opc-wrapper .fieldset .field .control > select,
+    .opc-wrapper .fieldset .field .control > textarea {
+        height: 44px;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 10px 14px;
+        transition: border-color .15s ease, box-shadow .15s ease;
+        &:focus { border-color: #b73337; box-shadow: 0 0 0 3px rgba(183,51,55,.12); }
+    }
+
+    // Erros
+    .field._error .control > input,
+    .field._error .control > select,
+    .field._error .control > textarea {
+        border-color: #e02b27 !important;
+        box-shadow: 0 0 0 3px rgba(224,43,39,.12) !important;
+    }
+    .field .note, .field .message,
+    .field .mage-error { color: #e02b27; font-size: 12px; margin-top: 6px; }
+
+    // Métodos de envio/pagamento
+    .checkout-shipping-method .table-checkout-shipping-method tr { border-bottom: 1px solid #f1f5f9; }
+    .payment-method-title .label { font-weight: 600; }
+    .payment-method-content .actions-toolbar .action.primary {
+        height: 44px; border-radius: 8px; font-weight: 700;
+    }
+
+    // Botão “Próximo” e “Finalizar Pedido”
+    .actions-toolbar .action.primary,
+    .opc-wrapper .button.action.primary {
+        background: #b73337; border-color: #b73337; border-radius: 8px; height: 44px;
+        &:hover { background: #8e2629; border-color: #8e2629; }
+    }
+
+    // Sidebar do checkout
+    .opc-summary-wrapper,
+    .opc-block-summary {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: 0 6px 16px rgba(15,23,42,0.06);
+    }
+}
+
+// ============================================
+// MOBILE TUNING (Busca, Carrosséis, Checkout)
+// ============================================
+@media (max-width: 991px) {
+    // Header search ocupa largura máxima
+    .block-search .control .input-text { width: 100%; }
+}
+
+@media (max-width: 767px) {
+    // Aumentar área de toque em carrosséis
+    .owl-nav .owl-prev, .owl-nav .owl-next {
+        width: 44px; height: 44px;
+    }
+    .owl-dots .owl-dot span {
+        width: 12px !important; height: 12px !important;
+    }
+
+    // Checkout: reduzir sombras e ajustar espaçamentos
+    .checkout-index-index {
+        .opc-wrapper .step-content,
+        .opc-wrapper .shipping-address-items,
+        .opc-wrapper .shipping-address-item,
+        .checkout-billing-address .billing-address-form {
+            box-shadow: 0 4px 10px rgba(15,23,42,0.05);
+            padding: 12px;
+        }
+    }
+}
+
+// ============================================
+// MELHORIAS VISUAIS FINAS - FASE 2
+// ============================================
+
+// Espaçamentos globais consistentes
+.page-main {
+    padding-top: 24px;
+    padding-bottom: 40px;
+    
+    @media (max-width: 767px) {
+        padding-top: 16px;
+        padding-bottom: 24px;
+    }
+}
+
+// Header sticky refinado
+.header-wrapper-sticky.enable-sticky {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    
+    &.is-sticky {
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+    }
+}
+
+// Minicart melhorado
+.minicart-wrapper {
+    .action.showcart {
+        position: relative;
+        transition: transform 0.2s ease;
+        
+        &:hover {
+            transform: scale(1.05);
+        }
+        
+        .counter {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: linear-gradient(135deg, #ff6f00, #e65100);
+            color: #fff;
+            border-radius: 12px;
+            min-width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 0 6px;
+            box-shadow: 0 2px 6px rgba(255, 111, 0, 0.4);
+            animation: pulse 2s infinite;
+        }
+    }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+// Busca autocomplete refinada
+.searchsuite-autocomplete {
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    border: 1px solid #e5e7eb;
+    overflow: hidden;
+    
+    .qs-option {
+        transition: background 0.15s ease;
+        
+        &:hover {
+            background: rgba(183, 51, 55, 0.04);
+        }
+        
+        &.active {
+            background: rgba(183, 51, 55, 0.08);
+        }
+    }
+}
+
+// Breadcrumbs refinados
+.breadcrumbs {
+    .items {
+        .item {
+            a {
+                transition: color 0.15s ease;
+                
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+            
+            strong {
+                font-weight: 600;
+            }
+        }
+    }
+}
+
+// Cards de categoria melhorados
+.category-image,
+.category-cms {
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+    }
+}
+
+// Tabelas mais elegantes
+.table-wrapper {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+    
+    table {
+        thead {
+            background: #f9fafb;
+            
+            th {
+                font-weight: 600;
+                text-transform: uppercase;
+                font-size: 12px;
+                letter-spacing: 0.5px;
+                padding: 16px;
+            }
+        }
+        
+        tbody {
+            tr {
+                transition: background 0.15s ease;
+                
+                &:hover {
+                    background: rgba(183, 51, 55, 0.02);
+                }
+                
+                td {
+                    padding: 16px;
+                    border-bottom: 1px solid #f1f5f9;
+                }
+            }
+        }
+    }
+}
+
+// Mensagens de sistema refinadas
+.page.messages {
+    .message {
+        border-left: 4px solid;
+        padding-left: 20px;
+        animation: slideIn 0.3s ease;
+        
+        &.success {
+            border-left-color: #10b981;
+        }
+        
+        &.error {
+            border-left-color: #ef4444;
+        }
+        
+        &.warning {
+            border-left-color: #f59e0b;
+        }
+        
+        &.info {
+            border-left-color: #3b82f6;
+        }
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+// Loading states elegantes
+.loading-mask {
+    .loader {
+        &:before {
+            border-width: 4px;
+            border-top-color: #b73337;
+            border-right-color: #b73337;
+            animation: spin 0.8s linear infinite;
+        }
+    }
+}
+
+// Skeleton loading para produtos
+.product-item-skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+    border-radius: 12px;
+    height: 300px;
+}
+
+@keyframes loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+// Tooltips melhorados
+.tooltip {
+    background: #1a1a2e;
+    color: #fff;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+// Badges de status melhorados
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    
+    &.badge-success {
+        background: #ecfdf5;
+        color: #065f46;
+    }
+    
+    &.badge-error {
+        background: #fef2f2;
+        color: #991b1b;
+    }
+    
+    &.badge-warning {
+        background: #fffbeb;
+        color: #92400e;
+    }
+    
+    &.badge-info {
+        background: #eff6ff;
+        color: #1e40af;
+    }
+}
+
+// Footer refinado
+.page-footer {
+    .footer.content {
+        .footer-columns {
+            .block {
+                .block-title {
+                    position: relative;
+                    padding-bottom: 12px;
+                    margin-bottom: 20px;
+                    
+                    &:after {
+                        content: '';
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        width: 40px;
+                        height: 2px;
+                        background: rgba(255, 255, 255, 0.3);
+                    }
+                }
+            }
+        }
+    }
+    
+    .footer-bottom {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding-top: 24px;
+        margin-top: 40px;
+    }
+}
+
+// Links sociais no footer
+.social-links {
+    display: flex;
+    gap: 12px;
+    
+    a {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        
+        &:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+    }
+}
+
+// Botões de ação secundária refinados
+.action.secondary {
+    border: 2px solid #e5e7eb;
+    background: transparent;
+    color: #333;
+    transition: all 0.2s ease;
+    
+    &:hover {
+        border-color: #b73337;
+        color: #b73337;
+        background: rgba(183, 51, 55, 0.04);
+    }
+}
+
+// Swatches de cor melhorados
+.swatch-option.color {
+    border-radius: 50%;
+    border: 3px solid #fff;
+    box-shadow: 0 0 0 1px #e5e7eb;
+    transition: all 0.2s ease;
+    
+    &:hover {
+        transform: scale(1.1);
+        box-shadow: 0 0 0 2px #b73337;
+    }
+    
+    &.selected {
+        box-shadow: 0 0 0 2px #b73337;
+        transform: scale(1.1);
+    }
+}
+
+// Filtros laterais refinados
+.sidebar-main {
+    .block {
+        margin-bottom: 24px;
+        
+        .block-title {
+            font-size: 16px;
+            font-weight: 700;
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+    }
+}
+
+// Paginação refinada
+.pages {
+    .pages-items {
+        .item {
+            a, strong {
+                min-width: 44px;
+                height: 44px;
+                border-radius: 8px;
+                font-weight: 600;
+                transition: all 0.2s ease;
+            }
+            
+            a {
+                &:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 12px rgba(183, 51, 55, 0.2);
+                }
+            }
+        }
+    }
+}
+
+// Quick View modal refinado
+.modal-popup {
+    .modal-inner-wrap {
+        border-radius: 16px;
+        overflow: hidden;
+    }
+    
+    .modal-header {
+        padding: 24px;
+        border-bottom: 1px solid #e5e7eb;
+        
+        .action-close {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #f9fafb;
+            transition: all 0.2s ease;
+            
+            &:hover {
+                background: #e5e7eb;
+                transform: rotate(90deg);
+            }
+        }
+    }
+}
+
+// Comparação de produtos melhorada
+.table-comparison {
+    .comparison {
+        .cell {
+            padding: 20px;
+            border: 1px solid #e5e7eb;
+            transition: background 0.15s ease;
+            
+            &:hover {
+                background: rgba(183, 51, 55, 0.02);
+            }
+        }
+    }
+}
+
+// Wishlist refinada
+.wishlist-index-index {
+    .products-grid {
+        .product-item {
+            .product-item-info {
+                position: relative;
+                
+                .action.delete {
+                    position: absolute;
+                    top: 12px;
+                    right: 12px;
+                    width: 36px;
+                    height: 36px;
+                    border-radius: 50%;
+                    background: rgba(255, 255, 255, 0.9);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: all 0.2s ease;
+                    opacity: 0;
+                    
+                    &:hover {
+                        background: #ef4444;
+                        color: #fff;
+                        transform: scale(1.1);
+                    }
+                }
+                
+                &:hover .action.delete {
+                    opacity: 1;
+                }
+            }
+        }
+    }
+}
+
+// B2B - Dashboard refinado
+.b2b-dashboard {
+    .dashboard-item {
+        background: #fff;
+        border-radius: 12px;
+        padding: 24px;
+        border: 1px solid #e5e7eb;
+        transition: all 0.3s ease;
+        
+        &:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+        }
+        
+        .dashboard-item-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+        
+        .dashboard-item-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #333;
+        }
+    }
+}
+
+// B2B - Quick Order refinado
+.b2b-quickorder {
+    .quick-order-form {
+        background: #fff;
+        border-radius: 16px;
+        padding: 32px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        
+        .field {
+            margin-bottom: 20px;
+        }
+        
+        .actions-toolbar {
+            margin-top: 24px;
+            
+            .action.primary {
+                width: 100%;
+                height: 52px;
+                font-size: 16px;
+                font-weight: 700;
+            }
+        }
+    }
+}
+
+// Fitment - Busca refinada
+.fitment-search {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    
+    .fitment-form {
+        .fields {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            
+            @media (max-width: 767px) {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        select {
+            height: 48px;
+            border-radius: 8px;
+            border: 2px solid #e5e7eb;
+            transition: all 0.2s ease;
+            
+            &:focus {
+                border-color: #b73337;
+                box-shadow: 0 0 0 3px rgba(183, 51, 55, 0.1);
+            }
+        }
+        
+        button[type="submit"] {
+            height: 48px;
+            border-radius: 8px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+    }
+}
+
+// Micro-interações sutis
+@keyframes subtleBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-2px); }
+}
+
+.product-item-info:hover {
+    animation: subtleBounce 0.6s ease;
+}
+
+// Scroll suave melhorado
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 100px; // Espaço para header sticky
+}
+
+// Focus visible melhorado globalmente
+*:focus-visible {
+    outline: 2px solid #b73337;
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+// Print styles melhorados
+@media print {
+    .header-container,
+    .page-footer,
+    .sidebar,
+    .actions-toolbar,
+    .minicart-wrapper {
+        display: none !important;
+    }
+    
+    .page-main {
+        padding: 0;
+    }
+}

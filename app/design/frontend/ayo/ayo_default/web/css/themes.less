@@ -1,7 +1,21 @@
+/**
+ * Ayo Theme - Main Stylesheet
+ * Versão: 2.0.0 - Atualização Completa Awamotos
+ * Paleta: #b73337 (Vermelho Awamotos)
+ */
+
+// ==========================================================================
+// CORE IMPORTS - Tema Base
+// ==========================================================================
 @import 'source/_variables_themes.less';
 @import 'source/_animate_themes.less';
 @import 'source/_reset_themes.less';
 @import 'source/_global_themes.less';
+@import 'source/_forms.less';
+
+// ==========================================================================
+// COMPONENTS - Componentes Reutilizáveis
+// ==========================================================================
 @import 'source/_search_ajax.less';
 @import 'source/_owl.carousel.less';
 @import 'source/_footer.less';
@@ -11,12 +25,29 @@
 @import 'source/_quickview_themes.less';
 @import 'source/_newsletterpopup.less';
 @import 'source/_vertical_menu.less';
-@import 'source/_responsive_themes.less';
 
-/*** Global ***/
+// ==========================================================================
+// PAGES - Estilos Específicos por Página
+// ==========================================================================
 @import 'source/_products.less';
 @import 'source/_product.less';
 @import 'source/_about_us.less';
 @import 'source/_store_locations.less';
 @import 'source/_blog.less';
+@import 'source/_homepage.less';
+
+// ==========================================================================
+// ACCESSIBILITY - Acessibilidade
+// ==========================================================================
+@import 'source/_header_accessibility.less';
+
+// ==========================================================================
+// FINE TUNING - Ajustes Finos e Otimizações
+// ==========================================================================
+@import 'source/_fine_tuning.less';
+
+// ==========================================================================
+// RESPONSIVE - Media Queries (Sempre por último)
+// ==========================================================================
+@import 'source/_responsive_themes.less';
 

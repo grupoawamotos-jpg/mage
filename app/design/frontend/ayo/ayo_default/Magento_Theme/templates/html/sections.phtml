@@ -16,12 +16,15 @@
 $group = $block->getGroupName();
 $groupCss = $block->getGroupCss();
 $groupBehavior = $block->getGroupBehaviour() ? $block->getGroupBehaviour() : '{"tabs":{"openedState":"active"}}';
+// Garantir JSON válido para data-mage-init
+$isValidJson = (null !== json_decode($groupBehavior, true));
+$safeGroupBehavior = $isValidJson ? $groupBehavior : '{}';
 ?>
 <?php if ($detailedInfoGroup = $block->getGroupChildNames($group)):?>
     <div class="sections <?php /* @escapeNotVerified */ echo $groupCss ?>">
         <?php $layout = $block->getLayout(); ?>
         <div id="close-menu" class="visible-xs"><a href="#"><i class="lnr lnr-cross"></i></a></div>
-        <div class="section-items <?php /* @escapeNotVerified */ echo $groupCss ?>-items" data-mage-init='<?php /* @escapeNotVerified */ echo $groupBehavior ?>'>
+        <div class="section-items <?php /* @escapeNotVerified */ echo $groupCss ?>-items" data-mage-init='<?php /* @escapeNotVerified */ echo $safeGroupBehavior ?>'>
             <?php foreach ($detailedInfoGroup as $name):?>
                 <?php
                     $html = $layout->renderElement($name);

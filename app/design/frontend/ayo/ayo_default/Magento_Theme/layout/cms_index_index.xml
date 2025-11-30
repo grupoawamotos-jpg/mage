@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="head.additional">
+            <block class="Magento\Framework\View\Element\Template" name="home.accessibility.js" after="-">
+                <action method="addJs">
+                    <script>js/home-accessibility.js</script>
+                </action>
+                <action method="addJs">
+                    <script>js/home-media-optimizations.js</script>
+                </action>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

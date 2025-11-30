@@ -1,0 +1,28 @@
+<?php /** @var $block \Magento\Catalog\Block\Navigation */ ?>
+<?php $categories = $block->getStoreCategories(false, true, true); ?>
+<nav class="vertical-category-menu" role="navigation" aria-label="Categorias">
+    <button class="vertical-menu-toggle" type="button" aria-expanded="false" aria-controls="vertical-menu-list">
+        <span class="label"><?= __('Categorias') ?></span>
+    </button>
+    <ul id="vertical-menu-list" class="vertical-menu-list" data-role="vertical-menu" hidden>
+        <?php foreach ($categories as $category): ?>
+            <li class="level0" data-category-id="<?= (int)$category->getId(); ?>">
+                <a href="<?= $block->escapeUrl($category->getUrl()); ?>" class="category-link" aria-haspopup="true">
+                    <span><?= $block->escapeHtml($category->getName()); ?></span>
+                </a>
+                <?php $children = $category->getChildren(); ?>
+                <?php if ($children && $children->count()): ?>
+                    <ul class="submenu" hidden>
+                        <?php foreach ($children as $child): ?>
+                            <li class="level1" data-category-id="<?= (int)$child->getId(); ?>">
+                                <a href="<?= $block->escapeUrl($child->getUrl()); ?>" class="subcategory-link">
+                                    <span><?= $block->escapeHtml($child->getName()); ?></span>
+                                </a>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                <?php endif; ?>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+</nav>

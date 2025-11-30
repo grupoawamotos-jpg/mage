@@ -5,7 +5,7 @@
  */
 ?>
 <div data-bind="scope: 'messages'">
-    <!-- ko if: cookieMessagesObservable() && cookieMessagesObservable().length > 0 -->
+    <!-- ko if: cookieMessagesObservable && cookieMessagesObservable() && cookieMessagesObservable().length > 0 -->
     <div aria-atomic="true" role="alert" class="messages" data-bind="foreach: {
         data: cookieMessagesObservable(), as: 'message'
     }">
@@ -35,11 +35,36 @@
         "*": {
             "Magento_Ui/js/core/app": {
                 "components": {
-                        "messages": {
-                            "component": "Magento_Theme/js/view/messages"
-                        }
+                    "messages": {
+                        "component": "Magento_Theme/js/view/messages"
+                    },
+                    "cookieMessages": {
+                        "component": "Magento_Theme/js/cookie-messages"
                     }
                 }
             }
+        }
     }
+<?php
+/** @var \Magento\Framework\View\Element\Template $block */
+?>
+<script type="text/x-magento-init">
+{
+    "*": {
+        "Magento_Ui/js/core/app": {
+            "components": {
+                "cookieMessages": {
+                    "component": "Magento_Theme/js/cookie-messages"
+                }
+            }
+        }
+    }
+}
 </script>
+<!-- ko if: typeof cookieMessagesObservable !== 'undefined' && cookieMessagesObservable().length > 0 -->
+    <!-- ko foreach: { data: cookieMessagesObservable, as: 'message' } -->
+        <div class="message notice">
+            <span data-bind="text: message"></span>
+        </div>
+    <!-- /ko -->
+<!-- /ko -->

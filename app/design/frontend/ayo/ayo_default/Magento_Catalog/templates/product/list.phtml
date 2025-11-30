@@ -18,6 +18,7 @@ use Magento\Framework\App\Action\Action;
 <?php
 $_productCollection = $block->getLoadedProductCollection();
 $_helper = $this->helper('Magento\Catalog\Helper\Output');
+$b2bHelper = $this->helper('GrupoAwamotos\B2B\Helper\Data');
 ?>
 <?php if (!$_productCollection->count()): ?>
     <div class="message info empty"><div><?php /* @escapeNotVerified */ echo __('We can\'t find products matching the selection.') ?></div></div>
@@ -63,13 +64,7 @@ $_helper = $this->helper('Magento\Catalog\Helper\Output');
             <?php /** @var $_product \Magento\Catalog\Model\Product */ ?>
             <?php foreach ($_productCollection as $_product): ?>
                 <div class="item-product" data-container="product-grid">
-                    <?php
-                    $productImage = $block->getImage($_product, $image);
-                    if ($pos != null) {
-                        $position = ' style="left:' . $productImage->getWidth() . 'px;'
-                            . 'top:' . $productImage->getHeight() . 'px;"';
-                    }
-                    ?>
+					<?php $productImage = $block->getImage($_product, $image); ?>
                 	<div class="product-thumb">
                 		<a href="<?php /* @escapeNotVerified */ echo $_product->getProductUrl() ?>" class="product-thumb-link">
 							<?php $productImageThumb = $block->getImage($_product, 'category_page_grid-1');?>
@@ -104,45 +99,47 @@ $_helper = $this->helper('Magento\Catalog\Helper\Output');
 									<li><a href="#"
 									   data-post='<?php echo $block->getAddToWishlistParams($_product); ?>'
 									   class="wishlist-link action towishlist" data-action="add-to-wishlist"
-									   title="<?php echo __('Add to Wishlist') ?>"
-									   aria-label="<?php echo $block->escapeHtmlAttr(__('Add to Wishlist')); ?>: <?php echo $block->escapeHtmlAttr($_product->getName()); ?>">
-                                        
+									   title="<?php echo __('Add to Wishlist') ?>">
+										
 									</a></li>
 								<?php endif; ?>
 								<li class="quickview-product">
-									<a class="quickview-link" data-role="quickview-button" data-id="<?php echo $_product->getId(); ?>" href="javascript: void(0);" data-href="<?php echo $block->getUrl('quickview/product/quickview/id/' . $_product->getId()) ?>" title="<?php echo __('Quick view');?>" aria-label="<?php echo $block->escapeHtmlAttr(__('Quick view')); ?>: <?php echo $block->escapeHtmlAttr($_product->getName()); ?>"></a>
+									<a class="quickview-link" data-role="quickview-button" data-id="<?php echo $_product->getId(); ?>" href="#" data-href="<?php echo $block->getUrl('quickview/product/quickview/id/' . $_product->getId()) ?>" title="<?php echo __('Quick view');?>"></a>
 								</li>
 								<?php if ($block->getAddToCompareUrl()): ?>
 									<?php $compareHelper = $this->helper('Magento\Catalog\Helper\Product\Compare');?>
 									<li><a href="#" class="compare-link action tocompare"
 									   data-post='<?php echo $compareHelper->getPostDataParams($_product);?>'
-									   title="<?php echo __('Add to Compare') ?>"
-									   aria-label="<?php echo $block->escapeHtmlAttr(__('Add to Compare')); ?>: <?php echo $block->escapeHtmlAttr($_product->getName()); ?>">
-                                    
+									   title="<?php echo __('Add to Compare') ?>">
+									
 									</a></li>
 								<?php endif; ?>
 							</ul>
 						</div>
 						<div class="product-info-cart">
 							<div class="actions-primary addcart-link">
-								<?php if ($_product->isSaleable()): ?>
-									<?php $postParams = $block->getAddToCartPostParams($_product); ?>
-									<form data-role="tocart-form" action="<?php /* @escapeNotVerified */ echo $postParams['action']; ?>" method="post">
-										<input type="hidden" name="product" value="<?php /* @escapeNotVerified */ echo $postParams['data']['product']; ?>">
-										<input type="hidden" name="<?php /* @escapeNotVerified */ echo Action::PARAM_NAME_URL_ENCODED; ?>" value="<?php /* @escapeNotVerified */ echo $postParams['data'][Action::PARAM_NAME_URL_ENCODED]; ?>">
-										<?php echo $block->getBlockHtml('formkey')?>
-										<button type="submit"
-												title="<?php echo $block->escapeHtml(__('Add to Cart')); ?>"
-												class="btn-add-to-cart action tocart addcart-link">
-											
-											 <span><?php echo $block->escapeHtml(__('Add to Cart')); ?></span>
-										</button>
-									</form>
+								<?php if ($b2bHelper->isHidePrice()): ?>
+									<!-- Hidden for Guest -->
 								<?php else: ?>
-									<?php if ($_product->getIsSalable()): ?>
-										<div class="stock available"><span><?php /* @escapeNotVerified */ echo __('In stock') ?></span></div>
+									<?php if ($_product->isSaleable()): ?>
+										<?php $postParams = $block->getAddToCartPostParams($_product); ?>
+										<form data-role="tocart-form" action="<?php /* @escapeNotVerified */ echo $postParams['action']; ?>" method="post">
+											<input type="hidden" name="product" value="<?php /* @escapeNotVerified */ echo $postParams['data']['product']; ?>">
+											<input type="hidden" name="<?php /* @escapeNotVerified */ echo Action::PARAM_NAME_URL_ENCODED; ?>" value="<?php /* @escapeNotVerified */ echo $postParams['data'][Action::PARAM_NAME_URL_ENCODED]; ?>">
+											<?php echo $block->getBlockHtml('formkey')?>
+											<button type="submit"
+													title="<?php echo $block->escapeHtml(__('Add to Cart')); ?>"
+													class="btn-add-to-cart action tocart addcart-link">
+												
+												 <span><?php echo $block->escapeHtml(__('Add to Cart')); ?></span>
+											</button>
+										</form>
 									<?php else: ?>
-										<div class="stock unavailable"><span><?php /* @escapeNotVerified */ echo __('Out of stock') ?></span></div>
+										<?php if ($_product->getIsSalable()): ?>
+											<div class="stock available"><span><?php /* @escapeNotVerified */ echo __('In stock') ?></span></div>
+										<?php else: ?>
+											<div class="stock unavailable"><span><?php /* @escapeNotVerified */ echo __('Out of stock') ?></span></div>
+										<?php endif; ?>
 									<?php endif; ?>
 								<?php endif; ?>
 							</div>
@@ -164,7 +161,11 @@ $_helper = $this->helper('Magento\Catalog\Helper\Output');
 							<?php echo $block->getReviewsSummaryHtml($_product, $templateType, true); ?>
 						</div>
 						<div class="info-price">
-						<?php /* @escapeNotVerified */ echo $this->helper('Rokanthemes\Themeoption\Helper\Data')->getPriceDisplayCustom($block->getProductPrice($_product)) ?>
+						<?php if ($b2bHelper->isHidePrice()): ?>
+							<a href="<?= $block->escapeUrl($block->getUrl('customer/account/login')) ?>"><?= __('Login to view price') ?></a>
+						<?php else: ?>
+							<?php /* @escapeNotVerified */ echo $this->helper('Rokanthemes\Themeoption\Helper\Data')->getPriceDisplayCustom($block->getProductPrice($_product)) ?>
+						<?php endif; ?>
 						</div>
 					</div>
                 </div>
@@ -230,30 +231,38 @@ $_helper = $this->helper('Magento\Catalog\Helper\Output');
 							</div> -->
 							
 							<div class="info-price">
-								<?php /* @escapeNotVerified */ echo $this->helper('Rokanthemes\Themeoption\Helper\Data')->getPriceDisplayCustom($block->getProductPrice($_product)) ?>
+								<?php if ($b2bHelper->isHidePrice()): ?>
+									<a href="<?= $block->escapeUrl($block->getUrl('customer/account/login')) ?>"><?= __('Login to view price') ?></a>
+								<?php else: ?>
+									<?php /* @escapeNotVerified */ echo $this->helper('Rokanthemes\Themeoption\Helper\Data')->getPriceDisplayCustom($block->getProductPrice($_product)) ?>
+								<?php endif; ?>
 							</div>
 							<div class="product-desc"><?php echo $_product->getShortDescription(); ?>
 							</div>
 							<div class="product-info-cart">
 								<div class="actions-primary">
-									<?php if ($_product->isSaleable()): ?>
-										<?php $postParams = $block->getAddToCartPostParams($_product); ?>
-										<form data-role="tocart-form" action="<?php /* @escapeNotVerified */ echo $postParams['action']; ?>" method="post">
-											<input type="hidden" name="product" value="<?php /* @escapeNotVerified */ echo $postParams['data']['product']; ?>">
-											<input type="hidden" name="<?php /* @escapeNotVerified */ echo Action::PARAM_NAME_URL_ENCODED; ?>" value="<?php /* @escapeNotVerified */ echo $postParams['data'][Action::PARAM_NAME_URL_ENCODED]; ?>">
-											<?php echo $block->getBlockHtml('formkey')?>
-											<button type="submit"
-													title="<?php echo $block->escapeHtml(__('Add to Cart')); ?>"
-													class="btn-add-to-cart action tocart addcart-link">
-												
-												 <span><?php echo $block->escapeHtml(__('Add to Cart')); ?></span>
-											</button>
-										</form>
+									<?php if ($b2bHelper->isHidePrice()): ?>
+										<!-- Hidden for Guest -->
 									<?php else: ?>
-										<?php if ($_product->getIsSalable()): ?>
-											<div class="stock available"><span><?php /* @escapeNotVerified */ echo __('In stock') ?></span></div>
+										<?php if ($_product->isSaleable()): ?>
+											<?php $postParams = $block->getAddToCartPostParams($_product); ?>
+											<form data-role="tocart-form" action="<?php /* @escapeNotVerified */ echo $postParams['action']; ?>" method="post">
+												<input type="hidden" name="product" value="<?php /* @escapeNotVerified */ echo $postParams['data']['product']; ?>">
+												<input type="hidden" name="<?php /* @escapeNotVerified */ echo Action::PARAM_NAME_URL_ENCODED; ?>" value="<?php /* @escapeNotVerified */ echo $postParams['data'][Action::PARAM_NAME_URL_ENCODED]; ?>">
+												<?php echo $block->getBlockHtml('formkey')?>
+												<button type="submit"
+														title="<?php echo $block->escapeHtml(__('Add to Cart')); ?>"
+														class="btn-add-to-cart action tocart addcart-link">
+													
+													 <span><?php echo $block->escapeHtml(__('Add to Cart')); ?></span>
+												</button>
+											</form>
 										<?php else: ?>
-											<div class="stock unavailable"><span><?php /* @escapeNotVerified */ echo __('Out of stock') ?></span></div>
+											<?php if ($_product->getIsSalable()): ?>
+												<div class="stock available"><span><?php /* @escapeNotVerified */ echo __('In stock') ?></span></div>
+											<?php else: ?>
+												<div class="stock unavailable"><span><?php /* @escapeNotVerified */ echo __('Out of stock') ?></span></div>
+											<?php endif; ?>
 										<?php endif; ?>
 									<?php endif; ?>
 								</div>
@@ -262,18 +271,16 @@ $_helper = $this->helper('Magento\Catalog\Helper\Output');
 										<a href="#"
 										   data-post='<?php echo $block->getAddToWishlistParams($_product); ?>'
 										   class="wishlist-link action towishlist" data-action="add-to-wishlist"
-										   title="<?php echo __('Add to Wishlist') ?>"
-										   aria-label="<?php echo $block->escapeHtmlAttr(__('Add to Wishlist')); ?>: <?php echo $block->escapeHtmlAttr($_product->getName()); ?>">
-                                            
+										   title="<?php echo __('Add to Wishlist') ?>">
+											
 										</a>
 									<?php endif; ?>
 									<?php if ($block->getAddToCompareUrl()): ?>
 										<?php $compareHelper = $this->helper('Magento\Catalog\Helper\Product\Compare');?>
 										<a href="#" class="compare-link action tocompare"
 										   data-post='<?php echo $compareHelper->getPostDataParams($_product);?>'
-										   title="<?php echo __('Add to Compare') ?>"
-										   aria-label="<?php echo $block->escapeHtmlAttr(__('Add to Compare')); ?>: <?php echo $block->escapeHtmlAttr($_product->getName()); ?>">
-                                        
+										   title="<?php echo __('Add to Compare') ?>">
+										
 										</a>
 									<?php endif; ?>
 								</div>

@@ -102,11 +102,21 @@
 //  Color nesting
 //  ---------------------------------------------
 
-@theme__color__primary: @color-blue1;
-@theme__color__primary-alt: @color-blue2;
-@theme__color__secondary: @color-orange-red1;
+//  Brand palette - Grupo Awamotos
+@brand-primary: #b73337;
+@brand-primary-dark: #8e2629;
+@brand-text: #333333;
+@brand-link: #b73337;
+@brand-link-hover: #8e2629;
+@brand-button-text: #ffffff;
+@brand-button-bg: #b73337;
+@brand-button-bg-hover: #8e2629;
 
-@primary__color: @color-gray20;
+@theme__color__primary: @brand-primary;
+@theme__color__primary-alt: @brand-primary-dark;
+@theme__color__secondary: @brand-primary;
+
+@primary__color: @brand-text;
 @primary__color__dark: darken(@primary__color, 35%); // #000
 @primary__color__darker: darken(@primary__color, 13.5%); // #111
 @primary__color__lighter: lighten(@primary__color, 29%); // #7d7d7d

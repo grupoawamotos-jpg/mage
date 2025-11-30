@@ -1,0 +1,153 @@
+/**
+ * Estilos da Homepage Ayo Home 5
+ * Usando variáveis do tema Ayo
+ */
+
+// Homepage Wrapper
+.ayo-home5-wrapper {
+    max-width: 100%;
+    overflow: hidden;
+}
+
+// Seções
+.ayo-home5-section {
+    padding: 40px 0;
+    margin-bottom: 30px;
+    
+    &--hero {
+        padding-top: 20px;
+    }
+    
+    &--fitment {
+        background: @bkghome;
+        padding: 50px 0;
+        margin: 0 0 40px;
+        width: 100%;
+        max-width: none;
+    }
+    
+    &--categories {
+        padding: 40px 0;
+    }
+}
+
+// Heading das seções
+.ayo-home5-heading {
+    text-align: center;
+    margin-bottom: 30px;
+    
+    h2 {
+        font-family: @titlefont;
+        font-size: 28px;
+        font-weight: @headingfontweight;
+        color: @headingcolor;
+        margin: 10px 0 15px;
+        text-transform: none;
+    }
+}
+
+.ayo-home5-label {
+    display: inline-block;
+    font-family: @bdf;
+    font-size: 12px;
+    font-weight: 500;
+    color: @linkshover;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.ayo-home5-divider {
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: @linkshover;
+    margin: 0 auto;
+}
+
+// Colunas de categorias
+.ayo-home5-category-rows {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -15px;
+}
+
+.ayo-home5-category-column {
+    flex: 1;
+    min-width: 280px;
+    padding: 0 15px;
+}
+
+// Produtos em grid
+.ayo-home5-products-grid {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -10px;
+    
+    .item-product {
+        padding: 10px;
+    }
+}
+
+// Banners
+.ayo-home5-banner {
+    overflow: hidden;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    
+    img {
+        width: 100%;
+        height: auto;
+        .transitions();
+    }
+    
+    &:hover img {
+        .transform(scale(1.03));
+    }
+}
+
+// Cards de benefício
+.ayo-home5-benefit-card {
+    text-align: center;
+    padding: 20px;
+    
+    .benefit-icon {
+        width: 60px;
+        height: 60px;
+        line-height: 60px;
+        margin: 0 auto 15px;
+        background: @bkghome;
+        border-radius: 50%;
+        color: @linkshover;
+        font-size: 24px;
+    }
+    
+    h4 {
+        font-family: @titlefont;
+        font-size: 16px;
+        font-weight: @headingfontweight;
+        color: @headingcolor;
+        margin-bottom: 10px;
+    }
+    
+    p {
+        font-size: 13px;
+        color: @primarycolor;
+        line-height: 1.6;
+    }
+}
+
+// Responsivo
+@media (max-width: 767px) {
+    .ayo-home5-heading h2 {
+        font-size: 22px;
+    }
+    
+    .ayo-home5-section {
+        padding: 25px 0;
+    }
+    
+    .ayo-home5-category-column {
+        flex: 100%;
+        margin-bottom: 20px;
+    }
+}

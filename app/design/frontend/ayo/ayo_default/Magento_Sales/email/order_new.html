@@ -5,11 +5,16 @@
         <td>
             <p class="greeting">{{trans "Olá %customer_name," customer_name=$order_data.customer_name}}</p>
             <p>
-                {{trans "Recebemos o seu pedido em %store_name e ele já está em processamento." store_name=$store.frontend_name}}
-                {{trans "Assim que a remessa for despachada enviaremos o código de rastreamento por e-mail."}}
+                {{trans "Recebemos seu pedido de compra em %store_name." store_name=$store.frontend_name}}
             </p>
+            <div style="background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 15px; margin: 15px 0;">
+                <p style="color: #991b1b; font-weight: 600; margin: 0 0 5px;">Status: Em Análise Financeira</p>
+                <p style="color: #7f1d1d; font-size: 14px; margin: 0;">
+                    Seu pedido foi encaminhado para nosso departamento financeiro. Após a aprovação de crédito, enviaremos o faturamento e as instruções de pagamento para este e-mail.
+                </p>
+            </div>
             <p>
-                {{trans 'Você pode acompanhar tudo <a href="%account_url">acessando sua conta</a>.' account_url=$this.getUrl($store,'customer/account/',[_nosid:1]) |raw}}
+                {{trans 'Você pode acompanhar o status <a href="%account_url">acessando sua conta</a>.' account_url=$this.getUrl($store,'customer/account/',[_nosid:1]) |raw}}
                 {{trans 'Em caso de dúvidas fale conosco pelo e-mail <a href="mailto:%store_email">%store_email</a>' store_email=$store_email |raw}}
                 {{depend store_phone}}{{trans ' ou ligue/mande WhatsApp para <a href="tel:%store_phone">%store_phone</a>' store_phone=$store_phone |raw}}{{/depend}}.
             </p>

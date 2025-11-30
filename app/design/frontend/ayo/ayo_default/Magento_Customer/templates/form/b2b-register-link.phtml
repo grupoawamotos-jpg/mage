@@ -1,0 +1,18 @@
+<?php
+/**
+ * B2B Registration Link Template
+ */
+?>
+<div class="b2b-register-promo" style="margin-top: 30px; padding: 20px; background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); border-radius: 12px; text-align: center;">
+    <h3 style="color: #fff; margin: 0 0 10px; font-size: 20px; font-weight: 600;">
+        <?= $block->escapeHtml(__('É uma Empresa?')) ?>
+    </h3>
+    <p style="color: rgba(255, 255, 255, 0.9); margin: 0 0 20px; font-size: 14px;">
+        <?= $block->escapeHtml(__('Cadastre-se como Pessoa Jurídica e tenha acesso a descontos exclusivos, crédito e condições especiais!')) ?>
+    </p>
+    <a href="<?= $block->escapeUrl($block->getUrl('b2b/register/index')) ?>" 
+       class="action primary" 
+       style="display: inline-block; padding: 12px 30px; background: #fff; color: #e67e22; border-radius: 8px; font-weight: 600; text-decoration: none; transition: all 0.2s ease;">
+        <span><?= $block->escapeHtml(__('Cadastro B2B →')) ?></span>
+    </a>
+</div>

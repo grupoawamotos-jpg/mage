@@ -16,20 +16,24 @@
 use Magento\Catalog\Model\Product\ProductList\Toolbar;
 ?>
 <?php if ($block->getCollection()->getSize()): ?>
-    <div class="toolbar toolbar-products" data-mage-init='<?php /* @escapeNotVerified */ echo $block->getWidgetOptionsJson(); ?>'>
+	<?php
+		// Obter opções do widget e garantir JSON válido para data-mage-init
+		$widgetJson = $block->getWidgetOptionsJson();
+		$isValidJson = (null !== json_decode($widgetJson, true));
+		$safeJson = $isValidJson ? $widgetJson : '{}';
+	?>
+	<div class="toolbar toolbar-products" data-mage-init='<?php /* @escapeNotVerified */ echo $safeJson; ?>'>
 		<div class="center">
 		<?php if ($block->isExpanded()): ?>
-            <?php include ($block->getTemplateFile('Magento_Catalog::product/list/toolbar/viewmode.phtml')) ?>
-		<?php if ($block->isExpanded()): ?>
-            <?php include ($block->getTemplateFile('Magento_Catalog::product/list/toolbar/sorter.phtml')) ?>
-        <?php endif; ?>
+			<?php include ($block->getTemplateFile('Magento_Catalog::product/list/toolbar/viewmode.phtml')) ?>
+			<?php include ($block->getTemplateFile('Magento_Catalog::product/list/toolbar/sorter.phtml')) ?>
+		<?php endif; ?>
 
 		
         <?php include ($block->getTemplateFile('Magento_Catalog::product/list/toolbar/limiter.phtml')) ?>
 		
 		<?php echo $block->getPagerHtml() ?>
 		
-        <?php endif; ?>
         <?php include ($block->getTemplateFile('Magento_Catalog::product/list/toolbar/amount.phtml')) ?>
 		</div>
         <div class="grid-mode-show-type-products">
