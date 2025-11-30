@@ -30,6 +30,11 @@ define([
             this._super();
 
             this.cookieMessages = _.unique($.cookieStorage.get('mage-messages'), 'text');
+
+            // Create observable for cookie messages
+            this.cookieMessagesObservable = window.cookieMessagesObservable =
+                window.ko.observableArray(this.cookieMessages || []);
+
             this.messages = customerData.get('messages').extend({
                 disposableCustomerData: 'messages'
             });
