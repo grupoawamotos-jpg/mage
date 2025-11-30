@@ -238,4 +238,17 @@ class Data extends AbstractHelper
     {
         return in_array($groupId, $this->b2bGroups);
     }
+
+    /**
+     * Check if price should be hidden
+     *
+     * @return bool
+     */
+    public function isHidePrice(): bool
+    {
+        if ($this->customerSession->isLoggedIn()) {
+            return false;
+        }
+        return $this->shouldHidePricesForGuests();
+    }
 }

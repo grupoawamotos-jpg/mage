@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Order Approval Index Layout
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <title>Aprovação de Pedidos B2B</title>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="Magento\Backend\Block\Template"
+                   name="b2b_order_approval"
+                   template="GrupoAwamotos_B2B::approval/index.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

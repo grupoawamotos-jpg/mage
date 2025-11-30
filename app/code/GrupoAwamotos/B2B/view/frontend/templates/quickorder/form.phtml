@@ -1,0 +1,511 @@
+<?php
+/**
+ * Quick Order Form Template
+ * @var \GrupoAwamotos\B2B\Block\QuickOrder\Form $block
+ */
+?>
+<div class="b2b-quick-order-page">
+    <div class="quick-order-header">
+        <h1><?= $block->escapeHtml(__('Pedido Rápido por SKU')) ?></h1>
+        <p class="subtitle"><?= $block->escapeHtml(__('Adicione múltiplos produtos ao carrinho de forma rápida usando códigos SKU.')) ?></p>
+    </div>
+
+    <div class="quick-order-container">
+        <!-- Instructions -->
+        <div class="quick-order-info">
+            <div class="info-box">
+                <h3><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg> <?= $block->escapeHtml(__('Como usar')) ?></h3>
+                <ul>
+                    <li><?= $block->escapeHtml(__('Insira o código SKU do produto e a quantidade desejada')) ?></li>
+                    <li><?= $block->escapeHtml(__('Use o botão "+" para adicionar mais linhas')) ?></li>
+                    <li><?= $block->escapeHtml(__('Ou cole uma lista de SKUs no campo de importação em massa')) ?></li>
+                    <li><?= $block->escapeHtml(__('Formato: SKU, quantidade (ex: ABC123, 5)')) ?></li>
+                </ul>
+            </div>
+        </div>
+
+        <form class="quick-order-form" 
+              action="<?= $block->escapeUrl($block->getFormAction()) ?>" 
+              method="post" 
+              id="quick-order-form"
+              data-mage-init='{"validation":{}}'>
+            <?= $block->getBlockHtml('formkey') ?>
+
+            <!-- Individual Items -->
+            <div class="form-section">
+                <h3><?= $block->escapeHtml(__('Adicionar por SKU')) ?></h3>
+                
+                <div class="quick-order-items" id="quick-order-items">
+                    <div class="item-header">
+                        <span class="col-sku"><?= $block->escapeHtml(__('Código SKU')) ?></span>
+                        <span class="col-qty"><?= $block->escapeHtml(__('Qtd')) ?></span>
+                        <span class="col-action"></span>
+                    </div>
+                    
+                    <?php for ($i = 0; $i < $block->getDefaultRows(); $i++): ?>
+                    <div class="item-row" data-row="<?= $i ?>">
+                        <div class="col-sku">
+                            <input type="text" 
+                                   name="items[<?= $i ?>][sku]" 
+                                   class="input-text sku-input" 
+                                   placeholder="<?= $block->escapeHtmlAttr(__('Ex: PECA-001')) ?>"
+                                   autocomplete="off">
+                        </div>
+                        <div class="col-qty">
+                            <input type="number" 
+                                   name="items[<?= $i ?>][qty]" 
+                                   class="input-text qty-input" 
+                                   value="1" 
+                                   min="1" 
+                                   step="1">
+                        </div>
+                        <div class="col-action">
+                            <button type="button" class="action remove-row" title="<?= $block->escapeHtmlAttr(__('Remover')) ?>">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <?php endfor; ?>
+                </div>
+
+                <div class="item-actions">
+                    <button type="button" class="action secondary add-row" id="add-row-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        <?= $block->escapeHtml(__('Adicionar Linha')) ?>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Bulk Import -->
+            <div class="form-section bulk-section">
+                <h3><?= $block->escapeHtml(__('Importação em Massa')) ?></h3>
+                <p class="section-desc"><?= $block->escapeHtml(__('Cole uma lista de SKUs e quantidades. Formato: SKU, QTD (um por linha)')) ?></p>
+                
+                <div class="field">
+                    <div class="control">
+                        <textarea name="bulk_input" 
+                                  id="bulk-input" 
+                                  class="input-text" 
+                                  rows="6"
+                                  placeholder="<?= $block->escapeHtmlAttr(__("PECA-001, 5\nPECA-002, 10\nPECA-003, 2")) ?>"></textarea>
+                    </div>
+                </div>
+
+                <div class="bulk-actions">
+                    <button type="button" class="action secondary" id="parse-bulk-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                        <?= $block->escapeHtml(__('Processar Lista')) ?>
+                    </button>
+                    <button type="button" class="action tertiary" id="clear-bulk-btn">
+                        <?= $block->escapeHtml(__('Limpar')) ?>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Results Preview -->
+            <div class="form-section results-section" id="results-section" style="display:none;">
+                <h3><?= $block->escapeHtml(__('Resultado')) ?></h3>
+                <div id="results-content"></div>
+            </div>
+
+            <!-- Actions -->
+            <div class="actions-toolbar">
+                <div class="secondary">
+                    <a href="<?= $block->escapeUrl($block->getContinueShoppingUrl()) ?>" class="action back">
+                        <span><?= $block->escapeHtml(__('← Continuar Comprando')) ?></span>
+                    </a>
+                </div>
+                <div class="primary">
+                    <button type="submit" class="action primary submit" title="<?= $block->escapeHtmlAttr(__('Adicionar ao Carrinho')) ?>" id="submit-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                        <span><?= $block->escapeHtml(__('Adicionar ao Carrinho')) ?></span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/x-magento-init">
+{
+    "#quick-order-form": {
+        "GrupoAwamotos_B2B/js/quick-order": {
+            "formSelector": "#quick-order-form",
+            "itemsContainer": "#quick-order-items",
+            "addRowBtn": "#add-row-btn",
+            "bulkInput": "#bulk-input",
+            "parseBulkBtn": "#parse-bulk-btn",
+            "clearBulkBtn": "#clear-bulk-btn",
+            "resultsSection": "#results-section",
+            "resultsContent": "#results-content"
+        }
+    }
+}
+</script>
+
+<style>
+.b2b-quick-order-page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 30px 20px;
+}
+
+.quick-order-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.quick-order-header h1 {
+    font-size: 28px;
+    color: #1a1a2e;
+    margin: 0 0 10px;
+}
+
+.quick-order-header .subtitle {
+    font-size: 16px;
+    color: #6b7280;
+    margin: 0;
+}
+
+.quick-order-container {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    padding: 30px;
+}
+
+/* Info Box */
+.quick-order-info {
+    margin-bottom: 25px;
+}
+
+.info-box {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid #2563eb;
+}
+
+.info-box h3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    color: #1e40af;
+    margin: 0 0 12px;
+}
+
+.info-box ul {
+    margin: 0;
+    padding-left: 20px;
+    color: #334155;
+}
+
+.info-box li {
+    margin-bottom: 6px;
+    font-size: 14px;
+}
+
+/* Form Sections */
+.form-section {
+    margin-bottom: 30px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.form-section:last-of-type {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.form-section h3 {
+    font-size: 18px;
+    color: #1f2937;
+    margin: 0 0 15px;
+    padding-left: 12px;
+    border-left: 3px solid #2563eb;
+}
+
+.section-desc {
+    font-size: 14px;
+    color: #6b7280;
+    margin: -10px 0 15px;
+}
+
+/* Items Grid */
+.quick-order-items {
+    background: #f9fafb;
+    border-radius: 8px;
+    padding: 15px;
+}
+
+.item-header {
+    display: grid;
+    grid-template-columns: 1fr 100px 50px;
+    gap: 15px;
+    padding: 0 0 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #e5e7eb;
+    font-weight: 600;
+    font-size: 13px;
+    color: #6b7280;
+    text-transform: uppercase;
+}
+
+.item-row {
+    display: grid;
+    grid-template-columns: 1fr 100px 50px;
+    gap: 15px;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+.item-row:last-child {
+    margin-bottom: 0;
+}
+
+.item-row input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.item-row input:focus {
+    border-color: #2563eb;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.item-row .qty-input {
+    text-align: center;
+}
+
+.action.remove-row {
+    background: none;
+    border: none;
+    color: #9ca3af;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.action.remove-row:hover {
+    color: #dc2626;
+    background: #fef2f2;
+}
+
+/* Item Actions */
+.item-actions {
+    margin-top: 15px;
+}
+
+.action.add-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    background: #f3f4f6;
+    border: 1px dashed #9ca3af;
+    border-radius: 6px;
+    color: #4b5563;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.action.add-row:hover {
+    background: #e5e7eb;
+    border-color: #6b7280;
+}
+
+/* Bulk Section */
+.bulk-section textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-family: 'Monaco', 'Menlo', monospace;
+    font-size: 13px;
+    line-height: 1.5;
+    resize: vertical;
+}
+
+.bulk-section textarea:focus {
+    border-color: #2563eb;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.bulk-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.action.secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 6px;
+    color: #1d4ed8;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.action.secondary:hover {
+    background: #dbeafe;
+}
+
+.action.tertiary {
+    padding: 10px 16px;
+    background: transparent;
+    border: none;
+    color: #6b7280;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.action.tertiary:hover {
+    color: #1f2937;
+}
+
+/* Results Section */
+.results-section {
+    background: #f0fdf4;
+    border: 1px solid #86efac;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.results-section.error {
+    background: #fef2f2;
+    border-color: #fecaca;
+}
+
+.result-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.result-item:last-child {
+    border-bottom: none;
+}
+
+.result-item.success {
+    color: #166534;
+}
+
+.result-item.error {
+    color: #dc2626;
+}
+
+/* Actions Toolbar */
+.actions-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.action.back {
+    color: #6b7280;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.action.back:hover {
+    color: #1f2937;
+}
+
+.action.primary.submit {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.action.primary.submit:hover {
+    background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.action.primary.submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Loading State */
+.loading .action.primary.submit::after {
+    content: '';
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-left: 8px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .quick-order-container {
+        padding: 20px;
+    }
+    
+    .item-header {
+        display: none;
+    }
+    
+    .item-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        padding: 15px;
+        background: #fff;
+        border-radius: 6px;
+        margin-bottom: 10px;
+    }
+    
+    .item-row .col-action {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+    }
+    
+    .actions-toolbar {
+        flex-direction: column-reverse;
+        gap: 15px;
+    }
+    
+    .action.primary.submit {
+        width: 100%;
+        justify-content: center;
+    }
+}
+</style>

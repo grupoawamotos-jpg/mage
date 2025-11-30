@@ -8,7 +8,7 @@
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="content">
-            <uiComponent name="b2b_carrier_listing"/>
+            <uiComponent name="grupoawamotos_b2b_carrier_listing"/>
         </referenceContainer>
     </body>
 </page>

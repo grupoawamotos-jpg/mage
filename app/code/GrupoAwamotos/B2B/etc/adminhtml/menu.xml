@@ -62,7 +62,7 @@
              module="GrupoAwamotos_B2B"
              sortOrder="30"
              parent="GrupoAwamotos_B2B::b2b"
-             action="b2b/carrier/index"
+             action="grupoawamotos_b2b/carrier/index"
              resource="GrupoAwamotos_B2B::carrier"/>
         
         <!-- Submenu: Configurações -->

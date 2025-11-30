@@ -97,7 +97,43 @@ Módulo B2B enterprise-grade para Magento 2.4.8 com funcionalidades completas pa
 - `used_credit` - Crédito utilizado
 - `currency_code` - Moeda (padrão BRL)
 
-### 7. 📧 Templates de Email
+### 7. 🚀 Pedido Rápido (Quick Order)
+
+**URL:** `/b2b/quickorder`
+
+**Funcionalidades:**
+- Adicionar múltiplos produtos ao carrinho por SKU
+- Interface intuitiva com linhas para SKU + Quantidade
+- Importação em massa via texto (formato: SKU, QTD por linha)
+- Validação AJAX com feedback em tempo real
+- Suporte a delimitadores: vírgula, ponto-e-vírgula, tab ou espaço
+
+**Fluxo:**
+1. Cliente acessa a página (requer login)
+2. Insere SKUs manualmente ou cola lista em massa
+3. Clica em "Adicionar ao Carrinho"
+4. Sistema valida SKUs e adiciona produtos disponíveis
+5. Exibe resumo com sucessos e erros
+
+**Arquivos:**
+- Controller: `Controller/QuickOrder/Index.php`, `Controller/QuickOrder/Add.php`
+- Block: `Block/QuickOrder/Form.php`
+- Template: `view/frontend/templates/quickorder/form.phtml`
+- Layout: `view/frontend/layout/grupoawamotos_b2b_quickorder_index.xml`
+- JS: `view/frontend/web/js/quick-order.js`
+
+### 8. 📋 Listas de Compras (Shopping Lists)
+
+**URL:** `/b2b/shoppinglist`
+
+**Funcionalidades:**
+- Criar múltiplas listas de compras
+- Adicionar produtos às listas
+- Adicionar toda a lista ao carrinho com um clique
+- Gerenciar itens (quantidade, remoção)
+- Total estimado por lista
+
+### 9. 📧 Templates de Email
 
 | Template ID | Descrição |
 |-------------|-----------|

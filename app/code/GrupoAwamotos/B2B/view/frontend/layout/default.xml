@@ -2,7 +2,7 @@
 <!--
 /**
  * GrupoAwamotos B2B - Theme Integration
- * Adds B2B links to header and customer account navigation
+ * Adds B2B links to header
  */
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -30,16 +30,13 @@
                     <argument name="sortOrder" xsi:type="number">45</argument>
                 </arguments>
             </block>
-        </referenceBlock>
-        
-        <!-- B2B Dashboard in customer account navigation (for B2B customers only) -->
-        <referenceBlock name="customer_account_navigation">
-            <block class="GrupoAwamotos\B2B\Block\Link\Dashboard"
-                   name="customer-account-navigation-b2b-dashboard-link">
+            
+            <!-- Quick Order Link (for logged-in customers) -->
+            <block class="GrupoAwamotos\B2B\Block\Link\QuickOrder" name="b2b-quickorder-link-header">
                 <arguments>
-                    <argument name="label" xsi:type="string" translate="true">Painel B2B</argument>
-                    <argument name="path" xsi:type="string">b2b/account/dashboard</argument>
-                    <argument name="sortOrder" xsi:type="number">5</argument>
+                    <argument name="label" xsi:type="string" translate="true">Pedido Rápido</argument>
+                    <argument name="path" xsi:type="string">b2b/quickorder</argument>
+                    <argument name="sortOrder" xsi:type="number">55</argument>
                 </arguments>
             </block>
         </referenceBlock>

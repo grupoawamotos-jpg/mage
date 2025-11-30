@@ -148,7 +148,7 @@
                     <div class="field required">
                         <label for="password" class="label"><span><?= $block->escapeHtml(__('Senha')) ?></span></label>
                         <div class="control">
-                            <input type="password" name="password" id="password" 
+                            <input type="password" name="password" id="password" data-input="password"
                                    title="<?= $block->escapeHtmlAttr(__('Senha')) ?>" 
                                    class="input-text" data-validate="{required:true, 'validate-customer-password':true}"
                                    autocomplete="new-password">
@@ -160,7 +160,7 @@
                     <div class="field required">
                         <label for="password_confirmation" class="label"><span><?= $block->escapeHtml(__('Confirmar Senha')) ?></span></label>
                         <div class="control">
-                            <input type="password" name="password_confirmation" id="password_confirmation" 
+                            <input type="password" name="password_confirmation" id="password_confirmation" data-input="password"
                                    title="<?= $block->escapeHtmlAttr(__('Confirmar Senha')) ?>" 
                                    class="input-text" data-validate="{required:true, equalTo:'#password'}"
                                    autocomplete="new-password">

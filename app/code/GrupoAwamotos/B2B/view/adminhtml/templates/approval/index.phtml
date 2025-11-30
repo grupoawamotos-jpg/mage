@@ -1,0 +1,67 @@
+<?php
+/**
+ * Order Approval Admin Template
+ *
+ * @var \Magento\Backend\Block\Template $block
+ */
+?>
+<div class="b2b-order-approval">
+    <div class="admin-page-header">
+        <h1><?= $block->escapeHtml(__('Aprovação de Pedidos B2B')) ?></h1>
+    </div>
+    
+    <div class="message message-notice notice">
+        <span>
+            <?= $block->escapeHtml(__('Este recurso permite aprovar ou rejeitar pedidos de clientes B2B que ultrapassem determinados limites de crédito ou quantidade.')) ?>
+        </span>
+    </div>
+    
+    <div class="admin-card">
+        <div class="card-header">
+            <h3><?= $block->escapeHtml(__('Pedidos Pendentes de Aprovação')) ?></h3>
+        </div>
+        <div class="card-body">
+            <p class="empty-state">
+                <?= $block->escapeHtml(__('Nenhum pedido pendente de aprovação no momento.')) ?>
+            </p>
+            
+            <!-- Placeholder para futura integração com grid de pedidos -->
+            <p class="hint">
+                <?= $block->escapeHtml(__('Configure limites de aprovação em Stores > Configuration > Grupo Awamotos > B2B Settings.')) ?>
+            </p>
+        </div>
+    </div>
+    
+    <style>
+        .b2b-order-approval .admin-page-header {
+            margin-bottom: 20px;
+        }
+        .b2b-order-approval .admin-card {
+            background: #fff;
+            border: 1px solid #e3e3e3;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+        .b2b-order-approval .card-header {
+            padding: 15px 20px;
+            background: #f7f7f7;
+            border-bottom: 1px solid #e3e3e3;
+        }
+        .b2b-order-approval .card-header h3 {
+            margin: 0;
+            font-size: 16px;
+        }
+        .b2b-order-approval .card-body {
+            padding: 20px;
+        }
+        .b2b-order-approval .empty-state {
+            color: #666;
+            font-style: italic;
+        }
+        .b2b-order-approval .hint {
+            color: #888;
+            font-size: 12px;
+            margin-top: 15px;
+        }
+    </style>
+</div>
