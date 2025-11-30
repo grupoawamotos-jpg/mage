@@ -1,0 +1,56 @@
+{
+  "data": "2025-11-29",
+  "branch": "feat/paleta-b73337",
+  "status": "✅ COMPLETO",
+  "produtos": {
+    "total": 481,
+    "habilitados": 481,
+    "com_imagem": 472,
+    "percentual_imagens": "98.13%",
+    "demo_desabilitados": 6,
+    "pendentes_imagem": ["2241", "T410 AM", "T410 PR"]
+  },
+  "home": {
+    "blocos_ativos": ["home_slider", "home_fitment", "home_featured", "home_new_products", "home_banner_promo", "featured_categories"],
+    "pagina_home": "home",
+    "status_pagina": "Ativa"
+  },
+  "tema": {
+    "layout": "full_width",
+    "header_type": "5",
+    "ajax_cart": true,
+    "quick_view": true,
+    "produtos_novos_tab": true
+  },
+  "paleta": {
+    "cor_primaria": "#b73337",
+    "cor_primaria_escura": "#832326",
+    "aplicada": true
+  },
+  "ambiente": {
+    "modo": "production",
+    "static_content_deployado": true,
+    "cache_limpo": true,
+    "indexes_atualizados": true
+  },
+  "acoes_realizadas": [
+    "Atribuição de imagens por SKU (472 produtos)",
+    "Desabilitação de 6 produtos demo/teste",
+    "Reconfiguração completa da home (grupoawamotos:store:setup)",
+    "Deploy de static content",
+    "Reindex completo",
+    "Cache flush completo"
+  ],
+  "scripts_criados": [
+    "scripts/atribuir_imagens_por_sku.php",
+    "scripts/relatorio_produtos_sem_imagem.php",
+    "scripts/desabilitar_produtos_teste.php",
+    "scripts/verificar_home_status.php"
+  ],
+  "proximos_passos": [
+    "Validar home visualmente no navegador",
+    "Adicionar imagens para 2241, T410 AM, T410 PR",
+    "Verificar performance da página",
+    "Testar funcionalidades Ajax (cart, wishlist, compare)"
+  ]
+}

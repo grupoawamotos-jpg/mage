@@ -1,0 +1,45 @@
+{
+    "generated_at": "2025-11-29T06:09:09+00:00",
+    "blocks": {
+        "head_contact": {
+            "length": 250,
+            "sha256": "f3214469b3bfe994d30d504d2de0d24b465928d5fbacc2a88422559eb81e9ee7",
+            "preview": " Atendimento: (16) 3301-1890 • awamotos.mkt@gmail.com "
+        },
+        "footer_info": {
+            "length": 382,
+            "sha256": "9614c76b48bff360cd1b2d32b101d2b7f8bb8298d56f3d5100e44b51dbd3e589",
+            "preview": " Sobre a Loja Especialistas em peças e acessórios premium para motos. Endereço: R. Lavineo de Arruda Falcão, 1272, Jardim Cruzeiro do Sul, Araraquara, 508 -"
+        },
+        "footer_static": {
+            "length": 6591,
+            "sha256": "189c08e101143e1a0c28ce62aa6e3a2932de36be3129d88498c2e5d49a9b1ccc",
+            "preview": " Assine e receba novidades Receba lançamentos, ofertas exclusivas e conteúdos técnicos sobre performance para motos e scooters. {{block class=\"Magento\\Newsle"
+        },
+        "fixed_right": {
+            "length": 570,
+            "sha256": "28a1808d2a0560b1096f74f8f28337b91eb3eadfe7ed76e0cdcdb414f5b17d87",
+            "preview": " Ligação WhatsApp E-mail Topo "
+        },
+        "social_block": {
+            "length": 2678,
+            "sha256": "37388b127c5fa2d824a8f78564bd356680cc3e8ef5cdbaabc8fc695405617972",
+            "preview": " facebook.com\/awamotos instagram.com\/awamotos youtube.com\/@awamotos7661 5516997367588 awamotos.mkt@gmail.com (16) 3301-1890 Seg a Sex: 8h às 18h | Sáb: 8h às"
+        },
+        "hotline_header": {
+            "length": 1107,
+            "sha256": "b5bb92353a7be53627537a6e2a6bf8d0f024feeadda15413779a1f58235241b0",
+            "preview": " Central: (16) 3301-1890 • WhatsApp • Seg a Sex: 8h às 18h | Sáb: 8h às 12h • awamotos.mkt@gmail.com • 06.093.812\/0001-05 "
+        },
+        "top-left-static": {
+            "length": 458,
+            "sha256": "440724c8662daf93ae026d6cd37f6ac521255dfa5c7bed57db286b7eeec735e5",
+            "preview": " R. Lavineo de Arruda Falcão, 1272, Jardim Cruzeiro do Sul, Araraquara, 508 - CEP 14808-390 • Seg a Sex: 8h às 18h | Sáb: 8h às 12h • Fale conosco "
+        },
+        "top-contact": {
+            "length": 596,
+            "sha256": "404e6b48caa3346f70ce36bc9604cef28ff1111aa1706ee9a6bc6d60497a2622",
+            "preview": " Telefone (16) 3301-1890 WhatsApp 5516997367588 E-mail awamotos.mkt@gmail.com "
+        }
+    }
+}
