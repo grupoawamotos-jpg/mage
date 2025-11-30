@@ -36,7 +36,7 @@
                 <width>400</width>
                 <height>400</height>
             </image>
-            <image id="category_image_second_large" type="swatch_image">
+            <image id="category_image_second_large" type="small_image">
                 <width>400</width>
                 <height>400</height>
             </image>
@@ -44,7 +44,7 @@
                 <width>480</width>
                 <height>480</height>
             </image>
-            <image id="category_image_second_small" type="swatch_image">
+            <image id="category_image_second_small" type="small_image">
                 <width>480</width>
                 <height>480</height>
             </image>
@@ -52,7 +52,7 @@
                 <width>110</width>
                 <height>110</height>
             </image>
-            <image id="category_image_second_small_list" type="swatch_image">
+            <image id="category_image_second_small_list" type="small_image">
                 <width>110</width>
                 <height>110</height>
             </image>
