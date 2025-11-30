@@ -1,23 +1,31 @@
 <?php
-$_brandCollection       = $block->getBrandCollection();
-$_helper                = $this->helper('Rokanthemes\Brand\Helper\Data');
-$title                  = $this->getConfig('widget_title');
-$show_brand_name        = $this->getConfig('show_brand_name');
-$blockId = strtotime('now');
+$_brandCollection = $block->getBrandCollection();
+$_helper = $this->helper('Rokanthemes\Brand\Helper\Data');
+$title = $this->getConfig('widget_title');
+$show_brand_name = $this->getConfig('show_brand_name');
+$blockId = 'rokanthemes-carousel-' . uniqid();
+$defaultItems = (int)$this->getConfig('default_item');
+$desktopItems = (int)$this->getConfig('destop_item');
+$desktopSmallItems = (int)$this->getConfig('small_destop_item');
+$tabletItems = (int)$this->getConfig('tablet_item');
+$mobileItems = (int)$this->getConfig('mobile_item');
+$autoPlay = (bool)$this->getConfig('auto_play_control');
+$navigation = (bool)$this->getConfig('show_next_back_control');
+$pagination = (bool)$this->getConfig('show_navigation_control');
 ?>
 
-<?php if ( $_brandCollection->count() ){ ?>
+<?php if ($_brandCollection->count()) { ?>
 <div class="block-widget-rokanthemes-brand">
-	<?php if($title){ ?>
+	<?php if ($title) { ?>
 	<div class="block-title"><strong><?php echo $title ?></strong></div>
 	<?php } ?>
 	<div class="block-content brandowl-play">
-		<ul id="rokanthemes-carousel<?php echo $blockId; ?>">
+		<ul id="<?php echo $blockId; ?>" class="owl-carousel">
 			<?php foreach ($_brandCollection as $_brand) { ?>
 			<li class="item">
 				<div class="brand-item">
 					<div class="brand-image"><a href="<?php echo $_brand->getUrl(); ?>" title="<?php echo $_brand->getName(); ?>"><img src="<?php echo $_brand->getThumbnailUrl(); ?>" alt="<?php echo $_brand->getName(); ?>"/></a></div>
-					<?php if($show_brand_name){ ?>
+					<?php if ($show_brand_name) { ?>
 					<div class="brand-name"><a href="<?php echo $_brand->getUrl(); ?>" title="<?php echo $_brand->getName(); ?>"><?php echo $_brand->getName() ?></a></div>
 					<?php } ?>
 				</div>
@@ -26,25 +34,22 @@ $blockId = strtotime('now');
 		</ul>
 	</div>
 </div>
-<script>
-	require([
-		'jquery',
-		'mage/mage',
-		'rokanthemes/owl'
-	], function ($) {
-		'use strict';
-
-		jQuery("#rokanthemes-carousel<?php echo $blockId; ?>").owlCarousel({
-			lazyLoad:true,
-			autoPlay : <?php echo ($this->getConfig('auto_play_control')) ? 'true' : 'false';?>,
-			items : <?php echo $this->getConfig('default_item');?>,
-			itemsDesktop : [1199,<?php echo $this->getConfig('destop_item');?>],
-			itemsDesktopSmall : [980,<?php echo $this->getConfig('small_destop_item');?>],
-			itemsTablet: [768,<?php echo $this->getConfig('tablet_item');?>],
-			itemsMobile : [479,<?php echo $this->getConfig('mobile_item');?>],
-			navigation : <?php echo ($this->getConfig('show_next_back_control')) ? 'true' : 'false';?>,
-			pagination : <?php echo ($this->getConfig('show_navigation_control')) ? 'true' : 'false';?>,
-		});
-	});
+<script type="text/x-magento-init">
+{
+	"#<?php echo $blockId; ?>": {
+		"Rokanthemes_Brand/js/carousel": {
+			"owl": {
+				"autoPlay": <?php echo $autoPlay ? 'true' : 'false'; ?>,
+				"items": <?php echo $defaultItems; ?>,
+				"itemsDesktop": [1199, <?php echo $desktopItems; ?>],
+				"itemsDesktopSmall": [980, <?php echo $desktopSmallItems; ?>],
+				"itemsTablet": [768, <?php echo $tabletItems; ?>],
+				"itemsMobile": [479, <?php echo $mobileItems; ?>],
+				"navigation": <?php echo $navigation ? 'true' : 'false'; ?>,
+				"pagination": <?php echo $pagination ? 'true' : 'false'; ?>
+			}
+		}
+	}
+}
 </script>
 <?php } ?>

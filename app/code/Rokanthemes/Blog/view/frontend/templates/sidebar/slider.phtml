@@ -26,16 +26,24 @@
 	$show_next_back = $this->getConfig('show_next_back');
 	$show_navigation_control = $this->getConfig('show_navigation_control');
 	$title = $this->getConfig('title');
-	if($show_next_back)
-		$show_next_back = 'true';
-	else
-		$show_next_back = 'false';
-	$show_navigation_control = $this->getConfig('show_navigation_control');
-	if($show_navigation_control)
-		$show_navigation_control = 'true';
-	else
-		$show_navigation_control = 'false';
 	$_postCollection = $block->getPostCollection();
+	$carouselId = 'blog-recent-posts-' . uniqid();
+	$owlOptions = [
+		'lazyLoad' => true,
+		'items' => (int)$default,
+		'itemsDesktop' => [1199, (int)$desktop],
+		'itemsDesktopSmall' => [980, (int)$desktop_small],
+		'itemsTablet' => [768, (int)$tablet],
+		'itemsMobile' => [479, (int)$mobile],
+		'slideSpeed' => (int)$pagination,
+		'paginationSpeed' => (int)$pagination,
+		'rewindSpeed' => (int)$pagination,
+		'addClassActive' => true,
+		'navigation' => (bool)$show_next_back,
+		'stopOnHover' => true,
+		'pagination' => (bool)$show_navigation_control,
+		'scrollPerPage' => true
+	];
 ?>
 <?php if ($_postCollection->count() && $enable) { ?>
 <section class="widget box-section block-recent-posts" data-bind="scope: 'recemt-posts'">
@@ -45,7 +53,7 @@
 		</div>
 		<div class="owl-container">
 			<div class="block-content">
-				<div class="owl">
+				<div class="owl" id="<?php echo $carouselId; ?>">
 					<?php foreach ($_postCollection as $_post) { ?>
 						<div class="item">
 							<div class="product-item">
@@ -78,31 +86,11 @@
 		</div>
     </div>
 </section>
-
-<script type="text/javascript">
-	require([
-		'jquery',
-		'mage/mage',
-		'rokanthemes/owl'
-	], function ($) {
-		'use strict';
-
-		jQuery(".block-recent-posts .owl").owlCarousel({
-			lazyLoad:true,
-			items : <?php echo $default; ?>,
-			itemsDesktop : [1199,<?php echo $desktop; ?>],
-			itemsDesktopSmall : [980,<?php echo $desktop_small; ?>],
-			itemsTablet: [768,<?php echo $tablet; ?>],
-			itemsMobile : [479,<?php echo $mobile; ?>],
-			slideSpeed : <?php echo $pagination; ?>,
-			paginationSpeed : <?php echo $pagination; ?>,
-			rewindSpeed : <?php echo $pagination; ?>,
-			addClassActive: true,
-			navigation : <?php echo $show_next_back; ?>,
-			stopOnHover : true,
-			pagination : <?php echo $show_navigation_control; ?>,
-			scrollPerPage:true,
-		});
-	});
+<script type="text/x-magento-init">
+{
+	"#<?php echo $carouselId; ?>": {
+		"Rokanthemes_Blog/js/carousel": <?php echo json_encode($owlOptions, JSON_UNESCAPED_SLASHES); ?>
+	}
+}
 </script>
 <?php } ?>

@@ -11,13 +11,26 @@ if($banners = $block->getBannerCollection()):
 ?>
 <div class="wrapper_slider hidden-xs slider_<?php echo $sliderId; ?>">
 	<div class="owl">
-		<?php foreach($banners as $banner){	?>
+		<?php $index = 0; foreach($banners as $banner){	?>
 			<div class="banner_item">
 			<?php
 			$html = $block->getImageElement($banner->getSlideImage());
-			if($link = $banner->getSlideLink())
-				$html = '<a href="'. $link .'">' . $html . '</a>' ; 
+			// Injeta atributos de performance: primeiro slide com fetchpriority=high e sem display:none
+			if ($index === 0) {
+			    $html = preg_replace('/style="[^"]*display:\s*none;?[^"]*"/i', '', $html); // remove display:none
+			    $html = preg_replace('/<img(.*?)src="([^"]+)"/i', '<img$1 src="$2" fetchpriority="high" decoding="async"', $html, 1);
+			} else {
+			    $html = preg_replace('/<img(.*?)src="([^"]+)"/i', '<img$1 src="$2" loading="lazy" decoding="async" fetchpriority="low"', $html, 1);
+			}
+			// Adiciona width/height padrão se ausente (slider placeholder 1600x520)
+			if (!preg_match('/width="/i', $html)) {
+			    $html = preg_replace('/<img\s+/i', '<img width="1600" height="520" ', $html, 1);
+			}
+			if($link = $banner->getSlideLink()) {
+				$html = '<a href="'. $link .'" class="banner-link">' . $html . '</a>' ;
+			}
 			echo $html;
+			$index++;
 			?>
 			</div>
 		<?php } ?>
@@ -25,13 +38,24 @@ if($banners = $block->getBannerCollection()):
 </div>
 <div class="wrapper_slider visible-xs slider_<?php echo $sliderId; ?>_mobile">
 	<div class="owl">
-		<?php foreach($banners as $banner){	?>
+		<?php $mIndex = 0; foreach($banners as $banner){	?>
 			<div class="banner_item">
 			<?php
 			$html = $block->getImageElement($banner->getSlideImageMobile());
-			if($link = $banner->getSlideLink())
-				$html = '<a href="'. $link .'">' . $html . '</a>' ; 
+			if ($mIndex === 0) {
+			    $html = preg_replace('/style="[^"]*display:\s*none;?[^"]*"/i', '', $html);
+			    $html = preg_replace('/<img(.*?)src="([^"]+)"/i', '<img$1 src="$2" fetchpriority="high" decoding="async"', $html, 1);
+			} else {
+			    $html = preg_replace('/<img(.*?)src="([^"]+)"/i', '<img$1 src="$2" loading="lazy" decoding="async" fetchpriority="low"', $html, 1);
+			}
+			if (!preg_match('/width="/i', $html)) {
+			    $html = preg_replace('/<img\s+/i', '<img width="800" height="520" ', $html, 1);
+			}
+			if($link = $banner->getSlideLink()) {
+				$html = '<a href="'. $link .'" class="banner-link">' . $html . '</a>' ;
+			}
 			echo $html;
+			$mIndex++;
 			?>
 			</div>
 		<?php } ?>
@@ -66,8 +90,8 @@ if($banners = $block->getBannerCollection()):
 						$value == 1 ? $value = 'true': '';
 					}
 					echo $key . ':' . $value . ',';
-				} ?>}
-		}
+				} ?>
+			}
 		);
 	});
 </script>

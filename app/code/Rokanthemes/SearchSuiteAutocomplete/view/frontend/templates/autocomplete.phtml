@@ -1,12 +1,23 @@
 <?php
 $helper = $this->helper('Magento\Search\Helper\Data');
+$categorySelectId = null;
+
+if ($block->enableSearchByCat()) {
+    $categorySelectId = preg_replace('/[^A-Za-z0-9_-]/', '', (string)$block->getNameInLayout());
+
+    if ($categorySelectId === '') {
+        $categorySelectId = uniqid('categoryselect_');
+    }
+
+    $categorySelectId = 'choose-category-' . $categorySelectId;
+}
 ?>
 <div class="block block-search">
     <div class="block-content">
         <form class="form minisearch search-content" id="search_mini_form" action="<?php /* @escapeNotVerified */ echo $helper->getResultUrl() ?>" method="get">
             <?php if($block->enableSearchByCat()){ ?>
             <div class="field-by-cat-search">    
-                <select name="cat" id="choose_category">
+                <select name="cat" id="<?php echo $categorySelectId; ?>">
                         <option value=""><?php echo __('All Categories'); ?></option>
                     <?php $categories = $block->getCategories(); 
                     foreach($categories as $cat)
@@ -48,14 +59,13 @@ $helper = $this->helper('Magento\Search\Helper\Data');
         </form>
     </div>
 </div>
-<?php if($block->enableSearchByCat()){ ?>
-<script type="text/javascript">
-    require([
-        'jquery',
-        'rokanthemes/choose'
-    ], function ($) {
-        $("#choose_category").chosen();
-    });
+<?php if ($block->enableSearchByCat() && $categorySelectId) { ?>
+<script type="text/x-magento-init">
+{
+	"#<?php echo $categorySelectId; ?>": {
+		"Rokanthemes_SearchSuiteAutocomplete/js/category-select": {}
+	}
+}
 </script>
 <?php } ?>
 <script type="text/x-magento-init">

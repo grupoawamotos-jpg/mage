@@ -80,10 +80,10 @@ foreach ($_brandCollection as $_brand) {
 	</div>
 </div>
 <?php } ?>
-<script type="text/javascript">
-	require(['jquery',
-		<?php if($this->helper("Rokanthemes\All\Helper\Data")->getConfig("enable_owlcarousel")): ?>
-		"Rokanthemes_All/lib/owl.carousel/owl.carousel.min",
-		<?php endif; ?>
-		'Rokanthemes_Brand/js/brand'], function () {});
-</script>
+	<script type="text/x-magento-init">
+	{
+		"#rokanthemes-carousel<?php echo $blockId; ?>": {
+			"Rokanthemes_Brand/js/carousel": {}
+		}
+	}
+	</script>

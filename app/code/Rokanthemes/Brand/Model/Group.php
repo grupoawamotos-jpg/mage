@@ -71,12 +71,12 @@ class Group extends \Magento\Framework\Model\AbstractModel
     public function __construct(
         \Magento\Framework\Model\Context $context,
         \Magento\Framework\Registry $registry,
-        \Rokanthemes\Brand\Model\ResourceModel\Group $resource = null,
-        \Rokanthemes\Brand\Model\ResourceModel\Group\Collection $resourceCollection = null,
         \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Framework\UrlInterface $url,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
+        ?\Rokanthemes\Brand\Model\ResourceModel\Group $resource = null,
+        ?\Rokanthemes\Brand\Model\ResourceModel\Group\Collection $resourceCollection = null,
         array $data = []
         ) {
         $this->_storeManager = $storeManager;

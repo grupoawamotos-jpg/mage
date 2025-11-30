@@ -6,9 +6,10 @@
 	$title = $block->getTitle();
 	$img_width = $helperData->getImgRizeWidth();
 	$img_height = $helperData->getImgRizeHeight();
+	$containerId = 'testimonials-slider-' . uniqid();
 ?>
 <?php if ($_testimonialsCollection->count()):?>
-<div class="box-bottom-home2 box-testimo">
+<div class="box-bottom-home2 box-testimo" id="<?php echo $containerId; ?>">
 	<h2><?php echo __($title) ?></h2>
 	<div class="testimo-slider slider-home2">
 		<div class="wrap-item">
@@ -34,31 +35,20 @@
 		</div>
 	</div>
 	<a href="<?php echo $block->getUrl('testimonials');?>" class="viewall"><?php echo __('View All');?></a>
-</div>
-<script type="text/javascript">
-	require([
-		'jquery',
-		'mage/mage',
-		'rokanthemes/owl'
-	], function ($) {
-		'use strict';
-	jQuery(document).ready(function ($) {
-		$('.testimo-slider .wrap-item').owlCarousel({
-			lazyLoad:true,
-			items:1,
-			itemsCustom: [ 
-			[0, 1], 
-			[480, 1], 
-			[768, 1], 
-			[992, 1], 
-			[1200, 1] 
-			],
-			pagination: true,
-			navigation: false,
-			navigationText:['<i class="fa fa-angle-left"></i>','<i class="fa fa-angle-right"></i>']
-		});
-	});
-});
+<?php
+	$sliderConfig = [
+		'carouselSelector' => '.wrap-item',
+		'owl' => [
+			'pagination' => true
+		]
+	];
+?>
+<script type="text/x-magento-init">
+{
+	"#<?php echo $containerId; ?>": {
+		"Rokanthemes_Testimonials/js/testimonials": <?php echo json_encode($sliderConfig, JSON_UNESCAPED_SLASHES); ?>
+	}
+}
 </script>
 <?php else :?>
 <div class="box-bottom-home2 box-testimo">

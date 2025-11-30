@@ -16,7 +16,23 @@ use Magento\Framework\App\Action\Action;
 	$type = 'widget-new-grid';
 	$templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::DEFAULT_VIEW;
 	$rows = $block->getConfig('row');
+	$containerId = 'product-tab-' . uniqid();
+	$itemsPerSlide = $items ? (int)$items : 5;
+	$slideSpeedValue = $speed ? (int)$speed : 500;
+	$owlOptions = [
+		'items' => $itemsPerSlide,
+		'autoPlay' => (bool)$auto,
+		'slideSpeed' => $slideSpeedValue,
+		'navigation' => (bool)$show_navigation,
+		'stopOnHover' => true,
+		'pagination' => (bool)$show_pagination,
+		'itemsDesktop' => [1200, 3],
+		'itemsDesktopSmall' => [1000, 2],
+		'itemsTablet' => [680, 2],
+		'itemsMobile' => [460, 1]
+	];
 	?>
+<div class="product-tab-block" id="<?php echo $containerId; ?>">
 	<div class="box-title">
 		<ul class="tabs">
 			<?php 
@@ -129,8 +145,9 @@ use Magento\Framework\App\Action\Action;
 		<?php 
 		} 
 		?>
-	</div>
-	</div>
+</div>
+</div>
+</div>
 <script type="text/x-magento-init">
 {
 	"[data-role=tocart-form], .form.map.checkout": {
@@ -138,42 +155,24 @@ use Magento\Framework\App\Action\Action;
 	}
 }
 </script>
-	
-<script type="text/javascript">
-require(["jquery", "rokanthemes/owl"], function($){
 
-	$(".tab_content").hide();
-	$(".tab_content:first").show(); 
-
-	$("ul.tabs li").click(function() {
-		$("ul.tabs li").removeClass("active");
-		$(this).addClass("active");
-		$(".tab_content").hide();
-		$(".tab_content").removeClass("animate1");
-		var activeTab = $(this).attr("rel"); 
-		$("#"+activeTab) .addClass("animate1");
-		$("#"+activeTab).fadeIn(); 
-	});
-	
-	  $(".productTabContent").owlCarousel({
-				lazyLoad:true,
-	    		items : <?php if($items) { echo $items; } else { echo 5; }?>,
-				autoPlay : <?php if($auto) echo 'true'; else echo 'false'; ?>,
-				slideSpeed : <?php if($speed) echo $speed; else echo '500'; ?>,
-				navigation : <?php if($show_navigation) echo 'true'; else echo 'false'; ?>,
-				stopOnHover : true,
-				pagination : <?php if($show_pagination) echo 'true'; else echo 'false'; ?>,
-				pagination : false,
-				itemsDesktop : [1200,3],
-				itemsDesktopSmall : [1000,2],
-				itemsTablet: [680,2],
-				itemsMobile : [460,1]
-	});
-	
-
-});
- 
-
+<?php
+	$productTabConfig = [
+		'tabSelector' => 'ul.tabs li',
+		'contentSelector' => '.tab_content',
+		'tabAttribute' => 'rel',
+		'activeClass' => 'active',
+		'animateClass' => 'animate1',
+		'carouselSelector' => '.productTabContent',
+		'owl' => $owlOptions
+	];
+?>
+<script type="text/x-magento-init">
+{
+	"#<?php echo $containerId; ?>": {
+		"Rokanthemes_ProductTab/js/tab": <?php echo json_encode($productTabConfig, JSON_UNESCAPED_SLASHES); ?>
+	}
+}
 </script> 
 
 

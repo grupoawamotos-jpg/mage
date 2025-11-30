@@ -16,8 +16,9 @@ use Magento\Framework\App\Action\Action;
 	$type = 'widget-new-grid';
 	$templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::DEFAULT_VIEW;
 	$rows = $block->getConfig('row');
+	$containerId = 'product-tab-' . uniqid();
 	?>
-<div class="list-tab-product common-tab-system-fixed">
+<div class="list-tab-product common-tab-system-fixed" id="<?php echo $containerId; ?>">
   <div class="box-title">
     <div class="title-tab-product">
       <h2>products</h2>
@@ -60,7 +61,7 @@ use Magento\Framework\App\Action\Action;
 									</span>
 								</a>
 								<div class="quickview-product">
-									<a  data-role="quickview-button" data-id="<?php echo $_item->getId(); ?>" href="javascript: void(0);" data-href="<?php echo $block->getUrl('quickview/product/quickview/id/' . $_item->getId()) ?>" title="<?php echo __('Quick view');?>"><i class="fa fa-eye"></i></a>
+									<a  data-role="quickview-button" data-id="<?php echo $_item->getId(); ?>" href="#" data-href="<?php echo $block->getUrl('quickview/product/quickview/id/' . $_item->getId()) ?>" title="<?php echo __('Quick view');?>"><i class="fa fa-eye"></i></a>
 							    </div>
 								<?php if ( $_item->getFinalPrice() < $_item->getPrice() ): ?>
 									<span class="onsale">
@@ -139,13 +140,18 @@ use Magento\Framework\App\Action\Action;
 	}
 }
 </script>
-
-<script type="text/javascript">
-require(["jquery", 'mage/mage', "rokanthemes/owl"], function($){
-	'use strict';
-	$( document ).ready(function() {
-		$(".list-tab-product .tab_content").hide();
-		$(".list-tab-product .tab_content:first").show();	
-	});
-});
+<?php
+	$productTabConfig = [
+		'tabSelector' => 'ul.tabs li',
+		'contentSelector' => '.tab_content',
+		'tabAttribute' => 'rel',
+		'activeClass' => 'active'
+	];
+?>
+<script type="text/x-magento-init">
+{
+	"#<?php echo $containerId; ?>": {
+		"Rokanthemes_ProductTab/js/tab": <?php echo json_encode($productTabConfig, JSON_UNESCAPED_SLASHES); ?>
+	}
+}
 </script>

@@ -6,6 +6,7 @@
 namespace Rokanthemes\SlideBanner\Model\ResourceModel\Slider\Grid;
 
 use Magento\Framework\Api\Search\SearchResultInterface;
+use Magento\Framework\DB\Adapter\AdapterInterface;
 use Magento\Framework\Search\AggregationInterface;
 use Rokanthemes\SlideBanner\Model\ResourceModel\Slider\Collection as SliderCollection;
 
@@ -47,7 +48,7 @@ class Collection extends SliderCollection implements SearchResultInterface
         $eventObject,
         $resourceModel,
         $model = 'Magento\Framework\View\Element\UiComponent\DataProvider\Document',
-        $connection = null,
+        ?AdapterInterface $connection = null,
         ?\Magento\Framework\Model\ResourceModel\Db\AbstractDb $resource = null
     ) {
         parent::__construct(

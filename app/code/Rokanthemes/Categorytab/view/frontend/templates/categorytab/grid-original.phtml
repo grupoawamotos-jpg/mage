@@ -24,13 +24,35 @@
     $categoryIds = $block->getCategoryIds();
     $categoryIds = explode(',', $categoryIds);
 
-    $productsOnRow = 2;
-    if (!$productsOnRow) {
-        $productsOnRow = 4;
+    $identifySanitized = preg_replace('/[^A-Za-z0-9_-]/', '', $identify);
+    if ($identifySanitized === '') {
+        $identifySanitized = 'categorytab_' . uniqid();
     }
+
+    $tabsClass = 'tabs-' . $identifySanitized;
+    $contentClass = 'tab_content_' . $identifySanitized;
+    $containerId = 'category-tab-' . $identifySanitized;
+    $carouselSelector = '.cat_home2';
+
+    $defaultItems = (int)($default ?: 6);
+    $desktopItems = (int)($desktop ?: 4);
+    $desktopSmallItems = (int)($desktop_small ?: 3);
+    $tabletItems = (int)($tablet ?: 3);
+    $mobileItems = (int)($mobile ?: 2);
+
+    $owlOptions = [
+        'lazyLoad' => true,
+        'items' => $defaultItems,
+        'itemsDesktop' => [1366, $desktopItems],
+        'itemsDesktopSmall' => [1199, $desktopSmallItems],
+        'itemsTablet' => [991, $tabletItems],
+        'itemsMobile' => [680, $mobileItems],
+        'navigation' => (bool)$show_navigation,
+        'pagination' => (bool)$show_pagination
+    ];
 ?>
 
-<div class="categorytab-container">
+<div class="categorytab-container" id="<?php echo $containerId; ?>">
     <div class="rokan-product-heading rokan-featured-heading clearfix">
         <?php echo $title ? '<h2 class="pull-left">' . $title . ' <span class="sup-title">' . __('This Month') . '</span></h2>' : ''; ?>
     </div>
@@ -42,7 +64,7 @@
                 </a>
                 <div class="cat_posion">
                     <div class="vc_tta-tabs-container">
-                        <ul class="tabs tabs<?php echo '-' . $identify; ?>">
+                        <ul class="tabs <?php echo $tabsClass; ?>">
                         <?php
                             $k = 0;
                             foreach ($categoryIds as $cate_id) {
@@ -50,7 +72,8 @@
                                 $cateName = $cate_model->load($cate_id)->getName();
                                 if ($cateName) {
                         ?>
-                                    <li class="<?php if ($k == 0) { echo 'active'; }?>" rel="tab<?php echo trim($cate_id) . '-' . $identify; ?>"><a><?php echo $cateName; ?></a></li>
+                                    <?php $tabId = 'tab' . trim($cate_id) . '-' . $identifySanitized; ?>
+                                    <li class="<?php if ($k == 0) { echo 'active'; }?>" rel="<?php echo $tabId; ?>"><a><?php echo $cateName; ?></a></li>
                         <?php }
                                 $k++;
                             }
@@ -69,8 +92,10 @@
                             $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::DEFAULT_VIEW;
                         ?>
                         <div class="tab_container">
-                            <?php foreach ($categoryIds as $cate_id) { ?>
-                            <div id="tab<?php echo trim($cate_id) . '-' . $identify; ?>" class="tab_content_<?php echo $identify; ?>">
+                            <?php foreach ($categoryIds as $cate_id) { 
+                                $tabId = 'tab' . trim($cate_id) . '-' . $identifySanitized;
+                            ?>
+                            <div id="<?php echo $tabId; ?>" class="<?php echo $contentClass; ?>">
                                 <div class="owl-container">
                                     <div class="cat_home2 owl-carousel">
                                         <?php
@@ -121,7 +146,7 @@
                                                             </li>
                                                             <?php endif; ?>
                                                             <li class="quickview-product">
-                                                                <a class="quickview-link" data-role="quickview-button" data-id="<?php echo $_item->getId(); ?>" href="javascript: void(0);" data-href="<?php echo $block->getUrl('quickview/product/quickview/id/' . $_item->getId()); ?>" title="<?php echo __('Quick view');?>">
+                                                                <a class="quickview-link" data-role="quickview-button" data-id="<?php echo $_item->getId(); ?>" href="#" data-href="<?php echo $block->getUrl('quickview/product/quickview/id/' . $_item->getId()); ?>" title="<?php echo __('Quick view');?>">
                                                                 </a>
                                                             </li>
                                                             <?php if ($block->getAddToCompareUrl() && $showCompare): ?>
@@ -209,39 +234,26 @@
         </div>
     </div>
 </div>
-<script type="text/javascript">
-require([
-    'jquery',
-    'mage/mage',
-    'rokanthemes/owl'
-], function ($) {
-    'use strict';
-
-    jQuery('.tab_content_<?php echo $identify; ?>').hide();
-    jQuery('.tab_content_<?php echo $identify; ?>:first').show();
-
-    jQuery('ul.tabs<?php echo '-' . $identify; ?> li').click(function() {
-        jQuery('ul.tabs<?php echo '-' . $identify; ?> li').removeClass('active');
-        jQuery(this).addClass('active');
-        jQuery('.tab_content_<?php echo $identify; ?>').hide();
-        var activeTab = $(this).attr('rel');
-        jQuery('#' + activeTab).show();
-    });
-    $(document).ready(function() {
-     $('.cat_home2').owlCarousel({
-         lazyLoad:true,
-         items : 6,
-        itemsDesktop : [1366, 4],
-        itemsDesktopSmall : [1199,3],
-        itemsTablet : [991, 3],
-        itemsMobile : [680, 2],
-        navigation : true,
-        pagination : false,
-         afterAction: function(el){
-         this.$owlItems.removeClass('first-active');
-         this.$owlItems.eq(this.currentItem).addClass('first-active');
-        }
-    });
-    });
-});
+<script type="text/x-magento-init">
+{
+    "[data-role=tocart-form], .form.map.checkout": {
+        "catalogAddToCart": {}
+    }
+}
+</script>
+<?php
+    $categoryTabConfig = [
+        'tabsSelector' => '.' . $tabsClass,
+        'contentSelector' => '.' . $contentClass,
+        'tabAttribute' => 'rel',
+        'carouselSelector' => $carouselSelector,
+        'owl' => $owlOptions
+    ];
+?>
+<script type="text/x-magento-init">
+{
+    "#<?php echo $containerId; ?>": {
+        "js/category-tab": <?php echo json_encode($categoryTabConfig, JSON_UNESCAPED_SLASHES); ?>
+    }
+}
 </script>

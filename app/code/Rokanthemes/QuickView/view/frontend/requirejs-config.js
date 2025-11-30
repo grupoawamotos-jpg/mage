@@ -8,13 +8,5 @@ var config = {
         '*': {
 			'productQuickview': 'Rokanthemes_QuickView/js/quickview'
         },
-    },
-	"shim": {
-		"quickview/cloudzoom": ["jquery"],
-		"quickview/bxslider": ["jquery"]
-	},
-	'paths': {
-		'quickview/cloudzoom': 'Rokanthemes_QuickView/js/cloud-zoom',
-        "quickview/bxslider": "Rokanthemes_QuickView/js/jquery.bxslider"
     }
 };

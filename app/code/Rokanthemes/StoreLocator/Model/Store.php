@@ -32,7 +32,7 @@ class Store extends AbstractModel implements StoreInterface, IdentityInterface
         Context $context,
         Registry $registry,
         CountryFactory $countryFactory,
-		?AbstractResource $resource = null,
+        ?AbstractResource $resource = null,
         ?AbstractDb $resourceCollection = null,
         array $data = []
     ) {

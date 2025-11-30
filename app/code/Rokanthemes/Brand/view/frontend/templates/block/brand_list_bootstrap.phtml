@@ -25,6 +25,7 @@ $dots = $this->getConfig('brand_block/dots',true);
 $nav = $this->getConfig('brand_block/nav',true);
 $nav_prev = $this->getConfig('brand_block/nav_prev');
 $nav_next = $this->getConfig('brand_block/nav_next');
+$loadBootstrap = $this->helper('Rokanthemes\All\Helper\Data')->getConfig('enable_bootstrap_js');
 
 ?>
 <?php if ( $_brandCollection->count() ){ ?>
@@ -88,16 +89,19 @@ $pretext                = $_helper->filter($this->getConfig('brand_block/pretext
 		</div>
 		<?php if($nav && $total>$xs_column_item){ ?>
 		<div class="carousel-controls">
-			<a class="left carousel-control" href="#productcarousel-<?php echo $blockId ?>" role="button" data-slide="prev"><?php echo $nav_prev?$nav_prev:'Previous'); ?></a>
-			<a class="right carousel-control" href="#productcarousel-<?php echo $blockId ?>" role="button" data-slide="next"><?php echo $nav_next?$nav_next:'Next'; ?></a>
+			<a class="left carousel-control" href="#productcarousel-<?php echo $blockId ?>" role="button" data-slide="prev"><?php echo $nav_prev ? $nav_prev : __('Previous'); ?></a>
+			<a class="right carousel-control" href="#productcarousel-<?php echo $blockId ?>" role="button" data-slide="next"><?php echo $nav_next ? $nav_next : __('Next'); ?></a>
 		</div>
 		<?php } ?>
 	</div>
 </div>
 <?php } ?>
-<script type="text/javascript">
-	require([<?php if($this->helper("Rokanthemes\All\Helper\Data")->getConfig("enable_bootstrap_js")): ?>
-		"Rokanthemes_All/lib/bootstrap/js/bootstrap.min",
-	<?php endif; ?>
-		], function () {});
+<script type="text/x-magento-init">
+{
+	"*": {
+		"Rokanthemes_Brand/js/bootstrap-loader": {
+			"loadBootstrap": <?php echo $loadBootstrap ? 'true' : 'false'; ?>
+		}
+	}
+}
 </script>

@@ -16,22 +16,22 @@
     $_config = $_helper->getConfig('custommenu');
     $columnsLimit = 0;
     if($_config['general']['enable']) {
+        $menuId = 'rokanthemes-custommenu-side-' . uniqid();
 ?>
 <?php $_menu = $block->getCustomMenuHtml(); ?>
 
-<nav class="navigation custommenu side-custommenu" role="navigation">
+<nav class="navigation custommenu side-custommenu" role="navigation" id="<?php echo $menuId; ?>">
     <ul>
         <?php echo $_menu; ?>
     </ul>
 </nav>
 
-<script type="text/javascript">
-    require([
-        'jquery',
-        'rokanthemes/custommenu'
-    ], function ($) {
-        $(".custommenu").CustomMenu();
-    });
+<script type="text/x-magento-init">
+{
+    "#<?php echo $menuId; ?>": {
+        "Rokanthemes_CustomMenu/js/topmenu": {}
+    }
+}
 </script>
 <?php
     }

@@ -6,6 +6,7 @@
 namespace Magento\Cms\Model\ResourceModel\Block\Grid;
 
 use Magento\Framework\Api\Search\SearchResultInterface;
+use Magento\Framework\DB\Adapter\AdapterInterface;
 use Magento\Framework\Search\AggregationInterface;
 use Magento\Cms\Model\ResourceModel\Block\Collection as BlockCollection;
 
@@ -46,7 +47,7 @@ class Collection extends BlockCollection implements SearchResultInterface
         $eventObject,
         $resourceModel,
         $model = 'Magento\Framework\View\Element\UiComponent\DataProvider\Document',
-        $connection = null,
+        ?AdapterInterface $connection = null,
         ?\Magento\Framework\Model\ResourceModel\Db\AbstractDb $resource = null
     ) {
         parent::__construct(

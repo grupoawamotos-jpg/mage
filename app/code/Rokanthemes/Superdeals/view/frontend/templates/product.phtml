@@ -3,8 +3,37 @@
 	$category_load = $block->getCategory();
 	if($category_load && strtotime($block->getConfig('end_date')) >= strtotime($block->getCurrentTime())){ 
 		$image = 'new_products_content_widget_grid';
+        $identifier = preg_replace('/[^A-Za-z0-9_-]/', '', (string)$block->getNameInLayout());
+		if ($identifier === '') {
+			$identifier = uniqid('superdeal_');
+		}
+		$containerId = 'superdeal-' . $identifier;
+		$timeCirclesConfig = [
+			'time' => [
+				'Days' => [
+					'show' => true,
+					'text' => (string)__('Days'),
+					'color' => '#f9bc02'
+				],
+				'Hours' => [
+					'show' => true,
+					'text' => (string)__('Hours'),
+					'color' => '#f9bc02'
+				],
+				'Minutes' => [
+					'show' => true,
+					'text' => (string)__('Mins'),
+					'color' => '#f9bc02'
+				],
+				'Seconds' => [
+					'show' => true,
+					'text' => (string)__('Secs'),
+					'color' => '#f9bc02'
+				]
+			]
+		];
 ?>
-<div class="super-deal">
+<div class="super-deal" id="<?php echo $containerId; ?>">
 	<div class="container">
 		<div class="super-deal-header">
 			<div class="row">
@@ -59,7 +88,7 @@
 										</a>
 									<?php endif; ?>
 									<div class="quickview-product quickview-product-fixed-inline">
-										<a  data-role="quickview-button" data-id="<?php echo $_item->getId(); ?>" href="javascript: void(0);" data-href="<?php echo $block->getUrl('quickview/product/quickview/id/' . $_item->getId()) ?>" title="<?php echo __('Quick view');?>"><i class="fa fa-search"></i></a>
+										<a  data-role="quickview-button" data-id="<?php echo $_item->getId(); ?>" href="#" data-href="<?php echo $block->getUrl('quickview/product/quickview/id/' . $_item->getId()) ?>" title="<?php echo __('Quick view');?>"><i class="fa fa-search"></i></a>
 									</div>
 								</div>
 								<div class="actions-primary addcart-link">
@@ -105,8 +134,8 @@
 								<a href="<?php echo $block->getProductUrl($_item) ?>" class="deal-shop-link"><?php echo __('Shop now') ?></a>
 								<div class="social-deal social-network">
 									<ul>
-										<li><a href="//www.facebook.com/sharer.php?u=<?php echo $block->getProductUrl($_item) ?>" onclick="return !window.open(this.href, 'Facebook', 'width=500,height=500')"><img alt="" src="<?php echo $block->getBaseUrlMediaCustom();?>images/home1/s1.png"></a></li>
-										<li><a href="//twitter.com/home?status=<?php echo $block->getProductUrl($_item) ?>" onclick="return !window.open(this.href, 'Twitter', 'width=500,height=500')"><img alt="" src="<?php echo $block->getBaseUrlMediaCustom();?>images/home1/s2.png"></a></li>
+										<li><a href="//www.facebook.com/sharer.php?u=<?php echo $block->escapeUrl($block->getProductUrl($_item)) ?>" data-share-popup="true" data-share-window="Facebook" data-share-width="500" data-share-height="500"><img alt="" src="<?php echo $block->getBaseUrlMediaCustom();?>images/home1/s1.png"></a></li>
+										<li><a href="//twitter.com/home?status=<?php echo $block->escapeUrl($block->getProductUrl($_item)) ?>" data-share-popup="true" data-share-window="Twitter" data-share-width="500" data-share-height="500"><img alt="" src="<?php echo $block->getBaseUrlMediaCustom();?>images/home1/s2.png"></a></li>
 									</ul>
 								</div>
 							</div>
@@ -119,43 +148,13 @@
 		</div>
 	</div>
 </div>
-<script type="text/javascript">
-    require([
-        'jquery',
-        'rokanthemes/timecircles'
-    ], function ($) {
-		$( document ).ready(function() {
-			if($('.super-deal-countdown').length>0){
-				$(".super-deal-countdown").TimeCircles({
-					fg_width: 0.01,
-					bg_width: 1.2,
-					text_size: 0.07,
-					circle_bg_color: "#ffffff",
-					time: {
-						Days: {
-							show: true,
-							text: "<?php echo __('Days'); ?>",
-							color: "#f9bc02"
-						},
-						Hours: {
-							show: true,
-							text: "<?php echo __('Hours'); ?>",
-							color: "#f9bc02"
-						},
-						Minutes: {
-							show: true,
-							text: "<?php echo __('Mins'); ?>",
-							color: "#f9bc02"
-						},
-						Seconds: {
-							show: true,
-							text: "<?php echo __('Secs'); ?>",
-							color: "#f9bc02"
-						}
-					}
-				}); 
-			}
-		});
-    });
+<script type="text/x-magento-init">
+{
+	"#<?php echo $containerId; ?>": {
+		"Rokanthemes_Superdeals/js/superdeal": {
+			"timeCircles": <?php echo json_encode($timeCirclesConfig, JSON_UNESCAPED_SLASHES); ?>
+		}
+	}
+}
 </script>
 <?php } ?>

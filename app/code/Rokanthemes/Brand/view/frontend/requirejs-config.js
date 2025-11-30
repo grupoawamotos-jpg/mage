@@ -5,9 +5,7 @@
 var config = {
 	map: {
 		"*": {
-			conflict: "Rokanthemes_Brand/js/conflict",
-			owlcarousel: "Rokanthemes_Brand/js/owl.carousel",
-			boostrap: "Rokanthemes_Brand/js/bootstrap.min",
+			conflict: "Rokanthemes_Brand/js/conflict"
 		}
 	}
 };

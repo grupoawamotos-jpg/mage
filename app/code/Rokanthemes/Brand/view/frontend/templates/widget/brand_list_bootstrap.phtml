@@ -23,6 +23,7 @@ $speed = $this->getConfig('speed');
 $dots = $this->getConfig('dots',true);
 $nav = $this->getConfig('nav',true);
 $interval = $this->getConfig('interval',true);
+$loadBootstrap = $this->helper('Rokanthemes\All\Helper\Data')->getConfig('enable_bootstrap_js');
 
 ?>
 <?php if ( $_brandCollection->count() ){ ?>
@@ -106,9 +107,12 @@ $html = $_helper->filter($html);
 </div>
 <?php } ?>
 
-<script type="text/javascript">
-	require([<?php if($this->helper("Rokanthemes\All\Helper\Data")->getConfig("enable_bootstrap_js")): ?>
-		"Rokanthemes_All/lib/bootstrap/js/bootstrap.min",
-	<?php endif; ?>
-		], function () {});
+<script type="text/x-magento-init">
+{
+	"*": {
+		"Rokanthemes_Brand/js/bootstrap-loader": {
+			"loadBootstrap": <?php echo $loadBootstrap ? 'true' : 'false'; ?>
+		}
+	}
+}
 </script>

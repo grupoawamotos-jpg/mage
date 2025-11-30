@@ -27,20 +27,22 @@ class FromDatePicker extends \Magento\Config\Block\System\Config\Form\Field
   
     protected function _getElementHtml(\Magento\Framework\Data\Form\Element\AbstractElement $element)
     {
-        //get configuration element
         $html = $element->getElementHtml();
-        $html .= '<script type="text/javascript">
-            require(["jquery", "mage/calendar"], function ($) {
-                $(document).ready(function () {
-					$("#' . $element->getHtmlId() . '").calendar({
-						showsTime: true,
-						timeFormat: "HH:mm",
-						dateFormat: "mm/dd/yy"
-					});
-                });
-            });
-            </script>';
-        // return datepicker element
+
+        $calendarConfig = [
+            '#' . $element->getHtmlId() => [
+                'calendar' => [
+                    'showsTime' => true,
+                    'timeFormat' => 'HH:mm',
+                    'dateFormat' => 'mm/dd/yy'
+                ]
+            ]
+        ];
+
+        $html .= '<script type="text/x-magento-init">'
+            . json_encode($calendarConfig, JSON_UNESCAPED_SLASHES)
+            . '</script>';
+
         return $html;
     }
 }

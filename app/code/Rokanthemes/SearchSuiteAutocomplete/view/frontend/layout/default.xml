@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
-
+<!--
+	Layout base do SearchSuiteAutocomplete.
+	O bloco de autocomplete é definido no tema ayo/ayo_default que possui o container toki_header.
+	Aqui apenas removemos o bloco de busca padrão do Magento.
+-->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
     	<referenceBlock name="top.search" remove="true"/>
-		<referenceContainer name="header-wrapper">
-			<block class="Rokanthemes\SearchSuiteAutocomplete\Block\Autocomplete" name="rokanthemes-search-autocomplete-wrapper" as="topSearch" template="Rokanthemes_SearchSuiteAutocomplete::autocomplete.phtml"/>
-		</referenceContainer>
-		<move element="rokanthemes-search-autocomplete-wrapper" destination="toki_header_custom" />
     </body>
 </page>

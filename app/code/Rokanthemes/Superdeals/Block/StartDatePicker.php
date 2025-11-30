@@ -29,18 +29,21 @@ class StartDatePicker extends \Magento\Config\Block\System\Config\Form\Field
     {
         //get configuration element
         $html = $element->getElementHtml();
-        $html .= '<script type="text/javascript">
-            require(["jquery", "mage/calendar"], function ($) {
-                $(document).ready(function () {
-					$("#' . $element->getHtmlId() . '").calendar({
-						showsTime: true,
-						timeFormat: "HH:mm:ss",
-						dateFormat: "dd/mm/yy"
-					});
-                });
-            });
-            </script>';
-        // return datepicker element
+
+        $calendarConfig = [
+            '#' . $element->getHtmlId() => [
+                'calendar' => [
+                    'showsTime' => true,
+                    'timeFormat' => 'HH:mm:ss',
+                    'dateFormat' => 'dd/mm/yy'
+                ]
+            ]
+        ];
+
+        $html .= '<script type="text/x-magento-init">'
+            . json_encode($calendarConfig, JSON_UNESCAPED_SLASHES)
+            . '</script>';
+
         return $html;
     }
 }

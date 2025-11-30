@@ -3,11 +3,4 @@
  * See COPYING.txt for license details.
  */
 
-var config = {
-	"shim": {
-		"rokanthemes/timecircles": ["jquery"]
-	},
-	'paths': {
-		'rokanthemes/timecircles': 'Rokanthemes_Superdeals/js/timecircles'
-    }
-};
+var config = {};

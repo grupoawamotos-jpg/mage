@@ -4,8 +4,9 @@
 <?php
 namespace Rokanthemes\Testimonials\Model\ResourceModel\Testimonials\Grid;
 
-use Magento\Framework\Search\AggregationInterface;
 use Magento\Framework\Api\Search\SearchResultInterface;
+use Magento\Framework\DB\Adapter\AdapterInterface;
+use Magento\Framework\Search\AggregationInterface;
 use Rokanthemes\Testimonials\Model\ResourceModel\Testimonials\Collection as TestimonialsCollection;
 
 class Collection extends TestimonialsCollection implements SearchResultInterface
@@ -23,7 +24,7 @@ class Collection extends TestimonialsCollection implements SearchResultInterface
         $eventObject,
         $resourceModel,
         $model = 'Magento\Framework\View\Element\UiComponent\DataProvider\Document',
-        $connection = null,
+        ?AdapterInterface $connection = null,
         ?\Magento\Framework\Model\ResourceModel\Db\AbstractDb $resource = null
     ) {
         parent::__construct($entityFactory, $logger, $fetchStrategy, $eventManager,$storeManager,$connection, $resource);
