@@ -4,6 +4,14 @@
 var config = {
     map: {
         '*': {
+            // Form Widgets
+            floatingLabels: 'js/floating-labels-widget',
+            passwordStrength: 'js/password-strength-widget',
+            charCounter: 'js/char-counter-widget',
+            formValidationStyles: 'js/form-validation-styles-widget',
+            accessibility: 'js/accessibility-widget',
+            placeholders: 'js/placeholders-widget',
+            
             // Rokanthemes Core
             'rokanthemes/owl': 'Rokanthemes_RokanBase/js/owl_carousel',
             'rokanthemes/fancybox': 'Rokanthemes_RokanBase/js/jquery_fancybox',
